@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  font-family: "Droid Arabic Kufi";
+}
+
+/*  links style */
+
+.links {
+  @apply p-2 sm:p-1  
+        ease-in-out w-auto transition duration-300  text-white rounded-md   hover:w-fit hover:text-black hover:bg-white;
+}
+.logo {
+  @apply text-white text-xl mr-10 font-bold;
+}

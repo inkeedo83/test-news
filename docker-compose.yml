@@ -1,0 +1,63 @@
+version: "3.8"
+
+networks:
+  dev:
+
+services:
+  db:
+    image: postgres:15.1
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: alinews
+      POSTGRES_PASSWORD: L2bBvWt7Xo5Hhcmy
+      POSTGRES_DB: alinews
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: api
+    depends_on:
+      - db
+    networks:
+      - dev
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: alinews
+      DB_USERNAME: alinews
+      DB_PASSWORD: L2bBvWt7Xo5Hhcmy
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: web
+    depends_on:
+      - api
+    networks:
+      - dev
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "/etc/letsencrypt:/etc/letsencrypt:ro"
+    depends_on:
+      - api
+      - web
+    networks:
+      - dev
+
+volumes:
+  db_data:
