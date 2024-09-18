@@ -18,10 +18,10 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Copy the built files from the build stage
+COPY --from=build /usr/src/app/package.json ./package.json
+COPY --from=build /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist  
 # Ensure this copies the dist directory
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/package.json ./package.json
 
 # Use a non-root user to run the app
 USER node
