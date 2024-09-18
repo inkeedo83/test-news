@@ -1,15 +1,16 @@
 # Build Stage
-FROM node:20-bullseye-slim as build
+FROM node:20-bullseye-slim AS build
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Install dependencies
 COPY package.json yarn.lock ./
-RUN yarn install --production
+RUN yarn install
 
 # Copy the source code and build the application
 COPY . .
-RUN yarn build  # This needs to build the app, ensuring dist/main is created
+# This needs to build the app, ensuring dist/main is created
+RUN yarn build  
 
 # Production Stage
 FROM node:20-bullseye-slim

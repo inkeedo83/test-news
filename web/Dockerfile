@@ -1,6 +1,6 @@
 # Frontend Dockerfile (app/front/Dockerfile)
 # Build stage
-FROM node:18-alpine as build
+FROM node:18-alpine AS build
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
