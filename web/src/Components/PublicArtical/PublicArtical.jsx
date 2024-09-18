@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import baseUrl from "../../assets/contants";
 
 export function PublicArtical() {
   const [isloading, setIsloading] = useState(true);

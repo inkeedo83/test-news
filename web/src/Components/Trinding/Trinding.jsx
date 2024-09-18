@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ImgView } from "../ImgView/ImgView";
 import axios from "axios";
+import baseUrl from "../../assets/contants";
+
 const DateOptions = {
   weekday: "long",
   year: "numeric",
@@ -12,7 +14,7 @@ const DateOptions = {
 export function Trinding() {
   useEffect(() => {
     axios
-      .get(`${baseUrl}public/articles?order=ASC`)
+      .get(`${baseUrl}/public/articles?order=ASC`)
       .then((res) => setData(res.data.data))
       .catch((err) => console.log(err));
   }, []);

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ImgView } from "../ImgView/ImgView";
 import axios from "axios";
+import baseUrl from "../../assets/contants";
 
 const DateOptions = {
   weekday: "long",
