@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { ImgView } from "../ImgView/ImgView";
 
 import {
   FacebookShareButton,
@@ -29,7 +30,7 @@ export default function ReadArticleByID() {
   const [data, setData] = useState(null);
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:5010/articles/${id}`)
+      .get(`http://127.0.0.1:5010/public/articles/${id}`)
       .then((res) => (console.log(res), setData(res.data)))
       .catch((err) => console.log(err));
   }, []);
@@ -47,17 +48,14 @@ export default function ReadArticleByID() {
           <h1 className="font-semibold  text-red-600 p-2 m-0 mb-2 text-xl leading-tight sm:leading-normal">
             {data.title}
           </h1>
-          <img
-            src="/src/assets/national_day.jpg"
-            alt="People"
-            className="  border-2 border-red-500   w-32 h-32 sm:w-2/3 sm:h-52"
-          />
-          <span className=" text-red-600 leading-none p-2 z-1">
-            {new Date(data.createdAt).toLocaleDateString(
-              "ar-EG-u-nu-latn",
-              DateOptions
-            )}
-          </span>
+
+          <div className="inline-block  bg-red-500  ">
+            <span className="  text-xs z-0 bold  text-white  text-center w-9   p-2 m-2  mb-0 ">
+              عدد القراءات : {data.watchCount}
+            </span>
+          </div>
+          <ImgView style={{ height: 150, width: 200 }} {...data} />
+
           <div className="w-2/3">
             <span className="  select-all font-semibold text-slate-800 p-1 ">
               {data.content.replace(/ .*/, " ")}

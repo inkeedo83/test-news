@@ -8,7 +8,7 @@ import PageNotFound from "../InvalidPath/PageNotFound";
 
 function App() {
   return (
-    <div className="relative min-h-screen  bg-slate-100 ">
+    <div className="relative min-h-screen bg-gray-900  ">
       <Navbar />
       <Routes>
         <Route path="/" element={<MainPage />} />
