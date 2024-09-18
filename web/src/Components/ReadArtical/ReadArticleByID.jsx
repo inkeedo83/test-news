@@ -30,7 +30,7 @@ export default function ReadArticleByID() {
   const [data, setData] = useState(null);
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:5010/public/articles/${id}`)
+      .get(`${baseUrl}/public/articles/${id}`)
       .then((res) => (console.log(res), setData(res.data)))
       .catch((err) => console.log(err));
   }, []);

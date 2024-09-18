@@ -12,7 +12,7 @@ const DateOptions = {
 export function Trinding() {
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5010/public/articles?order=ASC")
+      .get(`${baseUrl}public/articles?order=ASC`)
       .then((res) => setData(res.data.data))
       .catch((err) => console.log(err));
   }, []);

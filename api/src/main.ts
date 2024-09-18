@@ -12,6 +12,7 @@ async function bootstrap(): Promise<void> {
   const logger = app.get<Logger>(Logger);
   const port = config.get('APPLICATION_PORT', { infer: true });
 
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -26,7 +27,7 @@ async function bootstrap(): Promise<void> {
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('api/swagger', app, document);
   await app.listen(port);
   logger.log(`⚡️ Application started successfully on port ${port}`);
 }

@@ -5,7 +5,7 @@ export function PublicArtical() {
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:5010/public/articles?order=ASC")
+    fetch(`${baseUrl}/public/articles?order=ASC`)
       .then((res) => {
         const resulte = res.json();
         return resulte;

@@ -4,6 +4,7 @@ import { ImgView } from "../ImgView/ImgView";
 import { Link } from "react-router-dom";
 import { Trinding } from "../Trinding/Trinding";
 import { PublicArtical } from "../PublicArtical/PublicArtical";
+import baseUrl from "../../assets/contants";
 
 export default function MainPageTest() {
   //states
@@ -12,7 +13,7 @@ export default function MainPageTest() {
 
   // fetch start here
   useEffect(() => {
-    fetch("http://127.0.0.1:5010/public/articles?order=ASC")
+    fetch(`${baseUrl}/public/articles?order=ASC`)
       .then((res) => {
         const resulte = res.json();
         return resulte;
