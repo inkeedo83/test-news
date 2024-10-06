@@ -65,7 +65,7 @@ function Navbar() {
               <div className="flex flex-row  items-top p-2 ">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/Antwerpen.svg"
+                  src="/web/src/assets/svg/Antwerpen.svg"
                   alt="Antwerpen"
                 />
                 <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
@@ -75,7 +75,7 @@ function Navbar() {
               <div className="flex flex-row items-top p-2">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/Liege.svg"
+                  src="/web/src/assets/svg/Liege.svg"
                   alt="liege"
                 />
                 <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
@@ -86,7 +86,7 @@ function Navbar() {
               <div className="flex flex-row items-top p-1 ">
                 <img
                   className=" h-10 w-22"
-                  src="/src/assets/svg/flanders.svg"
+                  src="/web/src/assets/svg/flanders.svg"
                   alt="Flanders"
                 />
                 <a
@@ -99,7 +99,7 @@ function Navbar() {
               <div className="flex flex-row items-top p-2">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/walloni.svg"
+                  src="/web/src/assets/svg/walloni.svg"
                   alt="Walloni"
                 />
                 <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
@@ -109,7 +109,7 @@ function Navbar() {
               <div className="flex flex-row items-top p-2">
                 <img
                   className="h-10 w-10 "
-                  src="/src/assets/svg/germanophon.svg"
+                  src="/web/src/assets/svg/germanophon.svg"
                   alt="Germanofon"
                 />
                 <a href={`/ReadArticleByCat/${"SPORT"}`} className="links">
@@ -119,7 +119,7 @@ function Navbar() {
               <div className="flex flex-row items-top p-3">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/politics.svg"
+                  src="/web/src/assets/svg/politics.svg"
                   alt="politics"
                 />
                 <a
@@ -132,7 +132,7 @@ function Navbar() {
               <div className="flex flex-row items-top  p-3">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/law.svg"
+                  src="/web/src/assets/svg/law.svg"
                   alt="law"
                 />
                 <a
@@ -145,7 +145,7 @@ function Navbar() {
               <div className="flex flex-row items-top  p-3">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/ECONOMICS.svg"
+                  src="/web/src/assets/svg/ECONOMICS.svg"
                   alt="ECONOMICS"
                 />
                 <a
@@ -158,7 +158,7 @@ function Navbar() {
               <div className="flex flex-row items-top  p-3">
                 <img
                   className="h-10 w-22 "
-                  src="/src/assets/svg/crime.svg"
+                  src="/web/src/assets/svg/crime.svg"
                   alt="Crime"
                 />
                 <a
