@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsArray, IsEnum, IsInt, IsOptional, IsString, IsUUID, Min } from 'class-validator';
 import { ORDERS } from 'src/common/constants/constants';
 
@@ -12,6 +13,7 @@ export class IdDto {
 
 export class BaseReadDto {
   @ApiPropertyOptional({ type: Number, minimum: 1 })
+  @Type(() => Number)
   @IsInt()
   @Min(1)
   @IsOptional()
