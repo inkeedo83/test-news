@@ -20,6 +20,7 @@ export class BaseReadDto {
   limit?: number;
 
   @ApiPropertyOptional({ type: Number, minimum: 0 })
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   @IsOptional()
