@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PaginatedEntityDto } from 'src/common/types/types';
-import { ReadCategoriesDto, ReadCategoryDto } from 'src/modules/category/dto/category.dto';
+import { ReadCategoriesDto } from 'src/modules/category/dto/category.dto';
 import { Category } from 'src/modules/database/entities/category.entity';
 import { DataSource, EntityManager, FindOptionsWhere, ILike } from 'typeorm';
 
@@ -34,7 +34,7 @@ export class CategoryService {
     return { data: categories, count };
   }
 
-  async readOne({ id }: ReadCategoryDto): Promise<Category> {
+  async readOne(id: string): Promise<Category> {
     const category = await this.manager.findOne(Category, { where: { id } });
 
     if (!category) throw new BadRequestException(`Category with id ${id} not found`);

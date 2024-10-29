@@ -41,8 +41,8 @@ export class CategoryController {
   @Get(':id')
   @ApiOperation({ summary: 'Read Category by id' })
   @ApiOkResponse({ status: 200, description: 'Category read successfully', type: PaginatedEntityDto<Category> })
-  async readOne(@Query() query: ReadCategoryDto): Promise<Category> {
-    return await this.categoryService.readOne(query);
+  async readOne(@Param() { id }: ReadCategoryDto): Promise<Category> {
+    return await this.categoryService.readOne(id);
   }
 
   @Patch(':id')
