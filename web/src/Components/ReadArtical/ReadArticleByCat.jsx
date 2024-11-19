@@ -12,17 +12,18 @@ const DateOptions = {
 };
 
 export default function ReadArticleByCat() {
-  const { cat } = useParams();
+  const { id } = useParams();
+  console.log(id);
   //states
   const [isloading, setIsloading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/articles?order=ASC&categoryId=${cat}`)
+      .get(`${baseUrl}/public/articles?categoryId=${id}`)
       .then((res) => (console.log(res), setData(res.data.data)))
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   console.log(data, "render by catigory");
 
@@ -40,7 +41,7 @@ export default function ReadArticleByCat() {
                 key={item.id}
                 className="bg-slate-900 text-sm  sm:text-l rounded-xl"
               >
-                <h5 className=" text-xs z-0 bold  w-28 bg-red-800 text-white p-2 mb-0 ">
+                <h5 className=" text-xs z-0 bold  w-28 bg-red-600 text-white p-2 mb-0 ">
                   {item.category.name}
                 </h5>{" "}
                 <ImgView style={{ height: 150, width: 200 }} {...item} />

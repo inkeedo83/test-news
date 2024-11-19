@@ -1,16 +1,30 @@
 import { tabs } from "../../assets/text.constant";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Weather from "../Weather/Weather";
+import { Link } from "react-router-dom";
 
 const { MAIN, PROVINCE, CITY, POLITICS, ECONOMICS, LAWS, ACCDENT } = tabs;
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  let menuRef = useRef();
+  useEffect(() => {
+    const handler = (e) => {
+      if (!menuRef.current.contains(e.target)) {
+        setIsOpen(false);
+        console.log(menuRef.current);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
 
   return (
     <>
-      <nav className=" bg-red-900 md:text-md h-fit sm:text-xl ">
-        <div className=" flex items-center justify-between  ">
+      <nav className=" bg-red-900 md:text-md h-fit sm:text-xl " ref={menuRef}>
+        <div className=" flex items-center justify-between ">
           <div className="">
             <button onClick={() => setIsOpen(!isOpen)}>
               <svg
@@ -30,143 +44,103 @@ function Navbar() {
             </button>
           </div>
 
-          <h1 className="text-white font-extrabold">العربي بلجيكا</h1>
+          <h1 className="NewsTitle">مــراســل بـلـجـيـكـا</h1>
           <Weather />
         </div>
         {isOpen ? (
-          <div className=" absolute z-10 min-h-screen flex flex-col w-fit p-6 text-center bg-red-800 ">
+          <div className=" absolute z-10 min-h-screen flex flex-col w-fit p-6 text-center bg-gray-800 ">
             <ul className=" flex flex-col m-1 z-10 ">
               <div className="flex flex-row items-top p-3 ">
-                <img
-                  className="h-10 w-22 "
-                  src="https://img.icons8.com/external-outline-wichaiwi/64/FFFFFF/external-belgium-european-cities-landmarks-outline-wichaiwi.png"
-                  alt="main"
-                />
-
-                <a href={`/`} className="links m-2">
+                <Link
+                  to={`/`}
+                  className="links  items-center  gap-4 flex flex-row p-2 m-2"
+                >
                   {MAIN.AR}
-                </a>
+                </Link>
               </div>
 
               <div className="flex  flex-row items-top  p-3">
-                <img
-                  className="h-10 w-22 "
-                  src="https://img.icons8.com/external-vitaliy-gorbachev-fill-vitaly-gorbachev/60/FFFFFF/external-atomium-wonder-of-the-world-vitaliy-gorbachev-fill-vitaly-gorbachev.png"
-                  alt="brussel"
-                />
-
-                <a
-                  href={`/ReadArticleByCat/${CITY.AR1ID}`}
+                <Link
+                  to={`/ReadArticleByCat/${CITY.AR1ID}`}
                   className="links m-2"
                 >
                   {CITY.AR1}
-                </a>
+                </Link>
               </div>
+
               <div className="flex flex-row  items-top p-2 ">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/Antwerpen.svg"
-                  alt="Antwerpen"
-                />
-                <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
+                <Link
+                  to={`/ReadArticleByCat/${CITY.AR2ID}`}
+                  className="links m-2"
+                >
                   {CITY.AR2}
-                </a>
+                </Link>
               </div>
+
               <div className="flex flex-row items-top p-2">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/Liege.svg"
-                  alt="liege"
-                />
-                <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
+                <Link
+                  to={`/ReadArticleByCat/${CITY.AR3ID}`}
+                  className="links m-2"
+                >
                   {CITY.AR3}
-                </a>
+                </Link>
               </div>
 
               <div className="flex flex-row items-top p-1 ">
-                <img
-                  className=" h-10 w-22"
-                  src="/web/src/assets/svg/flanders.svg"
-                  alt="Flanders"
-                />
-                <a
-                  href={`/ReadArticleByCat/${PROVINCE.AR1ID}`}
+                <Link
+                  to={`/ReadArticleByCat/${PROVINCE.AR1ID}`}
                   className="links m-2"
                 >
                   {PROVINCE.AR1}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top p-2">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/walloni.svg"
-                  alt="Walloni"
-                />
-                <a href={`/ReadArticleByCat/${"SPORT"}`} className="links m-2">
+                <Link
+                  to={`/ReadArticleByCat/${PROVINCE.AR2ID}`}
+                  className="links m-2"
+                >
                   {PROVINCE.AR2}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top p-2">
-                <img
-                  className="h-10 w-10 "
-                  src="/web/src/assets/svg/germanophon.svg"
-                  alt="Germanofon"
-                />
-                <a href={`/ReadArticleByCat/${"SPORT"}`} className="links">
+                <Link
+                  to={`/ReadArticleByCat/${PROVINCE.AR3ID}`}
+                  className="links"
+                >
                   {PROVINCE.AR3}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top p-3">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/politics.svg"
-                  alt="politics"
-                />
-                <a
-                  href={`/ReadArticleByCat/${CITY.AR1ID}`}
+                <Link
+                  to={`/ReadArticleByCat/${POLITICS.ARID}`}
                   className="links m-2"
                 >
                   {POLITICS.AR}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top  p-3">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/law.svg"
-                  alt="law"
-                />
-                <a
-                  href={`/ReadArticleByCat/${CITY.AR1ID}`}
+                <Link
+                  to={`/ReadArticleByCat/${LAWS.ARID}`}
                   className="links m-2"
                 >
                   {LAWS.AR}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top  p-3">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/ECONOMICS.svg"
-                  alt="ECONOMICS"
-                />
-                <a
-                  href={`/ReadArticleByCat/${CITY.AR1ID}`}
+                <Link
+                  href={`/ReadArticleByCat/${ECONOMICS.ARID}`}
                   className="links m-2"
                 >
                   {ECONOMICS.AR}
-                </a>
+                </Link>
               </div>
               <div className="flex flex-row items-top  p-3">
-                <img
-                  className="h-10 w-22 "
-                  src="/web/src/assets/svg/crime.svg"
-                  alt="Crime"
-                />
-                <a
-                  href={`/ReadArticleByCat/${CITY.AR1ID}`}
+                <Link
+                  href={`/ReadArticleByCat/${ACCDENT.ARID}`}
                   className="links align-top m-2"
                 >
                   {ACCDENT.AR}
-                </a>
+                </Link>
               </div>
             </ul>
           </div>

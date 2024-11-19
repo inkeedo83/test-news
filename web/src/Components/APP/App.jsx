@@ -12,8 +12,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<MainPage />} />
+
         <Route path="/ReadArticleByID/:id" element={<ReadArticleByID />} />
-        <Route path="/ReadArticleByCat/:cat" element={<ReadArticleByCat />} />
+        <Route path="/ReadArticleByCat/:id" element={<ReadArticleByCat />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

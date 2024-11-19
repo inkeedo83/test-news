@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 /*  links style */
-
+* {
+  font-family: "Almarai", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  line-height: 2;
+}
+.NewsTitle {
+  font-family: "Marhey", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 400;
+  color: white;
+  font-size: 2.4vw;
+}
 .links {
   @apply p-2 sm:p-1  
         ease-in-out w-auto transition duration-300  text-white rounded-md   hover:w-fit hover:text-black hover:bg-white;
