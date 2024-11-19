@@ -3,12 +3,11 @@ import { ImgView } from "../ImgView/ImgView";
 import { Link } from "react-router-dom";
 import { OneArtical } from "../OneArtical/OneArtical";
 import baseUrl from "../../assets/contants";
-import MainPageCat from "../MainPageCat/MainpageCat";
+import MainPageCat from "../MainPageCat/MainPageCat";
 import { tabs } from "../../assets/text.constant";
 import LatestNews from "../LatestNews/LatestNews";
 
-const { MAIN, PROVINCE, CITY, POLITICS, ECONOMICS, LAWS, ACCDENT, CULTURE } =
-  tabs;
+const { CITY, POLITICS } = tabs;
 
 export default function MainPageTest() {
   //states
@@ -89,23 +88,4 @@ export default function MainPageTest() {
       <MainPageCat id={CITY.AR1ID} cat={CITY.AR1} />
     </>
   );
-}
-{
-  /* 
-  <span className="bg-white text-black">ads</span>
-      <MainPageCat id={PROVINCE.AR1ID} cat={PROVINCE.AR1} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={PROVINCE.AR2ID} cat={PROVINCE.AR2} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={PROVINCE.AR3ID} cat={PROVINCE.AR3} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={ECONOMICS.ARID} cat={ECONOMICS.AR} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={LAWS.ARID} cat={LAWS.AR} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={ACCDENT.ARID} cat={ACCDENT.AR} />
-      <span className="bg-white text-black">ads</span>
-      <MainPageCat id={CULTURE.ARID} cat={CULTURE.AR} />
-      <span className="bg-white text-black">ads</span>
-*/
 }
