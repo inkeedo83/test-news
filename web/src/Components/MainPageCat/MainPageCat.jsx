@@ -33,9 +33,9 @@ export default function MainPageCat({ id, cat }) {
 
       <div className="absolute sm:h-8 sm:w-auto top-1 opacity-90 flex  justify-center m-1 ">
         <Link to={`/ReadArticleByCat/${item.category.id}`}>
-          <h3 className="text-white sm:text-lg w-auto rounded-md h-18 sm:w-16  p-1 mr-1 mt-2 text-xs bg-red-600 sm:font-bold">
+          <h2 className="text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit  p-1 mt-2 text-xs bg-red-600 sm:font-bold">
             {item.category.name}
-          </h3>
+          </h2>
         </Link>
       </div>
       <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70 m-1 flex  justify-between ">
@@ -61,7 +61,7 @@ export default function MainPageCat({ id, cat }) {
              grid grid-cols-4 justify-items-center"
           >
             <div className=" text-white  m-1 col-start-1 col-span-4 ">
-              <h1 className=" sm:text-lg  font-extrabold  text-lg w-fit p-4 bg-red-900 text-white  ">
+              <h1 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-3 sm:p-5 mt-2 text-xs bg-red-600 sm:font-bold">
                 اخبار {Cat}
               </h1>
 

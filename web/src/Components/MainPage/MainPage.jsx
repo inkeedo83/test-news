@@ -10,6 +10,14 @@ import LatestNews from "../LatestNews/LatestNews";
 const { CITY, POLITICS } = tabs;
 
 export default function MainPageTest() {
+  //screen render
+  const screen = window.screen.width > 500;
+  const width = screen ? (
+    <div className=" text-white sm:text-sm sm:p-2  m-1 col-start-5  col-end-7">
+      <LatestNews />
+    </div>
+  ) : null;
+
   //states
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
@@ -21,7 +29,7 @@ export default function MainPageTest() {
 
       <div className="absolute sm:h-8 sm:w-auto top-1 opacity-90 flex  justify-center m-1 ">
         <Link to={`/ReadArticleByCat/${item.category.id}`}>
-          <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-16  p-1 mr-1 mt-2 text-xs bg-red-600 sm:font-bold">
+          <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-600 sm:font-bold">
             {item.category.name}
           </h3>
         </Link>
@@ -64,10 +72,10 @@ export default function MainPageTest() {
         <>
           <div
             className=" 
-             grid grid-cols-6 justify-items-center"
+             grid grid-cols-6 justify-items-center  pt-24 "
           >
-            <div className=" text-white  m-1 col-start-1 col-span-4 ">
-              <h1 className=" sm:text-lg text-md w-fit p-2 bg-red-900 text-white  ">
+            <div className=" mr-14 sm:m-1 text-white  col-start-1 w-screen sm:w-fit col-span-4 ">
+              <h1 className="text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit p-3  sm:p-5 mt-2 text-xs bg-red-600 sm:font-bold">
                 اخبار متنوعة
               </h1>
               <OneArtical any={{ height: 400, width: 610 }} />
@@ -77,9 +85,7 @@ export default function MainPageTest() {
               </div>
             </div>
 
-            <div className=" text-white sm:text-sm sm:p-2  m-1 col-start-5  col-end-7">
-              <LatestNews />
-            </div>
+            {width}
           </div>
         </>
       )}

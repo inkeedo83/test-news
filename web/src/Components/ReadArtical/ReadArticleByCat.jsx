@@ -35,7 +35,7 @@ export default function ReadArticleByCat() {
         )
       ) : (
         <>
-          <div className=" bg-gray-800 border-4 grid grid-cols-3 grid-rows-3 gap-8  ">
+          <div className=" bg-gray-800 border-4 grid grid-cols-3 grid-rows-3 gap-8 pt-24  ">
             {data.map((item) => (
               <div
                 key={item.id}

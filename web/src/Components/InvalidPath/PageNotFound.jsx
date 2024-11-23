@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 export default function PageNotFound() {
   const navigate = useNavigate();
   return (
-    <div className="   flex flex-col  items-center  h-screen ">
+    <div className="   flex flex-col  items-center  h-screen p-24 ">
       {" "}
       <h1
         className="text-xl text-red-500 mt-20 text-center 

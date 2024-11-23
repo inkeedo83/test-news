@@ -43,7 +43,7 @@ export default function ReadArticleByID() {
   console.log(data);
   return (
     <div className="bg-white  text-xl ">
-      <div className="grid grid-cols-1 ">
+      <div className="grid grid-cols-1 pt-24  ">
         <div>
           {data === null ? (
             isloading && (
