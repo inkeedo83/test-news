@@ -10,6 +10,7 @@ export const validationSchema = z.object({
 
   APPLICATION_HOST: z.string().default('0.0.0.0'),
   APPLICATION_PORT: z.coerce.number().int().positive().default(5000),
+  BASE_URL: z.string().url(),
 
   DB_HOST: z.string(),
   DB_PORT: z.coerce.number().int().positive(),

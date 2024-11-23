@@ -28,7 +28,6 @@ import {
   DeleteArticleDto,
   ReadArticlesDto,
   ReadOneArticleDto,
-  SomeDto,
   UpdateArticleDto
 } from 'src/modules/article/dto/article.dto';
 import { ArticleService } from 'src/modules/article/services/article.service';
@@ -39,18 +38,16 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
-  // @ApiOperation({ summary: 'Create article' })
-  // @ApiCreatedResponse({ status: 201, description: 'Article created successfully', type: ArticleDto })
-  // @ApiResponse({ status: 400, description: 'Invalid request' })
+  @ApiOperation({ summary: 'Create article' })
+  @ApiCreatedResponse({ status: 201, description: 'Article created successfully', type: ArticleDto })
+  @ApiResponse({ status: 400, description: 'Invalid request' })
   @ApiBody({ type: CreateArticleDto })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
   async create(@UploadedFile() image: Express.Multer.File, @Body() body: CreateArticleDto): Promise<ArticleDto> {
-    const article = await this.articleService.create(body);
+    body.image = image;
 
-    if (image) return this.articleService.updateImage(article.id, image);
-
-    return article;
+    return this.articleService.create(body);
   }
 
   @Get()
@@ -74,33 +71,17 @@ export class ArticleController {
   @ApiCreatedResponse({ status: 201, description: 'Article created successfully', type: ArticleDto })
   @ApiResponse({ status: 400, description: 'Invalid request' })
   @ApiNotFoundResponse({ status: 404, description: 'Article not found' })
-  async update(@Param() { id }: ReadOneArticleDto, @Body() body: UpdateArticleDto): Promise<ArticleDto> {
-    return this.articleService.update(id, body);
-  }
-
-  @Patch('/image/:id')
-  @ApiOperation({ summary: 'Update article image' })
-  @ApiCreatedResponse({ status: 201, description: 'Article image updated successfully', type: ArticleDto })
-  @ApiResponse({ status: 400, description: 'Invalid request' })
+  @ApiBody({ type: UpdateArticleDto })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
-  async updateImage(
+  async update(
+    @UploadedFile() image: Express.Multer.File | null | undefined,
     @Param() { id }: ReadOneArticleDto,
-    @Body() body: SomeDto,
-    @UploadedFile() image: Express.Multer.File
+    @Body() body: UpdateArticleDto
   ): Promise<ArticleDto> {
-    console.log({ body });
+    body.image = image ?? undefined;
 
-    return this.articleService.updateImage(id, image);
-  }
-
-  @Delete('image/:id')
-  @ApiOperation({ summary: 'Delete article image' })
-  @ApiOkResponse({ status: 200, description: 'Article image deleted successfully', type: ArticleDto })
-  @ApiResponse({ status: 400, description: 'Invalid request' })
-  @ApiNotFoundResponse({ status: 404, description: 'Article not found' })
-  async deleteImage(@Param() { id }: DeleteArticleDto): Promise<ArticleDto> {
-    return this.articleService.deleteImage(id);
+    return this.articleService.update(id, body);
   }
 
   @Delete(':id')

@@ -1,9 +1,11 @@
 import { Controller, Get, NotFoundException, Param, Response } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { Response as ExpressResponse } from 'express';
 import { Article } from 'src/modules/database/entities/article.entity';
 import { StorageService } from 'src/modules/storage/services/storage.service';
 import { DataSource, EntityManager } from 'typeorm';
 
+@ApiTags('Image proxy')
 @Controller('image')
 export class ProxyController {
   private manager: EntityManager;

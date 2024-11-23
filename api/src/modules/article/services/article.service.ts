@@ -1,8 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { randomUUID } from 'crypto';
 import { pick } from 'lodash';
 import { PaginatedEntityDto } from 'src/common/types/types';
 import { ArticleDto, CreateArticleDto, ReadArticlesDto, UpdateArticleDto } from 'src/modules/article/dto/article.dto';
+import { AppConfig } from 'src/modules/config/validation.schema';
 import { Article, ArticleTag } from 'src/modules/database/entities/article.entity';
 import { Tag } from 'src/modules/database/entities/tag.entity';
 import { StorageService } from 'src/modules/storage/services/storage.service';
@@ -13,15 +15,24 @@ export class ArticleService {
   private manager: EntityManager;
   constructor(
     private readonly dataSource: DataSource,
-    private readonly storageService: StorageService
+    private readonly storageService: StorageService,
+    private readonly config: ConfigService<AppConfig, true>
   ) {
     this.manager = this.dataSource.manager;
   }
 
-  async create({ tagsIds, image: _, ...data }: CreateArticleDto): Promise<ArticleDto> {
+  async create({ tagsIds, image, ...data }: CreateArticleDto): Promise<ArticleDto> {
     const articleToCreate = this.manager.create(Article, { ...data });
+    let article: Article;
 
-    const article = await this.manager.save(Article, articleToCreate);
+    if (image) {
+      const imageFilename = `${randomUUID()}.${image.mimetype.split('/')[1]}`;
+
+      articleToCreate.image = image ? imageFilename : articleToCreate.image;
+
+      await this.storageService.uploadFile(imageFilename, image.buffer);
+      article = await this.manager.save(Article, articleToCreate);
+    } else article = await this.manager.save(Article, articleToCreate);
 
     if (tagsIds !== undefined && tagsIds.length > 0) {
       const tags = await this.manager.find(Tag, { where: { id: In(tagsIds) } });
@@ -82,7 +93,7 @@ export class ArticleService {
   }
   async update(
     id: string,
-    { categoryId, tagsIds, title, content, isImportant }: UpdateArticleDto
+    { categoryId, tagsIds, title, content, isImportant, image, removeImage }: UpdateArticleDto
   ): Promise<ArticleDto> {
     const article = await this.manager.findOne(Article, {
       where: { id },
@@ -96,6 +107,17 @@ export class ArticleService {
     article.isImportant = isImportant ?? article.isImportant;
     article.categoryId = categoryId ?? article.categoryId;
 
+    if (image) {
+      if (article.image !== null) await this.storageService.deleteFile(article.image);
+
+      article.image = `${randomUUID()}.${image.mimetype.split('/')[1]}`;
+      await this.storageService.uploadFile(article.image, image.buffer);
+    }
+
+    if (removeImage) {
+      if (article.image !== null) await this.storageService.deleteFile(article.image);
+      article.image = null;
+    }
     await this.manager.save(article);
 
     if (tagsIds)
@@ -127,8 +149,6 @@ export class ArticleService {
 
     if (image) {
       const imageFilename = `${randomUUID()}.${image.mimetype.split('/')[1]}`;
-
-      console.log({ imageFilename });
 
       article.image = image ? imageFilename : article.image;
 
@@ -172,7 +192,7 @@ export class ArticleService {
 
     return {
       ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt']),
-      image: article.image,
+      image: `${this.config.get('BASE_URL')}/api/image/${article.image}`,
       isRelated: article.watchCount >= 10,
       category: { id: article.category.id, name: article.category.name },
       tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name }))

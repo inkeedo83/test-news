@@ -15,7 +15,6 @@ import {
 } from 'class-validator';
 import { BaseReadDto, IdDto } from 'src/common/types/types';
 import { IsNullable } from 'src/common/utils/isNullable';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 
 export class CategoryDto {
   @ApiProperty({ type: String, format: 'uuid' })
@@ -91,20 +90,20 @@ export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content'])
   @ApiProperty({ type: Boolean, required: false })
   @IsOptional()
   @IsBoolean()
-  @Type(() => Boolean)
+  @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
   isImportant?: boolean;
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
-  @Type(() => UUID)
-  @Transform(({ value }: { value: string }) => {
-    const result = value.split(',');
+  @Transform(({ value }: { value: string | string[] }) => {
+    if (Array.isArray(value)) return value;
 
-    if (result.length === 0) return [];
+    if (typeof value === 'string') return value.split(',').filter(item => item.trim() !== '');
 
-    return result.filter(item => item !== '');
+    return [];
   })
   @IsArray()
+  @IsUUID('all', { each: true })
   tagsIds?: string[];
 
   @ApiProperty({ type: 'string', format: 'binary', required: false })
@@ -119,55 +118,30 @@ export class ReadArticlesDto extends BaseReadDto {
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
+  @Transform(({ value }: { value: string | string[] }) => {
+    if (Array.isArray(value)) return value;
+
+    if (typeof value === 'string') return value.split(',').filter(item => item.trim() !== '');
+
+    return [];
+  })
   @IsArray()
-  @Type(() => UUID)
+  @IsUUID('all', { each: true })
   tagsIds?: string[];
 }
 
-export class UpdateArticleDto extends PartialType(PickType(CreateArticleDto, ['title', 'content', 'isImportant'])) {
-  @ApiProperty({ type: String, format: 'uuid', required: false })
-  @IsUUID()
+export class UpdateArticleDto extends PartialType(CreateArticleDto) {
+  @ApiProperty({ type: Boolean, required: false })
   @IsOptional()
-  categoryId?: string;
-
-  @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
-  @IsOptional()
-  @IsArray()
-  @Type(() => UUID)
-  tagsIds?: string[];
+  @IsBoolean()
+  @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
+  removeImage?: boolean;
 }
 
 export class UpdateImageDto {
   @ApiProperty({ type: 'string', format: 'binary', required: false })
   @IsOptional()
   image?: Express.Multer.File;
-}
-export class SomeDto {
-  @ApiProperty({ type: 'string', required: false })
-  @IsOptional()
-  field?: string;
-
-  @ApiProperty({ type: String, format: 'uuid' })
-  @IsUUID()
-  categoryId: string;
-
-  @ApiProperty({ type: Boolean, required: false })
-  @IsOptional()
-  @IsBoolean()
-  @Type(() => Boolean)
-  isImportant?: boolean;
-
-  @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
-  @IsOptional()
-  @Transform(({ value }: { value: string }) => {
-    console.log({ value });
-    console.log({ value: value.split(',') });
-
-    return value.split(',');
-  })
-  @Type(() => UUID)
-  @IsArray()
-  tagsIds?: string[];
 }
 
 export class ReadOneArticleDto extends IdDto {}

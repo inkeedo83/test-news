@@ -20,5 +20,4 @@ const ormConfig = new DataSource({
   synchronize: true
 });
 
-// для того, чтобы работал скрипт build:diagram
 export default ormConfig;
