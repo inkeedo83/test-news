@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
   ApiNotFoundResponse,
@@ -27,8 +28,8 @@ import {
   DeleteArticleDto,
   ReadArticlesDto,
   ReadOneArticleDto,
-  UpdateArticleDto,
-  UpdateImageDto
+  SomeDto,
+  UpdateArticleDto
 } from 'src/modules/article/dto/article.dto';
 import { ArticleService } from 'src/modules/article/services/article.service';
 
@@ -38,11 +39,18 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create article' })
-  @ApiCreatedResponse({ status: 201, description: 'Article created successfully', type: ArticleDto })
-  @ApiResponse({ status: 400, description: 'Invalid request' })
-  async create(@Body() body: CreateArticleDto): Promise<ArticleDto> {
-    return this.articleService.create(body);
+  // @ApiOperation({ summary: 'Create article' })
+  // @ApiCreatedResponse({ status: 201, description: 'Article created successfully', type: ArticleDto })
+  // @ApiResponse({ status: 400, description: 'Invalid request' })
+  @ApiBody({ type: CreateArticleDto })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image'))
+  async create(@UploadedFile() image: Express.Multer.File, @Body() body: CreateArticleDto): Promise<ArticleDto> {
+    const article = await this.articleService.create(body);
+
+    if (image) return this.articleService.updateImage(article.id, image);
+
+    return article;
   }
 
   @Get()
@@ -78,9 +86,11 @@ export class ArticleController {
   @UseInterceptors(FileInterceptor('image'))
   async updateImage(
     @Param() { id }: ReadOneArticleDto,
-    @Body() body: UpdateImageDto,
+    @Body() body: SomeDto,
     @UploadedFile() image: Express.Multer.File
   ): Promise<ArticleDto> {
+    console.log({ body });
+
     return this.articleService.updateImage(id, image);
   }
 

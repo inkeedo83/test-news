@@ -1,24 +1,29 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { pick } from 'lodash';
 import { PaginatedEntityDto } from 'src/common/types/types';
 import { ArticleDto, CreateArticleDto, ReadArticlesDto, UpdateArticleDto } from 'src/modules/article/dto/article.dto';
 import { Article, ArticleTag } from 'src/modules/database/entities/article.entity';
 import { Tag } from 'src/modules/database/entities/tag.entity';
+import { StorageService } from 'src/modules/storage/services/storage.service';
 import { DataSource, EntityManager, FindOptionsWhere, ILike, In } from 'typeorm';
 
 @Injectable()
 export class ArticleService {
   private manager: EntityManager;
-  constructor(private readonly dataSource: DataSource) {
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly storageService: StorageService
+  ) {
     this.manager = this.dataSource.manager;
   }
 
-  async create({ tagsIds, ...data }: CreateArticleDto): Promise<ArticleDto> {
+  async create({ tagsIds, image: _, ...data }: CreateArticleDto): Promise<ArticleDto> {
     const articleToCreate = this.manager.create(Article, { ...data });
 
     const article = await this.manager.save(Article, articleToCreate);
 
-    if (tagsIds && tagsIds.length > 0) {
+    if (tagsIds !== undefined && tagsIds.length > 0) {
       const tags = await this.manager.find(Tag, { where: { id: In(tagsIds) } });
 
       await this.manager.save(
@@ -121,8 +126,15 @@ export class ArticleService {
     if (!article) throw new NotFoundException(`Article with id ${id} not found`);
 
     if (image) {
-      article.image = image ? image.buffer : article.image;
-      await this.manager.save(Article, article);
+      const imageFilename = `${randomUUID()}.${image.mimetype.split('/')[1]}`;
+
+      console.log({ imageFilename });
+
+      article.image = image ? imageFilename : article.image;
+
+      await this.storageService.uploadFile(imageFilename, image.buffer).then(async () => {
+        await this.manager.save(Article, article);
+      });
     }
 
     return this.mapArticleToArticleDto(article.id);
@@ -160,7 +172,7 @@ export class ArticleService {
 
     return {
       ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt']),
-      image: article.image ? article.image.toString('base64') : null,
+      image: article.image,
       isRelated: article.watchCount >= 10,
       category: { id: article.category.id, name: article.category.name },
       tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name }))

@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsBase64,
@@ -91,13 +91,24 @@ export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content'])
   @ApiProperty({ type: Boolean, required: false })
   @IsOptional()
   @IsBoolean()
+  @Type(() => Boolean)
   isImportant?: boolean;
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
-  @IsArray()
   @Type(() => UUID)
+  @Transform(({ value }: { value: string }) => {
+    const result = value.split(',');
+
+    if (result.length === 0) return [];
+
+    return result.filter(item => item !== '');
+  })
+  @IsArray()
   tagsIds?: string[];
+
+  @ApiProperty({ type: 'string', format: 'binary', required: false })
+  image?: Express.Multer.File;
 }
 
 export class ReadArticlesDto extends BaseReadDto {
@@ -130,6 +141,33 @@ export class UpdateImageDto {
   @ApiProperty({ type: 'string', format: 'binary', required: false })
   @IsOptional()
   image?: Express.Multer.File;
+}
+export class SomeDto {
+  @ApiProperty({ type: 'string', required: false })
+  @IsOptional()
+  field?: string;
+
+  @ApiProperty({ type: String, format: 'uuid' })
+  @IsUUID()
+  categoryId: string;
+
+  @ApiProperty({ type: Boolean, required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  isImportant?: boolean;
+
+  @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
+  @IsOptional()
+  @Transform(({ value }: { value: string }) => {
+    console.log({ value });
+    console.log({ value: value.split(',') });
+
+    return value.split(',');
+  })
+  @Type(() => UUID)
+  @IsArray()
+  tagsIds?: string[];
 }
 
 export class ReadOneArticleDto extends IdDto {}

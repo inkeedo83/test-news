@@ -24,8 +24,8 @@ export class Article {
   @Column('text')
   content: string;
 
-  @Column('bytea', { nullable: true })
-  image: Buffer | null;
+  @Column('text', { nullable: true })
+  image: string | null;
 
   @Column('int', { default: 0 })
   watchCount: number;

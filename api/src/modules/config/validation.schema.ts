@@ -18,7 +18,14 @@ export const validationSchema = z.object({
   DB_NAME: z.string(),
 
   ENABLE_LOGGER: booleanEnv.default('y'),
-  ENABLE_DATABASE_LOGGER: booleanEnv.default('n')
+  ENABLE_DATABASE_LOGGER: booleanEnv.default('n'),
+
+  MINIO_HOST: z.string(),
+  MINIO_PORT: z.coerce.number().int().positive(),
+  MINIO_USE_SSL: booleanEnv,
+  MINIO_USER: z.string(),
+  MINIO_PASSWORD: z.string(),
+  MINIO_BUCKET: z.string()
 });
 
 export type AppConfig = z.infer<typeof validationSchema>;
