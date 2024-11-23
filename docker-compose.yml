@@ -12,6 +12,19 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: 6MzW9o7mcLYUs4XTu
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
   backend:
     build:
       context: ./api
@@ -20,6 +33,7 @@ services:
       - "5000:5000"
     depends_on:
       - db
+      - minio
     environment:
       NODE_ENV: production
       DB_HOST: db
@@ -30,6 +44,13 @@ services:
       ENABLE_LOGGER: y
       ENABLE_DATABASE_LOGGER: n
       PORT: 5000
+      BASE_URL: https://app-test-i.ru
+      MINIO_HOST: minio
+      MINIO_PORT: 9000
+      MINIO_USE_SSL: n
+      MINIO_USER: admin
+      MINIO_PASSWORD: 6MzW9o7mcLYUs4XTu
+      MINIO_BUCKET: bucket
 
   frontend:
     build:
@@ -42,3 +63,4 @@ services:
 
 volumes:
   db_data:
+  minio_data:
