@@ -37,7 +37,7 @@ export default function ReadArticleByID() {
       .get(`http://localhost:5010/api/public/articles/${id}`)
       .then((res) => (console.log(res), setData(res.data)))
       .catch((err) => console.log(err));
-  }, []);
+  }, [id]);
 
   console.log(data);
   return (

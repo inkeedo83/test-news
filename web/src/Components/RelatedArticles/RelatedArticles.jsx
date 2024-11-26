@@ -16,6 +16,7 @@ export function RelatedArticles() {
   const http = `http://localhost:5010/api/public/articles?limit=5&order=DESC&offset=${Math.floor(
     Math.random() * 15
   )}`;
+
   useEffect(() => {
     fetch(http)
       .then((res) => {
@@ -38,11 +39,11 @@ export function RelatedArticles() {
         {data &&
           data.map((item) => (
             <div key={item.id} className=" border-2 border-red-900 ">
-              <a href={`/ReadArticleByCat/${item.category.id}`}>
+              <Link to={`/ReadArticleByCat/${item.category.id}`}>
                 <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
                   {item.category.name}
                 </h3>
-              </a>
+              </Link>
               <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-500 ">
                 <FontAwesomeIcon icon={faPenNib} beat />
                 <span className="text-md p-2 m-2">
