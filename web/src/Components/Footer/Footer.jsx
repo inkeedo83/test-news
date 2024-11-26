@@ -5,7 +5,7 @@ function Footer() {
         <span className="text-sm sm:text-lg text-white text-nowrap ">
           © 2024{" "}
           <a href="#" className="hover:underline">
-            العربي بلجيكا
+            مراسل بلجيكا
           </a>
         </span>
         <ul className=" flex items-center  text-sm text-nowrap font-small text-white space-x-1 ">

@@ -3,9 +3,9 @@ const tabs = {
   PROVINCE: {
     EN1: " Flanders",
     AR1: " فلاندرز",
-    AR1ID: "b76417a1-2750-4dcb-aa1c-f5f34ac46aa1",
+    AR1ID: "646325f6-d561-43db-b2c6-2824a83377ec",
     EN2: "Wallonia",
-    AR2ID: "f7c81e31-5e61-4d73-b966-7457b1ebfab2",
+    AR2ID: "b397ae13-1186-4155-afa3-c66ec6968628",
     AR2: " والونيا",
     EN3: "Germanophone",
     AR3: "جرمانوفون",
@@ -15,10 +15,10 @@ const tabs = {
   CITY: {
     EN1: "Brussel",
     AR1: "بروكسل",
-    AR1ID: "2bd80ab9-a493-4c9c-928e-870f19a892c1",
+    AR1ID: "caf43688-bb94-4f6d-935e-6eb19b7aeb5e",
     EN2: "Antwerpen",
     AR2: "انتورب",
-    AR2ID: "80446d3f-14e2-4fd7-ab5c-5c9c12ba82b4",
+    AR2ID: "c5d004f4-222a-40d0-b131-f7c96658882c",
     EN3: " Liège",
     AR3: "لياج",
     AR3ID: "8e418124-1105-4fe9-8e06-fa1bc9177659",
@@ -26,7 +26,7 @@ const tabs = {
   POLITICS: {
     EN: "Politics",
     AR: "سياسة",
-    ARID: "c419b9c5-ae0c-4104-9041-b7e8b68b15c4",
+    ARID: "ba7b670b-c910-452b-a75c-d665f5198280",
   },
   ECONOMICS: {
     EN: "Economics",

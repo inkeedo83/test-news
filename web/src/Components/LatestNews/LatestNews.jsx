@@ -12,7 +12,7 @@ const DateOptions = {
 };
 export default function LatestNews() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=5&order=DESC&offset=${Math.floor(
+  const http = `http://localhost:5010/api/public/articles?limit=5&order=DESC&offset=${Math.floor(
     Math.random() * 15
   )}`;
   useEffect(() => {
@@ -30,19 +30,22 @@ export default function LatestNews() {
 
   return (
     <>
-      <h3 className="text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit  p-3 sm:p-4 mt-2 text-xs bg-red-600 sm:font-bold">
+      <h3 className="text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3  sm:p-4 mt-2 text-xs bg-red-900  sm:font-bold">
         اخر الاخبار
       </h3>
-      <div className="   mb-4  flex flex-col rounded-md border-1 bg-neutral-600 border-red-900">
+      <div className="   mb-4  flex flex-col rounded-md border-1 bg-zinc-500 border-red-900">
         {data &&
           data.map((item) => (
-            <div key={item.id} className=" border-2 border-red-700 ">
+            <div
+              key={item.id}
+              className=" bg-zinc-300 border-2 border-red-900 "
+            >
               <a href={`/ReadArticleByCat/${item.category.id}`}>
-                <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-600 sm:font-bold">
+                <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
                   {item.category.name}
                 </h3>
               </a>
-              <div className="p-2 mt-2 mr-2 ml-2">
+              <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-500">
                 <FontAwesomeIcon icon={faPenNib} beat />
                 <span className="text-md p-2 m-2">
                   {new Date(item.createdAt).toLocaleDateString(
@@ -55,7 +58,7 @@ export default function LatestNews() {
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
               <Link to={`/ReadArticleByID/${item.id}`}>
-                <h4 className=" hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-neutral-700 rounded-md h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
+                <h4 className=" mb-3 mr-2 ml-2 hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
                   {item.title}
                 </h4>
               </Link>

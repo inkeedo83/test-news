@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ImgView } from "../ImgView/ImgView";
 import axios from "axios";
 import baseUrl from "../../assets/contants";
+import { Pagination } from "../Pagination/Pagination";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+import { faPenNib } from "@fortawesome/free-solid-svg-icons";
 
 const DateOptions = {
   weekday: "long",
@@ -20,7 +23,7 @@ export default function ReadArticleByCat() {
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/public/articles?categoryId=${id}`)
+      .get(`http://localhost:5010/api/public/articles?categoryId=${id}`)
       .then((res) => (console.log(res), setData(res.data.data)))
       .catch((err) => console.log(err));
   }, [id]);
@@ -41,22 +44,31 @@ export default function ReadArticleByCat() {
                 key={item.id}
                 className="bg-slate-900 text-sm  sm:text-l rounded-xl"
               >
-                <h5 className=" text-xs z-0 bold  w-28 bg-red-600 text-white p-2 mb-0 ">
+                <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-2 mr-2 mt-2 mb-2 text-xs bg-red-900 sm:font-bold">
                   {item.category.name}
-                </h5>{" "}
-                <ImgView style={{ height: 150, width: 200 }} {...item} />
-                <p className=" text-white m-1 ">
-                  {new Date(item.createdAt).toLocaleDateString(
-                    "ar-EG-u-nu-latn",
-                    DateOptions
-                  )}
-                </p>
-                <h5 className="mb-4 pt-4 border-white min-h-3 m-3  font-bold text-white ">
-                  {item.title}
+                </h3>{" "}
+                <img
+                  src={item.image}
+                  className=" border-2 bg-white border-red-600  rounded-xl p-3 w-[700px] h-[400px]"
+                />
+                <div className="  bg-zinc-500 text-white p-2 mt-2 mr-2 ml-2">
+                  <FontAwesomeIcon icon={faPenNib} beat />
+                  <span className="text-md p-2 m-2">
+                    {new Date(item.createdAt).toLocaleDateString(
+                      "ar",
+                      DateOptions
+                    )}{" "}
+                  </span>
+                  <span className="p-2 mr-2 ml-2">|</span>
+                  <FontAwesomeIcon icon={faEye} beat />
+                  <span className="p-2 m-2"> {item.watchCount}</span>
+                </div>
+                <h5 className=" bg-zinc-600 mr-2 ml-2 p-4 border-white  min-h-3 font-bold text-white ">
+                  {item.title}...
                 </h5>
                 <Link
                   to={`/ReadArticleByID/${item.id}`}
-                  className="inline-flex  items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="inline-flex mr-2 ml-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-900  hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300  "
                 >
                   ..اقرأ المزيد
                   <svg
@@ -80,6 +92,7 @@ export default function ReadArticleByCat() {
           </div>
         </>
       )}
+      <Pagination />
     </>
   );
 }

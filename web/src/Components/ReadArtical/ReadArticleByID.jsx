@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { ImgView } from "../ImgView/ImgView";
 import baseUrl from "../../assets/contants";
 import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticles";
 import { tabs } from "../../assets/text.constant";
@@ -35,7 +34,7 @@ export default function ReadArticleByID() {
   const [data, setData] = useState(null);
   useEffect(() => {
     axios
-      .get(`${baseUrl}/public/articles/${id}`)
+      .get(`http://localhost:5010/api/public/articles/${id}`)
       .then((res) => (console.log(res), setData(res.data)))
       .catch((err) => console.log(err));
   }, []);
@@ -55,23 +54,23 @@ export default function ReadArticleByID() {
             <>
               <a
                 href={`/`}
-                className="p-2  font-bold text-md  sm:text-l  text-red-600 "
+                className="p-2  font-bold text-md  sm:text-l  text-zink-600 "
               >
                 {MAIN.AR}
               </a>
-              <span className=" font-bold text-md  sm:text-l  text-red-600 p-2 ">
+              <span className=" font-bold text-md  sm:text-l  text-zink-600 p-2 ">
                 /
               </span>
               <a
                 href={`/ReadArticleByCat/${data.category.id}`}
-                className=" font-bold text-md  sm:text-l  text-red-600 p-2 "
+                className=" font-bold text-md  sm:text-l  text-zink-600 p-2 "
               >
                 {data.category.name}
               </a>
-              <span className="  font-bold text-md  sm:text-l  text-red-600 p-2  ">
+              <span className="  font-bold text-md  sm:text-l  text-zink-600 p-2  ">
                 /
               </span>
-              <span className=" font-bold text-md  sm:text-l  text-red-600 p-2  ">
+              <span className=" font-bold text-md  sm:text-l  text-zink-600 p-2  ">
                 {data.title}...
               </span>
 
@@ -84,12 +83,12 @@ export default function ReadArticleByID() {
                   <span className="  text-xs z-0 bold  text-white  text-center w-9   p-2 m-2  mb-0 ">
                     عدد القراءات : {data.watchCount}
                   </span>
+                  <img
+                    src={data.image}
+                    className=" border-2 bg-white border-red-600  rounded-xl p-3 w-[800px] h-[500px]"
+                  />
                 </div>
-                <ImgView
-                  style={{ height: 400, width: 550 }}
-                  {...data}
-                  className="rounded-lg "
-                />
+
                 <div className="w-fit  m-4 p-2">
                   <span className="  text-md  sm:text-3xl  leading-loose  text-red-900 text-slate-800 p-1 ">
                     {data.content.replace(/ .*/, "  ")}

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { ImgView } from "../ImgView/ImgView";
 
 export function CatsRender({ data }) {
   const arr = data;
