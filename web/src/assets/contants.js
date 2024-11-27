@@ -1,2 +1,2 @@
-const baseUrl = "https://app-test-i.ru/api";
+const baseUrl = "http://localhost:5010/api";
 export default baseUrl;

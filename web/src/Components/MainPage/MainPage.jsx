@@ -34,7 +34,7 @@ export default function MainPageTest() {
       </div>
       <img
         src={item.image}
-        className="border-4 bg-white border-red-900 p-3 w-fit h-fit"
+        className="border-4 bg-white border-red-900 p-3 w-[800px] h-[350px]"
       />
       <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70 m-1 flex  justify-between ">
         <Link to={`/ReadArticleByID/${item.id}`}>
@@ -49,7 +49,7 @@ export default function MainPageTest() {
   // fetch start here
   useEffect(() => {
     fetch(
-      `http://localhost:5010/api/public/articles?limit=9&offset=${Math.floor(
+      `${baseUrl}/public/articles?limit=9&offset=${Math.floor(
         Math.random() * 15
       )}`
     )

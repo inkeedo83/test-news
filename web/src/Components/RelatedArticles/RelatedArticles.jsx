@@ -13,7 +13,7 @@ const DateOptions = {
 };
 export function RelatedArticles() {
   const [data, setData] = useState([]);
-  const http = `http://localhost:5010/api/public/articles?limit=5&order=DESC&offset=${Math.floor(
+  const http = `${baseUrl}/public/articles?limit=5&order=DESC&offset=${Math.floor(
     Math.random() * 15
   )}`;
 
@@ -44,7 +44,7 @@ export function RelatedArticles() {
                   {item.category.name}
                 </h3>
               </Link>
-              <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-500 ">
+              <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-300 ">
                 <FontAwesomeIcon icon={faPenNib} beat />
                 <span className="text-md p-2 m-2">
                   {new Date(item.createdAt).toLocaleDateString(

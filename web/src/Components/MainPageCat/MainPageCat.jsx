@@ -20,9 +20,7 @@ export default function MainPageCat({ id, cat }) {
 
   useEffect(() => {
     axios
-      .get(
-        `http://localhost:5010/api/public/articles?limit=5&order=DESC&categoryId=${ID}`
-      )
+      .get(`${baseUrl}/public/articles?limit=5&order=DESC&categoryId=${ID}`)
       .then((res) => setData(res.data.data), console.log(data))
       .catch((err) => console.log(err));
   }, []);

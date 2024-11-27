@@ -9,7 +9,7 @@ export function OneArtical() {
   const [isloading, setIsloading] = useState(true);
   const [israndom, setIsrandom] = useState();
   const [data, setData] = useState([]);
-  const http = `http://localhost:5010/api/public/articles?limit=1&offset=${Math.floor(
+  const http = `${baseUrl}/public/articles?limit=1&offset=${Math.floor(
     Math.random() * 50
   )}`;
   console.log(http);
