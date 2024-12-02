@@ -1,7 +1,7 @@
 import { tabs } from "../../assets/text.constant";
 import { useState, useEffect, useRef } from "react";
-import Weather from "../Weather/Weather";
 import { Link } from "react-router-dom";
+import Weather from "../Weather/Weather";
 
 const { MAIN, PROVINCE, CITY, POLITICS, ECONOMICS, LAWS, ACCDENT } = tabs;
 
@@ -16,7 +16,6 @@ function Navbar() {
     const handler = (e) => {
       if (!menuRef.current.contains(e.target)) {
         setIsOpen(false);
-        console.log(menuRef.current);
       }
     };
     document.addEventListener("mousedown", handler);
@@ -28,7 +27,11 @@ function Navbar() {
   return (
     <>
       <nav className="   fixed bg-red-900 md:text-md w-full sm:w-screen z-10 sm:text-xl ">
-        <div className=" flex items-center justify-between m-10 h-2 ">
+        <h1 className="NewsTitle relative right-28 p-1 sm:right-[42vw]">
+          مــراســل بـلـجـيـكـا
+        </h1>
+
+        <div className=" flex items-center justify-between p-10 h-4 ">
           <div className="">
             <button onClick={ToggelBtn}>
               <svg
@@ -37,7 +40,7 @@ function Navbar() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="white"
-                className=" h-8 w-10 sm:w-24 "
+                className=" h-10 w-10 sm:w-24 "
               >
                 <path
                   strokeLinecap="round"
@@ -47,9 +50,8 @@ function Navbar() {
               </svg>
             </button>
           </div>
-
-          <h1 className="NewsTitle">مــراســل بـلـجـيـكـا</h1>
         </div>
+
         {isOpen ? (
           <div
             className=" absolute  min-h-screen flex flex-col w-fit p-6 text-center bg-slate-800 "

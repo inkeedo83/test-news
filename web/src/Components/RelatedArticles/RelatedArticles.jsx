@@ -40,7 +40,7 @@ export function RelatedArticles() {
           data.map((item) => (
             <div key={item.id} className=" border-2 border-red-900 ">
               <Link to={`/ReadArticleByCat/${item.category.id}`}>
-                <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
+                <h3 className="text-white text-center sm:text-lg w-14 rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
                   {item.category.name}
                 </h3>
               </Link>
@@ -57,7 +57,7 @@ export function RelatedArticles() {
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
               <Link to={`/ReadArticleByID/${item.id}`}>
-                <h4 className=" mb-3 mr-2 ml-2 hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
+                <h4 className="  truncate ... mb-3 mr-2 ml-2 hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
                   {item.title}
                 </h4>
               </Link>
