@@ -29,7 +29,7 @@ export default function Weather() {
     <div className="weather-widget">
       {data ? (
         <>
-          <div className="flex-none  flex w-40  text-center sm:text-md text-xs ml-2  text-white m-1 items-center rounded-xl">
+          <div className="  flex-none  flex w-40  text-center sm:text-md text-xs ml-2  text-white m-1 items-center rounded-xl">
             <p className="  ml-1 text-centerm-1">
               {new Date().toLocaleDateString("ar-EG-u-nu-latn", DateOptions)}{" "}
             </p>

@@ -5,7 +5,7 @@
 /*  links style */
 
 * {
-  font-family: "Almarai", sans-serif;
+  font-family: "Cairo", sans-serif;
   font-weight: 300;
   font-style: normal;
   line-height: 2;
@@ -14,9 +14,9 @@
   font-family: "Marhey", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   color: white;
-  font-size: 2vw;
+  font-size: 4 vw;
 }
 
 .links {

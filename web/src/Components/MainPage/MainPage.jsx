@@ -13,12 +13,12 @@ export default function MainPageTest() {
   //screen render
   const screen = window.screen.width > 500;
   const width = screen ? (
-    <div className=" text-white sm:text-sm sm:p-2  m-1 col-start-5  col-end-7">
+    <div className=" text-white sm:text-sm sm:p-2  m-1 ">
       <LatestNews />
     </div>
   ) : null;
 
-  //states
+  /*states*/
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
   const render = data.map((item) => (
@@ -34,11 +34,11 @@ export default function MainPageTest() {
       </div>
       <img
         src={item.image}
-        className="border-4 bg-white border-red-900 p-3 w-[800px] h-[350px]"
+        className="border-4 bg-white border-red-900 p-3 w-[800px] h-[28vh] sm:h-[350px]"
       />
-      <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70 m-1 flex  justify-between ">
+      <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70 m-1 ">
         <Link to={`/ReadArticleByID/${item.id}`}>
-          <h2 className=" hover:text-red-700 text-white sm:text-lg w-fit text-justify rounded-md h-18 sm:w-auto sm:h-34 p-4 bg-gray-900 sm:font-bold">
+          <h2 className=" hover:text-red-700 text-white text-xs sm:text-lg sm:w-[30.2vw] text-justify rounded-md h-[10vh] sm:w-auto sm:h-34 p-2 sm:p-4 sm:mr-4 bg-gray-900 sm:font-bold">
             {item.title}
           </h2>
         </Link>
@@ -49,8 +49,8 @@ export default function MainPageTest() {
   // fetch start here
   useEffect(() => {
     fetch(
-      `${baseUrl}/public/articles?limit=9&offset=${Math.floor(
-        Math.random() * 15
+      `${baseUrl}/public/articles?limit=12&offset=${Math.floor(
+        Math.random() * 20
       )}`
     )
       .then((res) => {
@@ -72,35 +72,38 @@ export default function MainPageTest() {
         )
       ) : (
         <>
-          <div
-            className=" 
-             grid grid-cols-6 justify-items-center  pt-24 "
-          >
-            <div className=" mr-14 sm:m-1 text-white  col-start-1 w-screen sm:w-fit col-span-4 ">
-              <h1 className="text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3  sm:p-5 mt-2 text-xs bg-red-900  sm:font-bold">
-                اخبار متنوعة
-              </h1>
-              <OneArtical />
-
-              <div className="   bg-neutral-950 border-red-900 text-xs  justify-items-center grid grid-cols-2 grid-rows-4 gap-1 sm:grid-cols-3 sm:grid-rows-3  ">
-                {render}
+          <div className="grid bg-white ">
+            <div className=" mt-40 sm:mt-32 grid grid-cols-1 h-30 sm:grid-cols-2 grid-rows-1 sm:grid-rows-1 ">
+              <div className="">
+                <OneArtical />
               </div>
+              <div>{width}</div>
             </div>
-
-            {width}
+            <div className="  bg-white border-red-900 text-xs  justify-items-center grid grid-cols-2 grid-rows-4 gap-1 sm:grid-cols-3 sm:grid-rows-3  ">
+              {render}
+            </div>
           </div>
+
+          <MainPageCat id={POLITICS.ARID} cat={POLITICS.AR} />
+          <span className="bg-white border-2 border-red-900 text-black">
+            ads
+          </span>
+          <MainPageCat id={CITY.AR1ID} cat={CITY.AR1} />
+          <span className="bg-white border-2 border-red-900 text-black">
+            ads
+          </span>
+          <MainPageCat id={CITY.AR2ID} cat={CITY.AR2} />
+          <span className="bg-white border-2 border-red-900 text-black">
+            ads
+          </span>
+          <MainPageCat id={PROVINCE.AR1ID} cat={PROVINCE.AR1} />
+          <span className="bg-white border-2 border-red-900 text-black">
+            ads
+          </span>
+
+          <MainPageCat id={PROVINCE.AR2ID} cat={PROVINCE.AR2} />
         </>
       )}
-      <MainPageCat id={POLITICS.ARID} cat={POLITICS.AR} />
-      <span className="bg-white border-2 border-red-900 text-black">ads</span>
-      <MainPageCat id={CITY.AR1ID} cat={CITY.AR1} />
-      <span className="bg-white border-2 border-red-900 text-black">ads</span>
-      <MainPageCat id={CITY.AR2ID} cat={CITY.AR2} />
-      <span className="bg-white border-2 border-red-900 text-black">ads</span>
-      <MainPageCat id={PROVINCE.AR1ID} cat={PROVINCE.AR1} />
-      <span className="bg-white border-2 border-red-900 text-black">ads</span>
-
-      <MainPageCat id={PROVINCE.AR2ID} cat={PROVINCE.AR2} />
     </>
   );
 }

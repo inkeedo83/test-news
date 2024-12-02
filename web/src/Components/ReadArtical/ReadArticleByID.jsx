@@ -4,8 +4,10 @@ import axios from "axios";
 import baseUrl from "../../assets/contants";
 import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticles";
 import { tabs } from "../../assets/text.constant";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
 
-const { MAIN, PROVINCE, CITY, POLITICS, ECONOMICS, LAWS, ACCDENT } = tabs;
+const { MAIN } = tabs;
 
 import {
   FacebookShareButton,
@@ -41,7 +43,7 @@ export default function ReadArticleByID() {
 
   console.log(data);
   return (
-    <div className="bg-white  text-xl ">
+    <div className="bg-slate-200  text-md sm:text-xl ">
       <div className="grid grid-cols-1 pt-24  ">
         <div>
           {data === null ? (
@@ -52,36 +54,56 @@ export default function ReadArticleByID() {
             )
           ) : (
             <>
-              <a
-                href={`/`}
-                className="p-2  font-bold text-md  sm:text-l  text-zink-600 "
-              >
-                {MAIN.AR}
-              </a>
-              <span className=" font-bold text-md  sm:text-l  text-zink-600 p-2 ">
-                /
-              </span>
-              <a
-                href={`/ReadArticleByCat/${data.category.id}`}
-                className=" font-bold text-md  sm:text-l  text-zink-600 p-2 "
-              >
-                {data.category.name}
-              </a>
-              <span className="  font-bold text-md  sm:text-l  text-zink-600 p-2  ">
-                /
-              </span>
-              <span className=" font-bold text-md  sm:text-l  text-zink-600 p-2  ">
-                {data.title}...
-              </span>
+              <div className=" flex  pt-10 mr-4 text-md  sm:text-xl leading-loose  text-zink-600">
+                <a
+                  className=" inline-flex  text-red-600 hover:text-black ml-2"
+                  href={`/`}
+                >
+                  <FontAwesomeIcon
+                    icon={faHouse}
+                    className="size-4 sm:size-6 mt-2 ml-2"
+                  />
+
+                  {MAIN.AR}
+                </a>
+
+                <span className="text-red-600 ml-2 ">/</span>
+                <span className="text-red-600 ml-2  ">الاخبار</span>
+                <span className="text-red-600  ml-2 ">/</span>
+                <a
+                  className="text-red-600 hover:text-black ml-2 "
+                  href={`/ReadArticleByCat/${data.category.id}`}
+                >
+                  {data.category.name}
+                </a>
+                <span className="text-red-600  ml-2">/</span>
+                <span className=" text-red-600  ml-2  truncate ...">
+                  {" "}
+                  {data.title}...
+                </span>
+              </div>
+              <hr className="h-1 mr-4 ml-4 bg-red-600" />
 
               <div className=" scroll-px-4  indent-2 text-right w-auto flex flex-col  min-h-screen items-center bg-slate-200 border-b-0 m-1 ">
-                <h1 className="font-bold text-md  sm:text-3xl  text-red-600 p-2 m-0 mb-2 ">
+                <h1 className="   text-black text-center font-bold text-lg sm:mb-14 sm:mt-10   sm:text-3xl  p-2 m-0 mb-2 ">
                   {data.title}
                 </h1>
 
-                <div className="inline-block  bg-red-500  ">
-                  <span className="  text-xs z-0 bold  text-white  text-center w-9   p-2 m-2  mb-0 ">
-                    عدد القراءات : {data.watchCount}
+                <div className="inline-block text-white text-xs sm:text-lg bg-red-500  ">
+                  <span className=" mr-2 sm:mr-24 bold p-2 ml-6    ">
+                    مراسل بلجيكا
+                  </span>
+                  <span className="  sm:m-2">
+                    <FontAwesomeIcon className=" ml-2" icon={faPenNib} beat />
+                    {new Date(data.createdAt).toLocaleDateString(
+                      "ar",
+                      DateOptions
+                    )}{" "}
+                  </span>
+                  <span className="p-2 ">
+                    {" "}
+                    عدد القراءات : {data.watchCount}{" "}
+                    <FontAwesomeIcon icon={faEye} beat />
                   </span>
                   <img
                     src={data.image}
@@ -97,7 +119,7 @@ export default function ReadArticleByID() {
                     {data.content.substr(data.content.indexOf(" ") + 1)}
                   </span>
                 </div>
-                <div className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 mb-1 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
+                <div className="  text-red-600 border border-red-600  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 mb-1 ">
                   <h1 className="font-semibold text-xl ">
                     ارسل الخبر الى صديق{" "}
                   </h1>
@@ -108,7 +130,10 @@ export default function ReadArticleByID() {
                       htmlTitle={data.title}
                       hashtag="#العربي بلجيكا"
                     >
-                      <FacebookIcon size={45} round={true} />
+                      <FacebookIcon
+                        className=" sm:size-10 size-8"
+                        round={true}
+                      />
                     </FacebookShareButton>{" "}
                     <FacebookMessengerShareButton
                       className="m-2"
@@ -116,7 +141,10 @@ export default function ReadArticleByID() {
                       htmlTitle={data.title}
                       hashtag="#العربي بلجيكا"
                     >
-                      <FacebookMessengerIcon size={45} round={true} />
+                      <FacebookMessengerIcon
+                        className=" sm:size-10  size-8"
+                        round={true}
+                      />
                     </FacebookMessengerShareButton>
                     <WhatsappShareButton
                       className="m-2"
@@ -124,7 +152,10 @@ export default function ReadArticleByID() {
                       htmlTitle={data.title}
                       hashtag="#العربي بلجيكا"
                     >
-                      <WhatsappIcon size={45} round={true} />
+                      <WhatsappIcon
+                        className=" sm:size-10  size-8"
+                        round={true}
+                      />
                     </WhatsappShareButton>
                     <TelegramShareButton
                       className="m-2"
@@ -132,7 +163,10 @@ export default function ReadArticleByID() {
                       htmlTitle={data.title}
                       hashtag="#العربي بلجيكا"
                     >
-                      <TelegramIcon size={45} round={true} />
+                      <TelegramIcon
+                        className=" sm:size-10  size-8"
+                        round={true}
+                      />
                     </TelegramShareButton>
                     <TwitterShareButton
                       className="m-2"
@@ -140,7 +174,7 @@ export default function ReadArticleByID() {
                       htmlTitle={data.title}
                       hashtag="#العربي بلجيكا"
                     >
-                      <XIcon size={45} round={true} />
+                      <XIcon className=" sm:size-10 size-8" round={true} />
                     </TwitterShareButton>
                   </div>
                 </div>
