@@ -194,7 +194,8 @@ export class ArticleService {
       ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt', 'category']),
       image: `${this.config.get('BASE_URL')}/api/image/${article.image}`,
       isRelated: article.watchCount >= 10,
-      tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name }))
+      tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name })),
+      header: article.content.length > 50 ? article.content.substring(0, 50) + '...' : article.content
     };
   }
 }

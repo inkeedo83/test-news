@@ -40,6 +40,11 @@ export class ArticleDto extends IdDto {
   @IsNotEmpty()
   title: string;
 
+  @ApiProperty({ type: String })
+  @IsString()
+  @IsNotEmpty()
+  header: string;
+
   @ApiProperty({ type: String, required: true })
   @IsString()
   @IsNotEmpty()
