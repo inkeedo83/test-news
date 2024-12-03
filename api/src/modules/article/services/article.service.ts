@@ -195,7 +195,8 @@ export class ArticleService {
       image: `${this.config.get('BASE_URL')}/api/image/${article.image}`,
       isRelated: article.watchCount >= 10,
       tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name })),
-      header: article.content.length > 50 ? article.content.substring(0, 50) + '...' : article.content
+      header: article.title.length >= 50 ? article.title.substring(0, 50) + '...' : article.title,
+      shortContent: article.content.split(/\s+/).slice(0, 15).join(' ') + '...'
     };
   }
 }
