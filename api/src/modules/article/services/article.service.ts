@@ -50,15 +50,15 @@ export class ArticleService {
     offset,
     pattern,
     order,
-    categoryId,
+    category,
     tagsIds
   }: ReadArticlesDto): Promise<PaginatedEntityDto<ArticleDto>> {
     const criteria1: FindOptionsWhere<Article> = pattern === undefined ? {} : { title: ILike(`%${pattern}%`) };
     const criteria2: FindOptionsWhere<Article> = pattern === undefined ? {} : { content: ILike(`%${pattern}%`) };
 
-    if (categoryId) {
-      criteria1.categoryId = categoryId;
-      criteria2.categoryId = categoryId;
+    if (category) {
+      criteria1.category = category;
+      criteria2.category = category;
     }
     if (tagsIds) {
       criteria1.articleTags = { tagId: In(tagsIds) };
@@ -93,11 +93,11 @@ export class ArticleService {
   }
   async update(
     id: string,
-    { categoryId, tagsIds, title, content, isImportant, image, removeImage }: UpdateArticleDto
+    { category, tagsIds, title, content, isImportant, image, removeImage }: UpdateArticleDto
   ): Promise<ArticleDto> {
     const article = await this.manager.findOne(Article, {
       where: { id },
-      relations: { category: true, articleTags: { tag: true } }
+      relations: { articleTags: { tag: true } }
     });
 
     if (!article) throw new NotFoundException(`Article with id ${id} not found`);
@@ -105,7 +105,7 @@ export class ArticleService {
     article.title = title ?? article.title;
     article.content = content ?? article.content;
     article.isImportant = isImportant ?? article.isImportant;
-    article.categoryId = categoryId ?? article.categoryId;
+    article.category = category ?? article.category;
 
     if (image) {
       if (article.image !== null) await this.storageService.deleteFile(article.image);
@@ -185,16 +185,15 @@ export class ArticleService {
   async mapArticleToArticleDto(id: string): Promise<ArticleDto> {
     const article = await this.manager.findOne(Article, {
       where: { id },
-      relations: { category: true, articleTags: { tag: true } }
+      relations: { articleTags: { tag: true } }
     });
 
     if (!article) throw new NotFoundException(`Article with id ${id} not found`);
 
     return {
-      ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt']),
+      ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt', 'category']),
       image: `${this.config.get('BASE_URL')}/api/image/${article.image}`,
       isRelated: article.watchCount >= 10,
-      category: { id: article.category.id, name: article.category.name },
       tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name }))
     };
   }

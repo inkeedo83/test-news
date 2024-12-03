@@ -52,7 +52,7 @@ export function OneArtical() {
           />
 
           <div className="relative  sm:bottom-36 bottom-36 p-4 sm:p-4  h-2 sm:h-8 opacity-70 m-1 ">
-            <Link to={`/ReadArticleByID/${item.id}`}>
+            <Link to={`/articles/${item.id}`}>
               <h2 className=" hover:text-red-700 text-white text-lg sm:text-lg sm:w-[30.2vw] text-center rounded-md h-[100px] sm:w-auto sm:h-34 p-8 sm:p-6 sm:mr-4 bg-gray-900 sm:font-bold">
                 {item.title}
               </h2>

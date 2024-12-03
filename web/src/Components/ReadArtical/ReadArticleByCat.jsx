@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { tabs } from "../../assets/text.constant";
+import { CATEGORIES } from "../../assets/categories.constant";
 import baseUrl from "../../assets/contants";
 import { Pagination } from "../Pagination/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +14,7 @@ const DateOptions = {
   month: "short",
   day: "numeric",
 };
-const { MAIN } = tabs;
+const { MAIN } = CATEGORIES;
 
 export default function ReadArticleByCat() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ export default function ReadArticleByCat() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5010/api/public/articles?categoryId=${id}`)
+      .get(`http://localhost:5010/api/public/articles?category=${id}`)
       .then((res) => (console.log(res), setData(res.data.data)))
       .catch((err) => console.log(err));
   }, [id]);
@@ -47,7 +47,7 @@ export default function ReadArticleByCat() {
                 className="mt-10 mr-2 ml-2 bg-slate-900 text-sm md:w-[30vw] sm:text-l rounded-xl"
               >
                 <h3 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-2 mr-2 mt-2 mb-2 text-xs bg-red-900 sm:font-bold">
-                  {item.category.name}
+                  {CATEGORIES[item.category].AR}
                 </h3>{" "}
                 <img
                   src={item.image}
@@ -69,7 +69,7 @@ export default function ReadArticleByCat() {
                   {item.title}...
                 </h5>
                 <Link
-                  to={`/ReadArticleByID/${item.id}`}
+                  to={`/articles/${item.id}`}
                   className="inline-flex mr-2 ml-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-900  hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300  "
                 >
                   اقرأ المزيد...

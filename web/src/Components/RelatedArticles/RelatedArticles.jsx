@@ -4,6 +4,7 @@ import baseUrl from "../../assets/contants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenNib } from "@fortawesome/free-solid-svg-icons";
+import { CATEGORIES } from "../../assets/categories.constant";
 
 const DateOptions = {
   weekday: "long",
@@ -39,9 +40,9 @@ export function RelatedArticles() {
         {data &&
           data.map((item) => (
             <div key={item.id} className=" border-2 border-red-900 ">
-              <Link to={`/ReadArticleByCat/${item.category.id}`}>
+              <Link to={`/categories/${item.category}`}>
                 <h3 className="text-white text-center sm:text-lg w-14 rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
-                  {item.category.name}
+                  {CATEGORIES[item.category].AR}
                 </h3>
               </Link>
               <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-300 ">
@@ -56,7 +57,7 @@ export function RelatedArticles() {
                 <FontAwesomeIcon icon={faEye} beat />
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
-              <Link to={`/ReadArticleByID/${item.id}`}>
+              <Link to={`/articles/${item.id}`}>
                 <h4 className="  truncate ... mb-3 mr-2 ml-2 hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
                   {item.title}
                 </h4>

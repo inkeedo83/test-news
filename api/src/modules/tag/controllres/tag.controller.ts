@@ -8,9 +8,8 @@ import {
   ApiTags
 } from '@nestjs/swagger';
 import { PaginatedEntityDto } from 'src/common/types/types';
-import { DeleteCategoryDto } from 'src/modules/category/dto/category.dto';
 import { Tag } from 'src/modules/database/entities/tag.entity';
-import { CreateTagDto, ReadTagsDto } from 'src/modules/tag/dto/tag.dto';
+import { CreateTagDto, DeleteTagDto, ReadTagsDto } from 'src/modules/tag/dto/tag.dto';
 import { TagService } from 'src/modules/tag/services/tag.service';
 
 @ApiTags('Tags')
@@ -38,7 +37,7 @@ export class TagController {
   @ApiOkResponse({ status: 200, description: 'Tag deleted successfully', type: Tag })
   @ApiResponse({ status: 400, description: 'Invalid request' })
   @ApiNotFoundResponse({ status: 404, description: 'Tag not found' })
-  async delete(@Param() { id }: DeleteCategoryDto): Promise<Tag> {
+  async delete(@Param() { id }: DeleteTagDto): Promise<Tag> {
     return this.tagService.delete(id);
   }
 }

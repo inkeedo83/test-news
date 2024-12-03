@@ -5,6 +5,7 @@ import {
   IsBase64,
   IsBoolean,
   IsDate,
+  IsEnum,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -15,6 +16,7 @@ import {
 } from 'class-validator';
 import { BaseReadDto, IdDto } from 'src/common/types/types';
 import { IsNullable } from 'src/common/utils/isNullable';
+import { CATEGORIES, Category } from 'src/modules/category/services/category.service';
 
 export class CategoryDto {
   @ApiProperty({ type: String, format: 'uuid' })
@@ -62,10 +64,9 @@ export class ArticleDto extends IdDto {
   @IsBoolean()
   isImportant: boolean;
 
-  @ApiProperty({ type: CategoryDto })
-  @Type(() => CategoryDto)
-  @ValidateNested({ each: true })
-  category: CategoryDto;
+  @ApiProperty({ enum: CATEGORIES })
+  @IsEnum(CATEGORIES)
+  category: Category;
 
   @ApiProperty({ type: [TagDto], isArray: true })
   @IsArray()
@@ -82,11 +83,7 @@ export class ArticleDto extends IdDto {
   updatedAt: Date;
 }
 
-export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content']) {
-  @ApiProperty({ type: String, format: 'uuid' })
-  @IsUUID()
-  categoryId: string;
-
+export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content', 'category']) {
   @ApiProperty({ type: Boolean, required: false })
   @IsOptional()
   @IsBoolean()
@@ -111,10 +108,10 @@ export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content'])
 }
 
 export class ReadArticlesDto extends BaseReadDto {
-  @ApiProperty({ type: String, format: 'uuid', required: false })
-  @IsUUID()
+  @ApiProperty({ enum: CATEGORIES, required: false })
   @IsOptional()
-  categoryId?: string;
+  @IsEnum(CATEGORIES)
+  category?: Category;
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()

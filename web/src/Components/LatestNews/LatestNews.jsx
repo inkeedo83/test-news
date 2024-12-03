@@ -4,6 +4,7 @@ import baseUrl from "../../assets/contants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenNib } from "@fortawesome/free-solid-svg-icons";
+import { CATEGORIES } from "../../assets/categories.constant";
 
 const DateOptions = {
   weekday: "long",
@@ -40,9 +41,9 @@ export default function LatestNews() {
               key={item.id}
               className=" bg-zinc-300 border-2 h-fit border-red-900 "
             >
-              <a href={`/ReadArticleByCat/${item.category.id}`}>
+              <a href={`/categories/${item.category}`}>
                 <h3 className="text-white text-center sm:text-sm w-auto rounded-md h-fit sm:w-fit  p-1 mr-2  mt-1 text-xs bg-red-900 sm:font-bold">
-                  {item.category.name}
+                  {CATEGORIES[item.category].AR}
                 </h3>
               </a>
               <div className="p-2 mr-2 ml-2 bg-zinc-500">
@@ -57,7 +58,7 @@ export default function LatestNews() {
                 <FontAwesomeIcon icon={faEye} beat />
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
-              <Link to={`/ReadArticleByID/${item.id}`}>
+              <Link to={`/articles/${item.id}`}>
                 <h4 className=" mb-1 mr-2 ml-2 hover:text-red-900 text-white  sm:text-md w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-1  sm:font-bold ">
                   {item.title}
                 </h4>

@@ -1,4 +1,4 @@
-import { Category } from 'src/modules/database/entities/category.entity';
+import { CATEGORIES, Category } from 'src/modules/category/services/category.service';
 import { Tag } from 'src/modules/database/entities/tag.entity';
 import {
   Column,
@@ -33,11 +33,7 @@ export class Article {
   @Column('boolean', { default: false })
   isImportant: boolean;
 
-  @Column('uuid')
-  categoryId: string;
-
-  @ManyToOne(() => Category, category => category.articles, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'categoryId' })
+  @Column('enum', { enum: CATEGORIES })
   category: Category;
 
   @OneToMany(() => ArticleTag, articleTag => articleTag.article)

@@ -1,9 +1,21 @@
-import { tabs } from "../../assets/text.constant";
+import { CATEGORIES } from "../../assets/categories.constant";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Weather from "../Weather/Weather";
 
-const { MAIN, PROVINCE, CITY, POLITICS, ECONOMICS, LAWS, ACCDENT } = tabs;
+const {
+  MAIN,
+  FLANDERS,
+  WALLONIA,
+  BRUSSELS,
+  ANTWERP,
+  LIEGE,
+  GERMANOPHONE,
+  POLITIC,
+  LAW,
+  ECONOMIC,
+  ACCIDENT,
+} = CATEGORIES;
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,10 +82,10 @@ function Navbar() {
                 <div className="flex  flex-row items-top  p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${CITY.AR1ID}`}
+                      to={`/categories/${BRUSSELS.ID}`}
                       className="links m-2"
                     >
-                      {CITY.AR1}
+                      {BRUSSELS.AR}
                     </Link>
                   </button>
                 </div>
@@ -81,21 +93,18 @@ function Navbar() {
                 <div className="flex flex-row  items-top p-2 ">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${CITY.AR2ID}`}
+                      to={`/categories/${ANTWERP.ID}`}
                       className="links m-2"
                     >
-                      {CITY.AR2}
+                      {ANTWERP.AR}
                     </Link>
                   </button>
                 </div>
 
                 <div className="flex flex-row items-top p-2">
                   <button onClick={ToggelBtn}>
-                    <Link
-                      to={`/ReadArticleByCat/${CITY.AR3ID}`}
-                      className="links m-2"
-                    >
-                      {CITY.AR3}
+                    <Link to={`/categories/${LIEGE.ID}`} className="links m-2">
+                      {LIEGE.AR}
                     </Link>
                   </button>
                 </div>
@@ -103,70 +112,67 @@ function Navbar() {
                 <div className="flex flex-row items-top p-1 ">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${PROVINCE.AR1ID}`}
+                      to={`/categories/${FLANDERS.ID}`}
                       className="links m-2"
                     >
-                      {PROVINCE.AR1}
+                      {FLANDERS.AR}
                     </Link>
                   </button>
                 </div>
                 <div className="flex flex-row items-top p-2">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${PROVINCE.AR2ID}`}
+                      to={`/categories/${WALLONIA.ID}`}
                       className="links m-2"
                     >
-                      {PROVINCE.AR2}
+                      {WALLONIA.AR}
                     </Link>
                   </button>
                 </div>
                 <div className="flex flex-row items-top p-2">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${PROVINCE.AR3ID}`}
+                      to={`/categories/${GERMANOPHONE.ID}`}
                       className="links"
                     >
-                      {PROVINCE.AR3}
+                      {GERMANOPHONE.AR}
                     </Link>
                   </button>
                 </div>
                 <div className="flex flex-row items-top p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${POLITICS.ARID}`}
+                      to={`/categories/${POLITIC.ID}`}
                       className="links m-2"
                     >
-                      {POLITICS.AR}
+                      {POLITIC.AR}
+                    </Link>
+                  </button>
+                </div>
+                <div className="flex flex-row items-top  p-3">
+                  <button onClick={ToggelBtn}>
+                    <Link to={`/categories/${LAW.ID}`} className="links m-2">
+                      {LAW.AR}
                     </Link>
                   </button>
                 </div>
                 <div className="flex flex-row items-top  p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      to={`/ReadArticleByCat/${LAWS.ARID}`}
+                      href={`/categories/${ECONOMIC.ID}`}
                       className="links m-2"
                     >
-                      {LAWS.AR}
+                      {ECONOMIC.AR}
                     </Link>
                   </button>
                 </div>
                 <div className="flex flex-row items-top  p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      href={`/ReadArticleByCat/${ECONOMICS.ARID}`}
-                      className="links m-2"
-                    >
-                      {ECONOMICS.AR}
-                    </Link>
-                  </button>
-                </div>
-                <div className="flex flex-row items-top  p-3">
-                  <button onClick={ToggelBtn}>
-                    <Link
-                      href={`/ReadArticleByCat/${ACCDENT.ARID}`}
+                      href={`/categories/${ACCIDENT.ID}`}
                       className="links align-top m-2"
                     >
-                      {ACCDENT.AR}
+                      {ACCIDENT.AR}
                     </Link>
                   </button>
                 </div>

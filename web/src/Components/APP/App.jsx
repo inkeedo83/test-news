@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
 
-        <Route path="/ReadArticleByID/:id" element={<ReadArticleByID />} />
-        <Route path="/ReadArticleByCat/:id" element={<ReadArticleByCat />} />
+        <Route path="/articles/:id" element={<ReadArticleByID />} />
+        <Route path="/categories/:id" element={<ReadArticleByCat />} />
         <Route path="*" element={<PageNotFound />} />
       </Routes>
       <Footer />

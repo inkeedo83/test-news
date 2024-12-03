@@ -3,11 +3,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import baseUrl from "../../assets/contants";
 import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticles";
-import { tabs } from "../../assets/text.constant";
+import { CATEGORIES } from "../../assets/categories.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
 
-const { MAIN } = tabs;
+const { MAIN } = CATEGORIES;
 
 import {
   FacebookShareButton,
@@ -72,9 +72,9 @@ export default function ReadArticleByID() {
                 <span className="text-red-600  ml-2 ">/</span>
                 <a
                   className="text-red-600 hover:text-black ml-2 "
-                  href={`/ReadArticleByCat/${data.category.id}`}
+                  href={`/categories/${data.category}`}
                 >
-                  {data.category.name}
+                  {CATEGORIES[data.category]}
                 </a>
                 <span className="text-red-600  ml-2">/</span>
                 <span className=" text-red-600  ml-2  truncate ...">

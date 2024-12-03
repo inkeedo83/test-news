@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import axios from "axios";
 import baseUrl from "../../assets/contants";
+import { CATEGORIES } from "../../assets/categories.constant";
 
 const DateOptions = {
   weekday: "long",
@@ -20,7 +21,7 @@ export default function MainPageCat({ id, cat }) {
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/public/articles?limit=6&order=DESC&categoryId=${ID}`)
+      .get(`${baseUrl}/public/articles?limit=6&order=DESC&category=${ID}`)
       .then((res) => setData(res.data.data), console.log(data))
       .catch((err) => console.log(err));
   }, []);
@@ -29,9 +30,9 @@ export default function MainPageCat({ id, cat }) {
     <div key={item.id} className="m-2 relative max-w-xl mx-auto mx-1 ">
       <div className="absolute inset-0  bg-gray-700 opacity-20  rounded-md"></div>
       <div className="absolute sm:h-8 sm:w-auto top-1 opacity-90 flex  justify-center m-1 ">
-        <Link to={`/ReadArticleByCat/${item.category.id}`}>
+        <Link to={`/categories/${item.category}`}>
           <h2 className="text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit  p-1 mt-2 text-xs bg-red-900 sm:font-bold">
-            {item.category.name}
+            {CATEGORIES[item.category].AR}
           </h2>
         </Link>
       </div>
@@ -42,7 +43,7 @@ export default function MainPageCat({ id, cat }) {
         className=" border-2 bg-white border-red-600  rounded-xl p-3 w-[450px] h-[300px]"
       />
       <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70  mb-4 flex  justify-between ">
-        <Link to={`/ReadArticleByID/${item.id}`}>
+        <Link to={`/articles/${item.id}`}>
           <h2 className=" hover:text-red-700  text-center text-white sm:text-lg w-fit text-justify rounded-md h-18 sm:w-auto sm:h-24 sm:p-3 p-2 bg-gray-900 sm:font-bold">
             {item.title}
           </h2>
