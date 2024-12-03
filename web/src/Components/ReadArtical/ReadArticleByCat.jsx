@@ -25,7 +25,7 @@ export default function ReadArticleByCat() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5010/api/public/articles?category=${id}`)
+      .get(`${baseUrl}/public/articles?category=${id}`)
       .then((res) => (console.log(res), setData(res.data.data)))
       .catch((err) => console.log(err));
   }, [id]);
