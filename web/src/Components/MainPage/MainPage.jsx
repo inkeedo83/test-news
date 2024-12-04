@@ -7,7 +7,19 @@ import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
 
-const { POLITIC, BRUSSELS, ANTWERP, FLANDERS, WALLONIA } = CATEGORIES;
+const {
+  POLITIC,
+  BRUSSELS,
+  ANTWERP,
+  FLANDERS,
+  WALLONIA,
+  LIEGE,
+  GERMANOPHONE,
+  ECONOMIC,
+  LAW,
+  CULTURE,
+  ACCIDENT,
+} = CATEGORIES;
 
 export default function MainPageTest() {
   //screen render
@@ -50,7 +62,7 @@ export default function MainPageTest() {
   useEffect(() => {
     fetch(
       `${baseUrl}/public/articles?limit=12&offset=${Math.floor(
-        Math.random() * 20
+        Math.random() * 2
       )}`
     )
       .then((res) => {
@@ -72,36 +84,62 @@ export default function MainPageTest() {
         )
       ) : (
         <>
-          <div className="grid bg-white ">
+          <div className="grid bg-slate-300  ">
             <div className=" mt-40 sm:mt-32 grid grid-cols-1 h-30 sm:grid-cols-2 grid-rows-1 sm:grid-rows-1 ">
               <div className="">
                 <OneArtical />
               </div>
               <div>{width}</div>
             </div>
-            <div className="  bg-white border-red-900 text-xs  justify-items-center grid grid-cols-2 grid-rows-4 gap-1 sm:grid-cols-3 sm:grid-rows-3  ">
+            <div className="  bg-slate-300 border-2 border-red-900 text-xs  justify-items-center grid grid-cols-2 grid-rows-4 gap-1 sm:gap1 sm:grid-cols-3 sm:grid-rows-3  ">
               {render}
             </div>
           </div>
 
-          <MainPageCat id={POLITIC.ID} cat={POLITIC.AR} />
-          <span className="bg-white border-2 border-red-900 text-black">
-            ads
-          </span>
           <MainPageCat id={BRUSSELS.ID} cat={BRUSSELS.AR} />
-          <span className="bg-white border-2 border-red-900 text-black">
-            ads
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
           </span>
           <MainPageCat id={ANTWERP.ID} cat={ANTWERP.AR} />
-          <span className="bg-white border-2 border-red-900 text-black">
-            ads
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={LIEGE.ID} cat={LIEGE.AR} />
+          <span className="bg-white border-2 m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
           </span>
           <MainPageCat id={FLANDERS.ID} cat={FLANDERS.AR} />
-          <span className="bg-white border-2 border-red-900 text-black">
-            ads
+          <span className="bg-white border-2 m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
           </span>
-
           <MainPageCat id={WALLONIA.ID} cat={WALLONIA.AR} />
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={GERMANOPHONE.ID} cat={GERMANOPHONE.AR} />
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={POLITIC.ID} cat={POLITIC.AR} />
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={LAW.ID} cat={LAW.AR} />
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={ECONOMIC.ID} cat={ECONOMIC.AR} />
+          <span className="bg-white border-2  m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={ACCIDENT.ID} cat={ACCIDENT.AR} />
+          <span className="bg-white border-2 m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
+          <MainPageCat id={CULTURE.ID} cat={CULTURE.AR} />
+          <span className="bg-white border-2 m-14 border-red-900 text-black">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+          </span>
         </>
       )}
     </>

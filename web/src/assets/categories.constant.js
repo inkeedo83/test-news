@@ -38,9 +38,9 @@ const CATEGORIES = {
     AR: "سياسة",
   },
   ECONOMIC: {
-    ID: " ECONOMIC",
-    AR: "اقتصاد",
+    ID: "ECONOMIC",
     EN: "Economic",
+    AR: "اقتصاد",
   },
   LAW: {
     ID: "LAW",

@@ -43,7 +43,7 @@ function Navbar() {
           مــراســل بـلـجـيـكـا
         </h1>
 
-        <div className=" flex items-center justify-between p-10 h-4 ">
+        <div className=" relative bottom-16 items-center justify-between p-6 h-4 ">
           <div className="">
             <button onClick={ToggelBtn}>
               <svg
@@ -66,10 +66,10 @@ function Navbar() {
 
         {isOpen ? (
           <div
-            className=" absolute  min-h-screen flex flex-col w-fit p-6 text-center bg-slate-800 "
+            className=" absolute top-10 z-2 min-h-screen flex flex-col w-fit p-6 text-center opacity-90 bg-red-900  "
             ref={menuRef}
           >
-            <ul className=" flex flex-col m-1 z-10 ">
+            <ul className=" flex flex-col h-10 m-1 z-10 ">
               <div>
                 <div className="flex flex-row items-top p-3 ">
                   <button onClick={ToggelBtn}>
@@ -159,7 +159,7 @@ function Navbar() {
                 <div className="flex flex-row items-top  p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      href={`/categories/${ECONOMIC.ID}`}
+                      to={`/categories/${ECONOMIC.ID}`}
                       className="links m-2"
                     >
                       {ECONOMIC.AR}
@@ -169,7 +169,7 @@ function Navbar() {
                 <div className="flex flex-row items-top  p-3">
                   <button onClick={ToggelBtn}>
                     <Link
-                      href={`/categories/${ACCIDENT.ID}`}
+                      to={`/categories/${ACCIDENT.ID}`}
                       className="links align-top m-2"
                     >
                       {ACCIDENT.AR}
