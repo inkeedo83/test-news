@@ -43,7 +43,7 @@ export default function ReadArticleByID() {
 
   console.log(data);
   return (
-    <div className="bg-slate-200  text-md sm:text-xl ">
+    <div className="bg-white  text-md sm:text-xl ">
       <div className="grid grid-cols-1 pt-24  ">
         <div>
           {data === null ? (
@@ -74,7 +74,7 @@ export default function ReadArticleByID() {
                   className="text-red-600 hover:text-black ml-2 "
                   href={`/categories/${data.category}`}
                 >
-                  {CATEGORIES[data.category]}
+                  {CATEGORIES[data.category].AR}
                 </a>
                 <span className="text-red-600  ml-2">/</span>
                 <span className=" text-red-600  ml-2  truncate ...">

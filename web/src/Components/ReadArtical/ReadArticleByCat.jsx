@@ -40,7 +40,7 @@ export default function ReadArticleByCat() {
         )
       ) : (
         <>
-          <div className=" sm:m-0 bg-gray-800 border-4 grid grid-cols-2  grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-2 sm:gap-1 pt-24  ">
+          <div className=" sm:m-0 bg-white  border-4 grid grid-cols-2 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-2 sm:gap-1 pt-24  ">
             {data.map((item) => (
               <div
                 key={item.id}

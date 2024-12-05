@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import baseUrl from "../../assets/contants";
+import { CATEGORIES } from "../../assets/categories.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenNib } from "@fortawesome/free-solid-svg-icons";
@@ -40,15 +41,17 @@ export function OneArtical() {
 
   return (
     <div>
-      <h3 className=" mt-1  mb-[1px] text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3  sm:p-2 text-xs bg-red-900  sm:font-bold">
-        اخبار متنوعه
-      </h3>
       {data.map((item) => (
-        <div className=" static" key={item.id}>
+        <div className=" sm:h-[636px] h-[369px] static" key={item.id}>
+          <Link to={`/categories/${item.category.id}`}>
+            <h3 className="  relative  sm:top-20 top-12 text-white text-center sm:text-lg w-20 sm:w-28 rounded-md h-18 sm:w-fit  p-1  mt-2 text-xs bg-red-900  sm:font-bold">
+              {CATEGORIES[item.category].AR}
+            </h3>
+          </Link>
           <img
             style={PicStyle}
             src={item.image}
-            className="   border-4 bg-zinc-300 border-red-900 p-3 "
+            className="   border-2 border-b-0 bg-slate-900 p-4 border-red-900  "
           />
 
           <div className="relative  sm:bottom-36 bottom-36 p-4 sm:p-4  h-2 sm:h-8 opacity-70 m-1 ">

@@ -40,7 +40,7 @@ export default function MainPageCat({ id, cat }) {
       <img
         alt={cat}
         src={item.image}
-        className=" border-2 bg-white border-red-600  rounded-xl p-3 w-[450px] h-[300px]"
+        className=" border-2 bg-slate-900 border-red-600  rounded-xl sm:p-8 p-3 w-[450px] sm:h-[330px] h-[200px]"
       />
       <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70  mb-4 flex  justify-between ">
         <Link to={`/articles/${item.id}`}>

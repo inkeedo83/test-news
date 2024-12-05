@@ -66,9 +66,6 @@ export default function LatestNews() {
             </div>
           ))}
       </div>
-      <span className="bg-white text-black">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      </span>
     </>
   );
 }
