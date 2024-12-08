@@ -34,19 +34,19 @@ export default function LatestNews() {
       <h3 className="  text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
         اخر الاخبار
       </h3>
-      <div className="  flex flex-col rounded-md border-1 bg-zinc-500 border-red-900">
+      <div className="  flex flex-col rounded-md border-1 bg-slate-900 border-red-900">
         {data &&
           data.map((item) => (
             <div
               key={item.id}
-              className=" bg-zinc-300 border-2 h-fit border-red-900 "
+              className=" bg-white border-2 h-fit border-red-900 "
             >
               <a href={`/categories/${item.category}`}>
                 <h3 className="text-white text-center sm:text-sm w-auto rounded-md h-fit sm:w-fit  p-1 mr-2  mt-1 text-xs bg-red-900 sm:font-bold">
                   {CATEGORIES[item.category].AR}
                 </h3>
               </a>
-              <div className="p-2 mr-2 ml-2 bg-zinc-500">
+              <div className="p-2 mr-2 ml-2  h-10 bg-zinc-500">
                 <FontAwesomeIcon icon={faPenNib} beat />
                 <span className="text-md p-2 m-2">
                   {new Date(item.createdAt).toLocaleDateString(
@@ -59,7 +59,7 @@ export default function LatestNews() {
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
               <Link to={`/articles/${item.id}`}>
-                <h4 className=" mb-1 mr-2 ml-2 hover:text-red-900 text-white  sm:text-md w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-1  sm:font-bold ">
+                <h4 className=" mb-1 mr-2 ml-2 hover:text-red-900 text-white  sm:text-md w-fit text-justify bg-slate-900 h-18 sm:w-auto sm:h-[40px] p-1  sm:font-bold ">
                   {item.title}
                 </h4>
               </Link>

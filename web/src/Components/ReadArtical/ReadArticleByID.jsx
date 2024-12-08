@@ -6,6 +6,7 @@ import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticle
 import { CATEGORIES } from "../../assets/categories.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
+import BeReporter from "../../assets/BeReporter.jpg";
 
 const { MAIN } = CATEGORIES;
 
@@ -106,7 +107,11 @@ export default function ReadArticleByID() {
                     <FontAwesomeIcon icon={faEye} beat />
                   </span>
                   <img
-                    src={data.image}
+                    src={
+                      data.image === "https://app-test-i.ru/api/image/null"
+                        ? BeReporter
+                        : data.image
+                    }
                     className=" border-2 bg-white border-red-600  rounded-xl p-3 w-[800px] h-[500px]"
                   />
                 </div>

@@ -7,6 +7,7 @@ import { Pagination } from "../Pagination/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenNib } from "@fortawesome/free-solid-svg-icons";
+import BeReporter from "../../assets/BeReporter.jpg";
 
 const DateOptions = {
   weekday: "long",
@@ -50,7 +51,11 @@ export default function ReadArticleByCat() {
                   {CATEGORIES[item.category].AR}
                 </h3>{" "}
                 <img
-                  src={item.image}
+                  src={
+                    item.image === "https://app-test-i.ru/api/image/null"
+                      ? BeReporter
+                      : item.image
+                  }
                   className=" border-2 bg-white border-red-600  rounded-xl p-1  md:p-1 sm:p-3 w-[50vw] md:w-[60vw] h-[30vh] md:h-[30vh] "
                 />
                 <div className="  bg-zinc-500 text-white p-1 mt-2 mr-2 ml-2">

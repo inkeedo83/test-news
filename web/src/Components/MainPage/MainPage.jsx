@@ -6,6 +6,7 @@ import baseUrl from "../../assets/contants";
 import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
+import BeReporter from "../../assets/BeReporter.jpg";
 
 const {
   POLITIC,
@@ -30,8 +31,6 @@ export default function MainPageTest() {
     </div>
   ) : null;
 
-  let source = null;
-
   /*states*/
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
@@ -49,7 +48,11 @@ export default function MainPageTest() {
         </Link>
       </div>
       <img
-        src={item.image}
+        src={
+          item.image === "https://app-test-i.ru/api/image/null"
+            ? BeReporter
+            : item.image
+        }
         className="border-2 bg-slate-900 border-red-900  rounded-xl p-4 w-[800px] h-[28vh] sm:h-[350px]"
       />
       <div className="absolute sm:bottom-3 bottom-1  sm:h-26  m-1 ">
