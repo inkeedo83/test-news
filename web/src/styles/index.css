@@ -12,14 +12,4 @@
 }
 .NewsTitle {
   font-family: "Marhey", sans-serif;
-  font-optical-sizing: auto;
-  font-style: normal;
-  font-weight: 500;
-  color: white;
-  font-size: 4 vw;
-}
-
-.links {
-  @apply p-2 sm:p-1  
-            ease-in-out w-auto transition duration-300  text-white rounded-md   hover:w-fit hover:text-black hover:bg-white;
 }

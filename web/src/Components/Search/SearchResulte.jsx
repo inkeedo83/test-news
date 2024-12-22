@@ -6,6 +6,7 @@ import baseUrl from "../../assets/contants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
 import BeReporter from "../../assets/BeReporter.png";
+
 const DateOptions = {
   weekday: "long",
   month: "short",
@@ -13,7 +14,7 @@ const DateOptions = {
 };
 const { MAIN } = CATEGORIES;
 
-export default function ReadArticleByCat() {
+export default function SearchResulte() {
   const { id } = useParams();
   console.log(id);
 
@@ -21,22 +22,16 @@ export default function ReadArticleByCat() {
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
   const [count, setCount] = useState([]);
-  const [page, setPage] = useState(12);
-  console.log(page);
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}/public/articles?limit=${page}&order=DESC&category=${id}`)
-      .then(
-        (res) => (
-          console.log(count), setData(res.data.data), setCount(res.data.count)
-        )
-      )
+      .get(`${baseUrl}/public/articles?pattern=${id}`)
+      .then((res) => (console.log(res), setData(res.data.data)))
 
       .catch((err) => console.log(err));
-  }, [id, page]);
+  }, [id]);
 
-  console.log(data, "render by catigory");
+  console.log(data, "render searchpage ");
 
   return (
     <>
@@ -62,12 +57,7 @@ export default function ReadArticleByCat() {
             <span className="text-red-600 ml-2 ">/</span>
             <span className="text-red-600 ml-2  ">الاخبار</span>
             <span className="text-red-600  ml-2 ">/</span>
-            <a
-              className="text-red-600 hover:text-black ml-2 "
-              href={`/categories/${id}`}
-            >
-              {CATEGORIES[id].AR}
-            </a>
+            <span className="text-red-600 ml-2  ">نتائج البحث</span>
           </div>
           <div className=" sm:m-0 bg-white grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-1 sm:gap-1 ">
             {data.map((item) => (
@@ -120,30 +110,6 @@ export default function ReadArticleByCat() {
                 </h5>
               </div>
             ))}
-          </div>
-
-          <div className="my-24 flex items-center before:h-px before:flex-1  before:bg-gray-300 before:content-[''] after:h-px after:flex-1 after:bg-gray-300  after:content-['']">
-            <button
-              onClick={() => {
-                setPage(page + 12);
-              }}
-              type="button"
-              className="flex items-center rounded-full border border-gray-300 bg-secondary-50 px-3 py-2 text-center text-sm font-medium text-gray-900 hover:text-white hover:bg-red-900"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="mr-1 h-4 w-4"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              عرض المزيد
-            </button>
           </div>
         </>
       )}

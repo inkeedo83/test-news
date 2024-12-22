@@ -42,7 +42,7 @@ export default function LatestNews() {
               className=" bg-white border-2 h-fit border-red-900 "
             >
               <a href={`/categories/${item.category}`}>
-                <h3 className="text-white text-center sm:text-sm w-auto rounded-md h-fit sm:w-fit  p-1 mr-2  mt-1 text-xs bg-red-900 sm:font-bold">
+                <h3 className="text-white  hover:text-black text-center sm:text-sm w-auto rounded-md h-fit sm:w-fit  p-1 mr-2  mt-1 text-xs bg-red-900 sm:font-bold">
                   {CATEGORIES[item.category].AR}
                 </h3>
               </a>

@@ -30,28 +30,28 @@ function Footer() {
         </span>
         <div className="grid grid-cols-2  text-md sm:text-2xl  text-slate-100 mr-4 sm:mr-2  ">
           <div className=" hover:text-black">
-            <a href="">اخبار بروكسل</a>
+            <a href=""> بروكسل</a>
           </div>
           <div className=" hover:text-black">
             {" "}
-            <a href=""> اخبار انتورب</a>
+            <a href=""> انتورب</a>
           </div>
           <div className=" hover:text-black">
-            <a href=""> اخبار لباج</a>
+            <a href=""> لباج</a>
           </div>
           <div className=" hover:text-black">
-            <a href=""> اخبار فلاندرز</a>
+            <a href=""> فلاندرز</a>
           </div>
           <div className=" hover:text-black">
-            <a href=""> اخبار والونيا</a>
+            <a href=""> والونيا</a>
           </div>
           <div className=" hover:text-black">
-            <a href=""> اخبار جرمانوفون</a>
+            <a href=""> جرمانوفون</a>
           </div>
 
           <div className=" hover:text-black">
             {" "}
-            <a href=""> اخبار سياسه</a>
+            <a href=""> سياسه</a>
           </div>
           <div className=" hover:text-black">
             {" "}
@@ -75,7 +75,7 @@ function Footer() {
         {/* facebook */}
 
         <div className=" mr-2 sm:mr-2  ">
-          <button className=" group pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 sm:pl-20 sm:pr-20 bg-red-950 rounded-xl hover:bg-white ">
+          <button className=" group pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 md:pl-10 md:pr-10 sm:pl-14 sm:pr-14 bg-red-950 rounded-xl hover:bg-white ">
             <a
               href="http://facebook.com"
               className="w-5 h-5 sm:w-8 sm:h-8 flex items-center justify-center  group transition-all duration-300"
@@ -95,7 +95,7 @@ function Footer() {
 
           {/* tiktok */}
 
-          <button className=" group pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 sm:pl-20 sm:pr-20 bg-red-950 rounded-xl hover:bg-white ">
+          <button className=" group pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16  md:pl-10 md:pr-10 sm:pl-20 sm:pr-20 bg-red-950 rounded-xl hover:bg-white ">
             <a
               href="http://tiktok.com"
               className="w-5 h-5 sm:w-8 sm:h-8  flex items-center justify-center group transition-all duration-300"
@@ -128,7 +128,7 @@ function Footer() {
 
         <div className="mr-2 sm:mr-2 ">
           {/* instagram */}
-          <button className=" group  pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 sm:pl-20 sm:pr-20 bg-red-950 rounded-xl hover:bg-white ">
+          <button className=" group  pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 md:pl-10 md:pr-10  sm:pl-20 sm:pr-20 bg-red-950 rounded-xl hover:bg-white ">
             <a
               href="https://www.instagram.com/"
               className="w-5 h-5 sm:w-8 sm:h-8 flex items-center justify-center  group transition-all duration-300"
@@ -176,7 +176,7 @@ function Footer() {
           </button>
 
           {/* gmail */}
-          <button className="group  pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 sm:pl-20 sm:pr-20 mb-8 bg-red-950 rounded-xl hover:bg-white  ">
+          <button className="group  pt-8 pb-8 sm:pt-10 sm:pb-10 pl-16 pr-16 md:pl-10 md:pr-10 sm:pl-20 sm:pr-20 mb-8 bg-red-950 rounded-xl hover:bg-white  ">
             <a
               href="http://gmail.com"
               className=" w-5 h-5 sm:w-8 sm:h-8 flex items-center justify-center  transition-all duration-300"

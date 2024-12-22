@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporter from "../../assets/BeReporter.png";
 import axios from "axios";
 import baseUrl from "../../assets/contants";
 import { CATEGORIES } from "../../assets/categories.constant";
@@ -22,7 +22,7 @@ export default function MainPageCat({ id, cat }) {
   useEffect(() => {
     axios
       .get(`${baseUrl}/public/articles?limit=6&order=DESC&category=${ID}`)
-      .then((res) => setData(res.data.data), console.log(data))
+      .then((res) => setData(res.data.data))
       .catch((err) => console.log(err));
   }, []);
 
@@ -31,7 +31,7 @@ export default function MainPageCat({ id, cat }) {
       <div className="absolute inset-0  bg-gray-700 opacity-20  rounded-md"></div>
       <div className="absolute sm:h-8 sm:w-auto top-1 opacity-90 flex  justify-center m-1 ">
         <Link to={`/categories/${item.category}`}>
-          <h2 className="text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit  p-1 mt-2 text-xs bg-red-900 sm:font-bold">
+          <h2 className=" hover:text-black text-white text-center sm:text-lg w-auto rounded-sm h-18 sm:w-fit  p-1 mt-2 text-xs bg-red-900 sm:font-bold">
             {CATEGORIES[item.category].AR}
           </h2>
         </Link>
@@ -44,11 +44,11 @@ export default function MainPageCat({ id, cat }) {
             ? BeReporter
             : item.image
         }
-        className=" border-2 bg-slate-900 border-red-600  rounded-xl sm:p-8 p-3 w-[450px] sm:h-[330px] h-[200px]"
+        className=" border-2 bg-slate-900 border-red-600  rounded-xl sm:p-4 p-3 w-[450px] sm:h-[330px] h-[200px]"
       />
-      <div className="absolute sm:bottom-3 bottom-1  sm:h-26 opacity-70  mb-4 flex  justify-between ">
+      <div className="absolute sm:bottom-3 bottom-1  sm:h-fit opacity-70  mb-4  ">
         <Link to={`/articles/${item.id}`}>
-          <h2 className=" hover:text-red-700  text-center text-white sm:text-lg w-fit text-justify rounded-md h-18 sm:w-auto sm:h-24 sm:p-3 p-2 bg-gray-900 sm:font-bold">
+          <h2 className=" hover:bg-black  text-center text-white sm:text-lg w-fit text-justify rounded-md h-18 sm:w-[410px] sm:h-fit sm:p-3 p-2 bg-red-900 sm:font-bold">
             {item.title}
           </h2>
         </Link>
@@ -69,9 +69,11 @@ export default function MainPageCat({ id, cat }) {
              grid grid-cols-4 justify-items-center "
           >
             <div className=" text-white  m-1 col-start-1 col-span-4 mt-32">
-              <h1 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-3 sm:p-5 mt-2 text-xs bg-red-900 sm:font-bold">
-                اخبار {Cat}
-              </h1>
+              <Link to={`/categories/${ID}`}>
+                <h2 className="text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-3 sm:p-5 mt-2 text-xs bg-red-900 sm:font-bold">
+                  اخبار {Cat}
+                </h2>
+              </Link>
 
               <div className="  border-2  bg-white border-red-900 text-xs  justify-items-center grid grid-cols-2  grid-rows-3 sm:grid-cols-3 sm:grid-rows-2 gap-2 sm:gap-1 sm:h-fit  ">
                 {render}

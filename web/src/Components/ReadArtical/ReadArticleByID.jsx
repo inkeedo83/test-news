@@ -6,7 +6,7 @@ import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticle
 import { CATEGORIES } from "../../assets/categories.constant";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporter from "../../assets/BeReporter.png";
 
 const { MAIN } = CATEGORIES;
 
@@ -117,11 +117,8 @@ export default function ReadArticleByID() {
                 </div>
 
                 <div className="w-fit  m-4 p-2">
-                  <span className="  text-md  sm:text-3xl  leading-loose  text-red-900 text-slate-800 p-1 ">
-                    {data.content.replace(/ .*/, "  ")}
-                  </span>
-                  <span className="  text-slate-800  text-md  sm:text-3xl leading-loose  ">
-                    {data.content.substr(data.content.indexOf(" ") + 1)}
+                  <span className="  text-md font-bold text-slate-900 sm:text-3xl  leading-loose   p-1 ">
+                    {data.content}
                   </span>
                 </div>
                 <div className="  text-red-600 border border-red-600  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 mb-1 ">

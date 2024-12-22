@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import { faPenNib } from "@fortawesome/free-solid-svg-icons";
 import { CATEGORIES } from "../../assets/categories.constant";
+import BeReporter from "../../assets/BeReporter.png";
 
 const DateOptions = {
   weekday: "long",
@@ -58,7 +59,7 @@ export function RelatedArticles() {
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
               <Link to={`/articles/${item.id}`}>
-                <h4 className="  truncate ... mb-3 mr-2 ml-2 hover:text-red-900 text-white  sm:text-lg w-fit text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
+                <h4 className="  mb-3 mr-1  ml-1 hover:text-red-900 text-white  sm:text-lg w-88 text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
                   {item.title}
                 </h4>
               </Link>
