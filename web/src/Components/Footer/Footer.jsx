@@ -1,7 +1,19 @@
+import { Link } from "react-router-dom";
+import { CATEGORIES } from "../../assets/categories.constant";
 function Footer() {
-  const scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
+  const {
+    POLITIC,
+    BRUSSELS,
+    ANTWERP,
+    FLANDERS,
+    WALLONIA,
+    LIEGE,
+    GERMANOPHONE,
+    ECONOMIC,
+    LAW,
+    CULTURE,
+    ACCIDENT,
+  } = CATEGORIES;
 
   return (
     <footer className="grid grid-cols-1 sm:grid-cols-3  grid-rows-1 w-full h-fit  bg-red-900 ">
@@ -10,7 +22,7 @@ function Footer() {
           من نحن
         </span>
 
-        <div className="grid grid-cols-1  text-md sm:text-2xl text-slate-100 mr-4   mb-6 sm:mb-20  ">
+        <div className="grid grid-cols-1  text-md sm:text-2xl text-slate-100 mr-4    mb-6 sm:mb-20  ">
           <div className=" hover:text-black">
             <a href="">من نحن</a>
           </div>
@@ -30,40 +42,43 @@ function Footer() {
         </span>
         <div className="grid grid-cols-2  text-md sm:text-2xl  text-slate-100 mr-4 sm:mr-2  ">
           <div className=" hover:text-black">
-            <a href=""> بروكسل</a>
+            <Link to={`/categories/${CATEGORIES.BRUSSELS.ID}`}> بروكسل</Link>
           </div>
           <div className=" hover:text-black">
             {" "}
-            <a href=""> انتورب</a>
+            <Link to={`/categories/${CATEGORIES.ANTWERP.ID}`}> انتورب</Link>
           </div>
           <div className=" hover:text-black">
-            <a href=""> لباج</a>
+            <Link to={`/categories/${CATEGORIES.LIEGE.ID}`}> لباج</Link>
           </div>
           <div className=" hover:text-black">
-            <a href=""> فلاندرز</a>
+            <Link to={`/categories/${CATEGORIES.FLANDERS.ID}`}> فلاندرز</Link>
           </div>
           <div className=" hover:text-black">
-            <a href=""> والونيا</a>
+            <Link to={`/categories/${CATEGORIES.WALLONIA.ID}`}> والونيا</Link>
           </div>
           <div className=" hover:text-black">
-            <a href=""> جرمانوفون</a>
+            <Link to={`/categories/${CATEGORIES.GERMANOPHONE.ID}`}>
+              {" "}
+              جرمانوفون
+            </Link>
           </div>
 
           <div className=" hover:text-black">
             {" "}
-            <a href=""> سياسه</a>
+            <Link to={`/categories/${CATEGORIES.POLITIC.ID}`}> سياسه</Link>
           </div>
           <div className=" hover:text-black">
             {" "}
-            <a href=""> قوانين</a>
+            <Link to={`/categories/${CATEGORIES.LAW.ID}`}> قوانين</Link>
           </div>
           <div className=" hover:text-black">
             {" "}
-            <a href=""> اقتصاد</a>
+            <Link to={`/categories/${CATEGORIES.ECONOMIC.ID}`}> اقتصاد</Link>
           </div>
           <div className=" hover:text-black">
             {" "}
-            <a href=""> حوادث</a>
+            <Link to={`/categories/${CATEGORIES.ACCIDENT.ID}`}> حوادث</Link>
           </div>
         </div>
       </div>
@@ -200,47 +215,17 @@ function Footer() {
         </div>
       </div>
       <hr className="w-screen " />
-      <span className=" font-black text-white  text-center text-md sm:text-2xl  mb-4 mt-10 ">
-        {" "}
-        ©المراسل بلجيكا
+
+      <span className="text-center text-white ">
+        <button
+          className="hover:text-black"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        >
+          ^^
+        </button>
       </span>
     </footer>
   );
 }
 
 export default Footer;
-{
-  /*
-
-       
-    
-
-  
-  
-  
-  
-  
-  youtube 
-   <button className=" group  pt-6 pb-6 pl-12 pr-12  bg-red-950 rounded-xl hover:bg-white  ">
-   <a
-     href="http://youtube.com"
-     className=" w-5 h-5 sm:w-8 sm:h-8 transition-all duration-300"
-   >
-     <svg
-       className=" justify-items-center rounded-md transition-all duration-300 group-hover:bg-red-900 group-hover:scale-110"
-       xmlns="http://www.w3.org/2000/svg"
-       width="28"
-       height="28"
-       fill="currentColor"
-       viewBox="0 0 576 512"
-     >
-       <path d="M549.7 124.1c-6.3-23.7-24.8-42.3-48.3-48.6C458.8 64 288 64 288 64S117.2 64 74.6 75.5c-23.5 6.3-42 24.9-48.3 48.6-11.4 42.9-11.4 132.3-11.4 132.3s0 89.4 11.4 132.3c6.3 23.7 24.8 41.5 48.3 47.8C117.2 448 288 448 288 448s170.8 0 213.4-11.5c23.5-6.3 42-24.2 48.3-47.8 11.4-42.9 11.4-132.3 11.4-132.3s0-89.4-11.4-132.3zm-317.5 213.5V175.2l142.7 81.2-142.7 81.2z" />
-
-       <path
-         d="M30.8811 44.1617L44.4392 36.3124L30.8811 28.463V44.1617Z"
-         fill="white"
-       />
-     </svg>
-   </a>
- </button>**/
-}

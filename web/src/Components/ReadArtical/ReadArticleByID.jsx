@@ -4,9 +4,11 @@ import axios from "axios";
 import baseUrl from "../../assets/contants";
 import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticles";
 import { CATEGORIES } from "../../assets/categories.constant";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
+import { IoHome } from "react-icons/io5";
+import { RiEyeFill } from "react-icons/ri";
+import { FaPencil } from "react-icons/fa6";
 import BeReporter from "../../assets/BeReporter.png";
+import { Link } from "react-router-dom";
 
 const { MAIN } = CATEGORIES;
 
@@ -32,6 +34,9 @@ const DateOptions = {
 export default function ReadArticleByID() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState(null);
@@ -40,11 +45,12 @@ export default function ReadArticleByID() {
       .get(`${baseUrl}/public/articles/${id}`)
       .then((res) => (console.log(res), setData(res.data)))
       .catch((err) => console.log(err));
+    toTop();
   }, [id]);
 
   console.log(data);
   return (
-    <div className="bg-white  text-md sm:text-xl ">
+    <div className=" text-md sm:text-xl ">
       <div className="grid grid-cols-1 pt-24  ">
         <div>
           {data === null ? (
@@ -55,38 +61,35 @@ export default function ReadArticleByID() {
             )
           ) : (
             <>
-              <div className=" flex  pt-10 mr-4 text-md  sm:text-xl leading-loose  text-zink-600">
-                <a
-                  className=" inline-flex  text-red-600 hover:text-black ml-2"
-                  href={`/`}
+              <div className=" flex  pt-10 mr-4 text-md  sm:text-xl leading-loose  ">
+                <Link
+                  className=" inline-flex  text-red-600 hover:text-zinc-400 ml-2"
+                  to={`/`}
                 >
-                  <FontAwesomeIcon
-                    icon={faHouse}
-                    className="size-4 sm:size-6 mt-2 ml-2"
-                  />
+                  <IoHome className="size-4 sm:size-6 mt-2 ml-2" />
 
                   {MAIN.AR}
-                </a>
+                </Link>
 
                 <span className="text-red-600 ml-2 ">/</span>
                 <span className="text-red-600 ml-2  ">الاخبار</span>
                 <span className="text-red-600  ml-2 ">/</span>
-                <a
-                  className="text-red-600 hover:text-black ml-2 "
-                  href={`/categories/${data.category}`}
+                <Link
+                  className="text-red-600 hover:text-zinc-400  ml-2 "
+                  to={`/categories/${data.category}`}
                 >
                   {CATEGORIES[data.category].AR}
-                </a>
+                </Link>
                 <span className="text-red-600  ml-2">/</span>
                 <span className=" text-red-600  ml-2  truncate ...">
                   {" "}
                   {data.title}...
                 </span>
               </div>
-              <hr className="h-1 mr-4 ml-4 bg-red-600" />
+              <hr className="h-2 mr-4 ml-4 bg-red-600" />
 
-              <div className=" scroll-px-4  indent-2 text-right w-auto flex flex-col  min-h-screen items-center bg-slate-200 border-b-0 m-1 ">
-                <h1 className="   text-black text-center font-bold text-lg sm:mb-14 sm:mt-10   sm:text-3xl  p-2 m-0 mb-2 ">
+              <div className=" scroll-px-4  indent-2 text-right w-auto flex flex-col  min-h-screen items-center  border-b-0 m-1 ">
+                <h1 className="  text-red-900 text-black text-center font-bold text-lg sm:mb-14 sm:mt-10   sm:text-3xl  p-2 m-0 mb-2 ">
                   {data.title}
                 </h1>
 
@@ -94,8 +97,8 @@ export default function ReadArticleByID() {
                   <span className=" mr-2 sm:mr-24 bold p-2 ml-6    ">
                     مراسل بلجيكا
                   </span>
+                  <FaPencil className="inline-flex  mr-2" />
                   <span className="  sm:m-2">
-                    <FontAwesomeIcon className=" ml-2" icon={faPenNib} beat />
                     {new Date(data.createdAt).toLocaleDateString(
                       "ar",
                       DateOptions
@@ -104,7 +107,7 @@ export default function ReadArticleByID() {
                   <span className="p-2 ">
                     {" "}
                     عدد القراءات : {data.watchCount}{" "}
-                    <FontAwesomeIcon icon={faEye} beat />
+                    <RiEyeFill className="inline-flex  mr-2" />
                   </span>
                   <img
                     src={
@@ -117,7 +120,7 @@ export default function ReadArticleByID() {
                 </div>
 
                 <div className="w-fit  m-4 p-2">
-                  <span className="  text-md font-bold text-slate-900 sm:text-3xl  leading-loose   p-1 ">
+                  <span className="  text-md font-bold text-gray-600 sm:text-3xl  leading-loose   p-1 ">
                     {data.content}
                   </span>
                 </div>

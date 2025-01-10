@@ -3,8 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
 import baseUrl from "../../assets/contants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
+import { IoHome } from "react-icons/io5";
+import { RiEyeFill } from "react-icons/ri";
+import { FaPencil } from "react-icons/fa6";
+
 import BeReporter from "../../assets/BeReporter.png";
 
 const DateOptions = {
@@ -23,12 +25,17 @@ export default function SearchResulte() {
   const [data, setData] = useState([]);
   const [count, setCount] = useState([]);
 
+  const toTop = () => {
+    window.scrollTo(0, 0);
+  };
+
   useEffect(() => {
     axios
       .get(`${baseUrl}/public/articles?pattern=${id}`)
       .then((res) => (console.log(res), setData(res.data.data)))
 
       .catch((err) => console.log(err));
+    toTop();
   }, [id]);
 
   console.log(data, "render searchpage ");
@@ -46,10 +53,7 @@ export default function SearchResulte() {
               className=" inline-flex  text-red-600 hover:text-black ml-2"
               href={`/`}
             >
-              <FontAwesomeIcon
-                icon={faHouse}
-                className="size-4 sm:size-6 mt-2 ml-2"
-              />
+              <IoHome className="size-4 sm:size-6 mt-2 ml-2" />
 
               {MAIN.AR}
             </a>
@@ -79,11 +83,7 @@ export default function SearchResulte() {
                   />
                 </Link>
                 <div className=" bg-black opacity-40  text-white p-1 mt-2 mr-2 ml-2">
-                  <FontAwesomeIcon
-                    className="text-white"
-                    icon={faPenNib}
-                    beat
-                  />
+                  <FaPencil className="inline-flex  mr-2" />
                   <span className=" text-xs sm:text-md p-2">
                     {new Date(item.createdAt).toLocaleDateString(
                       "ar",
@@ -91,7 +91,7 @@ export default function SearchResulte() {
                     )}
                   </span>
                   <span className=" mr-2 ml-2">|</span>
-                  <FontAwesomeIcon className="text-white" icon={faEye} beat />
+                  <RiEyeFill className="inline-flex  mr-2" />
                   <span className="p-2 m-2"> {item.watchCount}</span>
                 </div>
                 <Link to={`/articles/${item.id}`}>

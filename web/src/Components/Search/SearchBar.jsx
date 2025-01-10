@@ -10,8 +10,9 @@ export default function SearchBar() {
         <input
           onChange={(e) => setSearchData(e.target.value)}
           type="text"
+          style={{ color: "red" }}
           placeholder="ابحث هنا..."
-          className="w-full outline-none bg-white text-sm px-3 sm:px-5 py-1 sm:py-3"
+          className="w-full outline-none  bg-white text-sm px-3 sm:px-5 py-1 sm:py-3"
         />
         <Link
           to={

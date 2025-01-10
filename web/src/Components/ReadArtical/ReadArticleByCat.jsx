@@ -3,8 +3,9 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
 import baseUrl from "../../assets/contants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faPenNib, faEye } from "@fortawesome/free-solid-svg-icons";
+import { IoHome } from "react-icons/io5";
+import { RiEyeFill } from "react-icons/ri";
+import { FaPencil } from "react-icons/fa6";
 import BeReporter from "../../assets/BeReporter.png";
 const DateOptions = {
   weekday: "long",
@@ -23,6 +24,9 @@ export default function ReadArticleByCat() {
   const [count, setCount] = useState([]);
   const [page, setPage] = useState(12);
   console.log(page);
+  const toTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     axios
@@ -34,6 +38,7 @@ export default function ReadArticleByCat() {
       )
 
       .catch((err) => console.log(err));
+    toTop();
   }, [id, page]);
 
   console.log(data, "render by catigory");
@@ -46,34 +51,30 @@ export default function ReadArticleByCat() {
         )
       ) : (
         <>
-          <div className=" flex pt-24 sm:pt-32 mr-4 text-md  sm:text-xl leading-loose  text-zink-600">
-            <a
-              className=" inline-flex  text-red-600 hover:text-black ml-2"
-              href={`/`}
+          <div className=" flex pt-24 sm:pt-32 mr-4 text-md  sm:text-xl leading-loose  text-zinc-600">
+            <Link
+              className=" inline-flex  text-red-600 hover:text-zinc-400 ml-2"
+              to={`/`}
             >
-              <FontAwesomeIcon
-                icon={faHouse}
-                className="size-4 sm:size-6 mt-2 ml-2"
-              />
-
+              <IoHome className="size-4 sm:size-6 mt-2 ml-2" />
               {MAIN.AR}
-            </a>
+            </Link>
 
             <span className="text-red-600 ml-2 ">/</span>
             <span className="text-red-600 ml-2  ">الاخبار</span>
             <span className="text-red-600  ml-2 ">/</span>
             <a
-              className="text-red-600 hover:text-black ml-2 "
+              className="text-red-600 hover:text-zinc-400 ml-2 "
               href={`/categories/${id}`}
             >
               {CATEGORIES[id].AR}
             </a>
           </div>
-          <div className=" sm:m-0 bg-white grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-1 sm:gap-1 ">
+          <div className=" sm:m-0  grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-1 sm:gap-1 ">
             {data.map((item) => (
               <div
                 key={item.id}
-                className="mt-10 mr-1 ml-1 bg-slate-900 text-sm md:w-[30vw] sm:text-l rounded-xl"
+                className="mt-10 mr-1 ml-1 bg-gray-900 text-sm md:w-[30vw] sm:text-l rounded-xl"
               >
                 <h3 className=" absolute  opacity-80 text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-2 mr-2 mt-2 mb-2 text-xs bg-red-900 sm:font-bold">
                   {CATEGORIES[item.category].AR}
@@ -85,15 +86,11 @@ export default function ReadArticleByCat() {
                         ? BeReporter
                         : item.image
                     }
-                    className=" border-2 bg-white border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[40vh]  md:h-[40vh] "
+                    className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[40vh]  md:h-[40vh] "
                   />
                 </Link>
                 <div className=" bg-black opacity-40  text-white p-1 mt-2 mr-2 ml-2">
-                  <FontAwesomeIcon
-                    className="text-white"
-                    icon={faPenNib}
-                    beat
-                  />
+                  <FaPencil className="inline-flex  mr-2" />
                   <span className=" text-xs sm:text-md p-2">
                     {new Date(item.createdAt).toLocaleDateString(
                       "ar",
@@ -101,7 +98,8 @@ export default function ReadArticleByCat() {
                     )}
                   </span>
                   <span className=" mr-2 ml-2">|</span>
-                  <FontAwesomeIcon className="text-white" icon={faEye} beat />
+                  <RiEyeFill className="inline-flex  mr-2" />
+
                   <span className="p-2 m-2"> {item.watchCount}</span>
                 </div>
                 <Link to={`/articles/${item.id}`}>
@@ -109,7 +107,7 @@ export default function ReadArticleByCat() {
                     {item.title}
                   </h3>
                 </Link>
-                <h5 className="  opacity-60 bg-zink-500 mr-2 ml-2 p-4 border-white text-md  md:text-lg min-h-3 font-bold text-slate-300">
+                <h5 className="  opacity-60 bg-zinc-500 mr-2 ml-2 p-4 border-white text-md  md:text-lg min-h-3 font-bold text-slate-300">
                   {item.shortContent}
                   <Link
                     to={`/articles/${item.id}`}
@@ -128,7 +126,7 @@ export default function ReadArticleByCat() {
                 setPage(page + 12);
               }}
               type="button"
-              className="flex items-center rounded-full border border-gray-300 bg-secondary-50 px-3 py-2 text-center text-sm font-medium text-gray-900 hover:text-white hover:bg-red-900"
+              className="flex items-center rounded-full border border-gray-300 bg-secondary-50 px-3 py-2 text-center text-sm font-medium text-zinc-400 hover:bg-red-900"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

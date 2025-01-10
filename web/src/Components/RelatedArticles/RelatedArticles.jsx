@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import baseUrl from "../../assets/contants";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { faPenNib } from "@fortawesome/free-solid-svg-icons";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.png";
+
+import { IoHome } from "react-icons/io5";
+import { RiEyeFill } from "react-icons/ri";
+import { FaPencil } from "react-icons/fa6";
 
 const DateOptions = {
   weekday: "long",
@@ -47,7 +47,8 @@ export function RelatedArticles() {
                 </h3>
               </Link>
               <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-300 ">
-                <FontAwesomeIcon icon={faPenNib} beat />
+                <FaPencil className="inline-flex  mr-2" />
+
                 <span className="text-md p-2 m-2">
                   {new Date(item.createdAt).toLocaleDateString(
                     "ar",
@@ -55,7 +56,8 @@ export function RelatedArticles() {
                   )}{" "}
                 </span>
                 <span className="p-2 mr-2 ml-2">|</span>
-                <FontAwesomeIcon icon={faEye} beat />
+                <RiEyeFill className="inline-flex  mr-2" />
+
                 <span className="p-2 m-2"> {item.watchCount}</span>
               </div>
               <Link to={`/articles/${item.id}`}>
