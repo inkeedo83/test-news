@@ -7,7 +7,6 @@ import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporter from "../../assets/BeReporter.png";
 import { WriterEffect } from "../WriterEffect/WriterEffect";
-import { IoHome } from "react-icons/io5";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 const DateOptions = {

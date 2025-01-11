@@ -191,7 +191,7 @@ function Navbar(props) {
                       onClick={() => ChangeDarkMode(!DarkMode)}
                       className="size-10  "
                     >
-                      <BsFillMoonStarsFill className="fill-gray-950  mt-[1px]   hover:size-[25px] size-[23px] rounded-xl block dark:hidden mr-1" />
+                      <BsFillMoonStarsFill className="fill-sky-400 hover:fill-sky-300  mt-[1px]   hover:size-[25px] size-[23px] rounded-xl block dark:hidden mr-1" />
                       <FaSun className="fill-yellow-300  hover:fill-yellow-200 hover:size-[25px] size-[23px] hidden dark:block mr-1" />
                     </button>
                   </div>

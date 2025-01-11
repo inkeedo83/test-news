@@ -2,21 +2,23 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import baseUrl from "../../assets/contants";
 import { CATEGORIES } from "../../assets/categories.constant";
-
-import { IoHome } from "react-icons/io5";
+import BeReporter from "../../assets/BeReporter.png";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 
 const DateOptions = {
   weekday: "long",
-  year: "numeric",
+
   month: "short",
   day: "numeric",
+};
+const toTop = () => {
+  window.scrollTo(0, 0);
 };
 export function RelatedArticles() {
   const [data, setData] = useState([]);
   const http = `${baseUrl}/public/articles?limit=5&order=DESC&offset=${Math.floor(
-    Math.random() * 15
+    Math.random() * 80
   )}`;
 
   useEffect(() => {
@@ -30,45 +32,64 @@ export function RelatedArticles() {
       })
 
       .catch((err) => console.log(err));
+    toTop();
   }, []);
+  const screen = window.screen.width > 500;
 
   return (
     <>
-      <h3 className="sm:text-lg text-md w-fit p-1 bg-red-900 text-white  ">
+      <h3 className="  mt-28 text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
         مواضيع ذات صله
       </h3>
       <div className="  bg-zinc-300 border-2 border-red-900 ">
         {data &&
           data.map((item) => (
-            <div key={item.id} className=" border-2 border-red-900 ">
-              <Link to={`/categories/${item.category}`}>
-                <h3 className="text-white text-center sm:text-lg w-14 rounded-md h-18 sm:w-fit  p-1 mr-2 mt-2 text-xs bg-red-900 sm:font-bold">
-                  {CATEGORIES[item.category].AR}
-                </h3>
-              </Link>
-              <div className="p-2 mt-2 mr-2 ml-2 bg-zinc-300 ">
-                <FaPencil className="inline-flex  mr-2" />
+            <div
+              key={item.id}
+              className=" grid grid-cols-5  gap-0 border border-2 border-red-900"
+            >
+              <div className="col-span-1 p-0">
+                <Link className="p-0" to={`/articles/${item.id}`}>
+                  <img
+                    style={
+                      screen
+                        ? { height: "120px", width: "180px" }
+                        : { height: "90px", width: "90px" }
+                    }
+                    src={
+                      item.image === "https://app-test-i.ru/api/image/null"
+                        ? BeReporter
+                        : item.image
+                    }
+                    className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-0 m-2 "
+                  />
+                </Link>
+              </div>
+              <div className=" text-xs col-span-4 mt-3 sm:mr-0 mr-4 dark:text-white  text-red-900">
+                <RiEyeFill className="inline-flex  ml-2 " />
+                <p className="inline p-2">{item.watchCount} </p>
+                <span className=" mr-2 ml-2">|</span>
 
-                <span className="text-md p-2 m-2">
+                <FaPencil className="inline-flex  mr-2" />
+                <p className="inline p-4  ">
+                  {" "}
                   {new Date(item.createdAt).toLocaleDateString(
                     "ar",
                     DateOptions
-                  )}{" "}
-                </span>
-                <span className="p-2 mr-2 ml-2">|</span>
-                <RiEyeFill className="inline-flex  mr-2" />
+                  )}
+                </p>
 
-                <span className="p-2 m-2"> {item.watchCount}</span>
+                <Link to={`/articles/${item.id}`}>
+                  <div className=" bg-gradient-to-r mt-1 sm:h-20 h-10  rounded-md from-red-900 to-zinc-700  ml-4">
+                    <h4 className=" sm:text-lg text--sm dark:text-white  m-1 p-2 text-white    ">
+                      {item.title}
+                    </h4>
+                  </div>
+                </Link>
               </div>
-              <Link to={`/articles/${item.id}`}>
-                <h4 className="  mb-3 mr-1  ml-1 hover:text-red-900 text-white  sm:text-lg w-88 text-justify bg-zinc-600 h-18 sm:w-auto sm:h-34 p-4  sm:font-bold ">
-                  {item.title}
-                </h4>
-              </Link>
             </div>
           ))}
       </div>
-      <span className="bg-white text-black">ads</span>
     </>
   );
 }

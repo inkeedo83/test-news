@@ -34,7 +34,7 @@ export default function LatestNews() {
       <h3 className="  text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
         اخر الاخبار
       </h3>
-      <div className="  rounded-md  broder border-2  text-xs border-red-900">
+      <div className="  rounded-md bg-zinc-300 h broder border-2  text-xs border-red-900">
         {data &&
           data.map((item) => (
             <div
@@ -68,8 +68,8 @@ export default function LatestNews() {
                 </p>
 
                 <Link to={`/articles/${item.id}`}>
-                  <div className=" bg-gradient-to-r mt-1  rounded-md from-red-900 to-zinc-700  ml-4">
-                    <h4 className=" sm:text-sm text--xs dark:text-white  m-1 p-2 text-white    ">
+                  <div className=" bg-gradient-to-r mt-1 sm:h-16 h-10  rounded-md from-red-900 to-zinc-700  ml-4">
+                    <h4 className=" sm:text-lg text--sm dark:text-white  m-1 p-1 text-white    ">
                       {item.title}
                     </h4>
                   </div>

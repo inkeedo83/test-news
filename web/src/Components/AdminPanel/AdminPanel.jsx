@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CATEGORIES } from "../../assets/categories.constant";
 import axios from "axios";
 import BeReporter from "../../assets/BeReporter.png";
 
@@ -57,13 +56,17 @@ export function AdminPanel() {
 
   return (
     <>
-      <div className="  text-xl font-bold pt-32 mr-10">
-        <p className="block text-red-800 bg-gray-500 text-2xl font-bold ">
+      <div className="  text-xl font-bold pt-32 mr-4">
+        <h1 className="block text-red-800  text-center text-2xl font-bold ">
           {" "}
           واجهه الادمن
+        </h1>{" "}
+        <p className="block text-black mt-2 w-fit  p-4 bg-sky-400 text-2xl font-bold ">
+          {" "}
+          انشاء خبر{" "}
         </p>{" "}
-        <form onSubmit={CreatArtical} name="da">
-          <label className="block text-red-800  mt-5 mb-1"> الفئات </label>
+        <form className="bg-orange-300" onSubmit={CreatArtical} name="da">
+          <label className="block text-red-800  mb-1"> الفئات </label>
           <select
             className="   rounded-md inline-flex h-fit bg-slate-400 "
             onChange={(e) => setCategory(e.target.value)}
@@ -98,7 +101,6 @@ export function AdminPanel() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           ></textarea>
-
           <input
             className="  block  text-white rounded-xl bg-red-800 p-3 mt-10 mb-10  "
             type="file"
@@ -109,35 +111,36 @@ export function AdminPanel() {
               setImageToDataBase(file);
             }}
           />
-
           <div className=" block bg-slate-600 w-[800px] text-white text-center  ">
             <p className="block text-black  ">معاينه الخبر قبل النشر</p>
             <img
+              className="mr-10"
               src={imageView !== "" ? imageView : BeReporter}
               style={{ width: "400px", height: "400px" }}
             />
             <p className="block text-red-800  ">الفئه:{category}</p>
             <p className="  text-red-800  ">{title}</p>
-            <p>{content}</p>
+            <p>{content} </p>
           </div>
-
           <button className=" block  text-white rounded-xl bg-red-800 p-3 mt-10 mb-10 ">
-            اضافه الخبر الى الموقع{" "}
+            اضف الخبر{" "}
           </button>
           <p className="  text-red-800  text-4xl ">{published}</p>
-
           <pre className="text-blue-800">
             {JSON.stringify(articalID, null, 1).split(3, 3)}
           </pre>
           <hr className="p-4 bg-red-800 " />
           {/* deletpost  */}
+          <p className="block text-black mt-2 w-fit  p-4 bg-sky-400 text-2xl font-bold ">
+            {" "}
+            حذف خبر{" "}
+          </p>{" "}
           <label className="block text-red-800  ">
             {" "}
-            لحذف الايدي ادخل الرقم{" "}
+            ادخل الايدي لحذف الخبر{" "}
           </label>
-
           <input
-            className="   rounded-md block text-red-800   p-2 h-4  bg-slate-400 p-4 w-[600px]  "
+            className="      rounded-md block text-red-800   p-2 h-4  bg-slate-400 p-4 w-[600px]  "
             type="text"
             value={delId}
             onChange={(e) => setDelId(e.target.value)}
@@ -147,11 +150,10 @@ export function AdminPanel() {
             className=" block  text-white rounded-xl bg-red-800 p-3 mt-10 mb-10 "
           >
             {" "}
-            حذف الخبر
+            احذف الخبر
           </button>
           <p className="block text-black  ">{idDeleted} </p>
           <hr className="p-4 bg-red-800 " />
-
           <button
             className=" block  text-white rounded-xl bg-red-800 p-3 mt-10 mb-10 "
             onClick={() => {
