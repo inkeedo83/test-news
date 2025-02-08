@@ -7,8 +7,8 @@ import ReadArticleByCat from "../ReadArtical/ReadArticleByCat";
 import PageNotFound from "../InvalidPath/PageNotFound";
 import SearchResulte from "../Search/SearchResulte";
 import SearchInvalidResulte from "../Search/SearchInvalidResulte";
-import { AdminPanel } from "../AdminPanel/AdminPanel";
 import { useState } from "react";
+import AdminProtectedRoute from "../AdminProtectedRoute/AdminProtectedRoute";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -18,8 +18,8 @@ function App() {
       <div className="relative min-h-screen  transition-colors  duration 300  bg-slate-100 dark:bg-slate-950">
         <Navbar DarkTheme={darkMode} changeDarkTheme={setDarkMode} />
         <Routes onUpdate={() => window.scrollTo(0, 0)}>
-          <Route path="Admin" element={<AdminPanel />} />
           <Route path="/" element={<MainPage />} />
+          <Route path="/Admin?" element={<AdminProtectedRoute />} />
           <Route path="/articles/:id" element={<ReadArticleByID />} />
           <Route path="/categories/:id" element={<ReadArticleByCat />} />
           <Route path="/articles/pattern/:id" element={<SearchResulte />} />

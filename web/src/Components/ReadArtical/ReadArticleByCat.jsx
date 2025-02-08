@@ -70,6 +70,10 @@ export default function ReadArticleByCat() {
               {CATEGORIES[id].AR}
             </a>
           </div>
+          <h1 className="   mt-4 dark:bg-white  border-2 border border-red-800  text-center font-extrabold text-red-900 text-xl">
+            {" "}
+            انت تقرا اخر اخبار ومستجدات {CATEGORIES[id].AR}{" "}
+          </h1>
           <div className=" sm:m-0  grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-1 sm:gap-1 ">
             {data.map((item) => (
               <div

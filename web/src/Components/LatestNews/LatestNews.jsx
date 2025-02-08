@@ -34,16 +34,21 @@ export default function LatestNews() {
       <h3 className="  text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
         اخر الاخبار
       </h3>
-      <div className="  rounded-md bg-zinc-300 h broder border-2  text-xs border-red-900">
+      <div className="  rounded-md bg-zinc-900 h broder border-2  text-xs border-red-900">
         {data &&
           data.map((item) => (
             <div
               key={item.id}
-              className=" grid grid-cols-3 border border-2 border-red-900"
+              className=" grid grid-cols-5 border border-2 border-red-900"
             >
-              <div className="col-span-1">
+              <div className="col-span-2">
                 <Link to={`/articles/${item.id}`}>
                   <img
+                    style={
+                      screen
+                        ? { height: "120px", width: "180px" }
+                        : { height: "90px", width: "90px" }
+                    }
                     src={
                       item.image === "https://app-test-i.ru/api/image/null"
                         ? BeReporter
@@ -53,12 +58,12 @@ export default function LatestNews() {
                   />
                 </Link>
               </div>
-              <div className="col-span-2 mt-3 sm:mr-0 mr-4 dark:text-white   text-red-900">
-                <RiEyeFill className="inline-flex  ml-2 " />
-                <p className="inline p-2">{item.watchCount} </p>
-                <span className=" mr-2 ml-2">|</span>
+              <div className=" text-xs col-span-3 mt-3 sm:mr-0 mr-4 text-white  text-red-900">
+                <RiEyeFill className="inline-flex   " />
+                <p className="inline p-1">{item.watchCount} </p>
+                <span className=" mr-1 ml-1">|</span>
 
-                <FaPencil className="inline-flex  mr-2" />
+                <FaPencil className="inline-flex " />
                 <p className="inline p-4  ">
                   {" "}
                   {new Date(item.createdAt).toLocaleDateString(
@@ -68,7 +73,7 @@ export default function LatestNews() {
                 </p>
 
                 <Link to={`/articles/${item.id}`}>
-                  <div className=" bg-gradient-to-r mt-1 sm:h-16 h-10  rounded-md from-red-900 to-zinc-700  ml-4">
+                  <div className=" bg-gradient-to-r mt-1 sm:h-16 h-16  rounded-md from-red-900 to-zinc-700  ml-4">
                     <h4 className=" sm:text-lg text--sm dark:text-white  m-1 p-1 text-white    ">
                       {item.title}
                     </h4>

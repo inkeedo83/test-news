@@ -41,7 +41,11 @@ export default function MainPageTest() {
 
   // fetch start here
   useEffect(() => {
-    fetch(`${baseUrl}/public/articles?limit=12&offset=30`)
+    fetch(
+      `${baseUrl}/public/articles?limit=12&offset=${Math.floor(
+        Math.random() * 100
+      )}`
+    )
       .then((res) => {
         const resulte = res.json();
         return resulte;
@@ -53,6 +57,7 @@ export default function MainPageTest() {
       .catch((err) => console.log(err));
     toTop();
   }, []);
+  const screen = window.screen.width > 500;
 
   return (
     <>
@@ -83,7 +88,7 @@ export default function MainPageTest() {
               className="  relative sm:top-[40px] sm:mr-0 sm:ml-0  top-[10px] 
              mb-[1px] text-white sm:text-lg w-auto text-center rounded-md h-18 sm:w-fit p-3  sm:p-2 text-lg bg-red-900  sm:font-bold"
             >
-              اخبار متنوعة
+              اخبار متـفرقـــه{" "}
             </h3>
 
             {/*  6 div  */}
@@ -104,7 +109,7 @@ export default function MainPageTest() {
                           ? BeReporter
                           : item.image
                       }
-                      className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[300px]  md:h-[240px] "
+                      className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[32vh]  md:h-[40vh] "
                     />
                   </Link>
                   <div className=" bg-black opacity-40  text-white p-1 mt-2 mr-2 ml-2">

@@ -41,7 +41,7 @@ export function RelatedArticles() {
       <h3 className="  mt-28 text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
         مواضيع ذات صله
       </h3>
-      <div className="  bg-zinc-300 border-2 border-red-900 ">
+      <div className="  bg-zinc-900 border-2 border-red-900 ">
         {data &&
           data.map((item) => (
             <div
@@ -65,7 +65,7 @@ export function RelatedArticles() {
                   />
                 </Link>
               </div>
-              <div className=" text-xs col-span-4 mt-3 sm:mr-0 mr-4 dark:text-white  text-red-900">
+              <div className=" text-xs col-span-4 mt-3 sm:mr-0 mr-4 text-white  text-red-900">
                 <RiEyeFill className="inline-flex  ml-2 " />
                 <p className="inline p-2">{item.watchCount} </p>
                 <span className=" mr-2 ml-2">|</span>
@@ -80,7 +80,7 @@ export function RelatedArticles() {
                 </p>
 
                 <Link to={`/articles/${item.id}`}>
-                  <div className=" bg-gradient-to-r mt-1 sm:h-20 h-10  rounded-md from-red-900 to-zinc-700  ml-4">
+                  <div className=" bg-gradient-to-r mt-1 sm:h-20 h-14  rounded-md from-red-900 to-zinc-700  ml-4">
                     <h4 className=" sm:text-lg text--sm dark:text-white  m-1 p-2 text-white    ">
                       {item.title}
                     </h4>
