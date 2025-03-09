@@ -5,10 +5,13 @@ import baseUrl from "../../assets/contants";
 import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.png";
+import BeReporter from "../../assets/BeReporter.jpg";
 import { WriterEffect } from "../WriterEffect/WriterEffect";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
+import Weather from "../Weather/Weather";
+import { IoArrowUpCircle } from "react-icons/io5";
+
 const DateOptions = {
   weekday: "long",
   month: "short",
@@ -33,11 +36,17 @@ const toTop = () => {
 };
 
 export default function MainPageTest() {
-  //screen render
-
-  /*states*/
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // fetch start here
   useEffect(() => {
@@ -52,6 +61,7 @@ export default function MainPageTest() {
       })
       .then((resulte) => {
         setData(resulte.data);
+        setIsloading(false);
       })
 
       .catch((err) => console.log(err));
@@ -59,114 +69,177 @@ export default function MainPageTest() {
   }, []);
   const screen = window.screen.width > 500;
 
-  return (
-    <>
-      {data === null ? (
-        isloading && (
-          <span className=" bg-red-900 bold text-xl h-30 ">is loading </span>
-        )
-      ) : (
-        <>
-          <div className="grid  ">
-            <WriterEffect data={data} />
-            <h3
-              className="  relative sm:top-[46px] sm:mr-0 sm:ml-0  top-[40px] 
-             mb-[1px] text-white sm:text-lg w-auto text-center rounded-md h-18 sm:w-fit p-3  sm:p-2 text-lg bg-red-900  sm:font-bold"
-            >
-              خبر عاجل
-            </h3>
-            <div className="  grid grid-cols-1  sm:grid-cols-2 grid-rows-1 sm:grid-rows-1 ">
-              <OneArtical />
+  // Loading skeleton component
+  const LoadingSkeleton = () => (
+    <div className="animate-pulse space-y-4">
+      <div className="h-64 bg-zinc-800 rounded-xl"></div>
+      <div className="grid grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-48 bg-zinc-800 rounded-xl"></div>
+        ))}
+      </div>
+    </div>
+  );
 
-              <div>
-                <div className=" text-white sm:text-sm sm:p-2  m-1 ">
-                  <LatestNews />
-                </div>
+  return (
+    <div className="min-h-screen pt-20 sm:pt-72 overflow-hidden w-screen m-0 text-white relative">
+      {isloading ? (
+        <LoadingSkeleton />
+      ) : (
+        <div className="container mx-auto px-2 sm:px-4 py-0">
+          <WriterEffect data={data} />
+
+          {/* Featured Article */}
+          {data.length > 0 && (
+            <div className="mb-4 sm:mb-8">
+              <div className="relative h-[300px] sm:h-[500px] rounded-xl overflow-hidden">
+                <Link to={`/articles/${data[0].id}`}>
+                  <img
+                    src={
+                      data[0].image === "https://app-test-i.ru/api/image/null"
+                        ? BeReporter
+                        : data[0].image
+                    }
+                    className="w-full h-full object-cover"
+                    alt={data[0].title}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
+                    <div className="absolute bottom-0 p-4 sm:p-8">
+                      <span className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-full mb-2 sm:mb-4 inline-block text-sm sm:text-base">
+                        {CATEGORIES[data[0].category].AR}
+                      </span>
+                      <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
+                        {data[0].title}
+                      </h2>
+                      <p className="text-base sm:text-lg text-zinc-200 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
+                        {data[0].shortContent}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
-            <h3
-              className="  relative sm:top-[40px] sm:mr-0 sm:ml-0  top-[10px] 
-             mb-[1px] text-white sm:text-lg w-auto text-center rounded-md h-18 sm:w-fit p-3  sm:p-2 text-lg bg-red-900  sm:font-bold"
-            >
-              اخبار متـفرقـــه{" "}
-            </h3>
+          )}
 
-            {/*  6 div  */}
-            <div className=" grid grid-cols-2  justify-items-center border-2 border-red-900 grid-rows-6 sm:grid-cols-3 sm:grid-rows-4 sm:mt-10  ">
+          {/* Breaking News Section */}
+          <div className="relative w-full sm:w-screen mb-4 sm:mb-8">
+            <h3 className="inline-block bg-gradient-to-r from-red-950 to-zinc-900 text-white px-3 py-1 sm:px-4 sm:py-2 mt-2 mb-2 rounded-lg shadow-lg transform hover:scale-105 transition-all text-lg sm:text-xl font-bold">
+              في الاتجاهين
+            </h3>
+            <div className="grid w-full sm:w-screen lg:grid-cols-3 gap-2 sm:gap-4">
+              <div className="lg:col-span-2">
+                <OneArtical />
+              </div>
+              <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                <LatestNews />
+              </div>
+            </div>
+          </div>
+
+          {/* News Grid Section */}
+          <div className="mb-4 sm:mb-8">
+            <h3 className="inline-block bg-gradient-to-r from-red-950 to-zinc-900 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-lg shadow-lg transform hover:scale-105 transition-all text-lg sm:text-xl font-bold">
+              اخبار متـفرقـــه
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {data.map((item) => (
                 <div
                   key={item.id}
-                  className="mb-4 mt-4 mr-1 ml-1 bg-gray-900 text-sm sm:h-[550px]  
-                   h-[580px] md:w-[30vw] sm:text-l rounded-xl"
+                  className="group relative bg-stone-900 dark:bg-gray-950 rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-zinc-800"
                 >
-                  <h3 className=" absolute  opacity-80 text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-2 mr-2 mt-2 mb-2 text-xs bg-red-900 sm:font-bold">
-                    {CATEGORIES[item.category].AR}
-                  </h3>{" "}
-                  <Link to={`/articles/${item.id}`}>
-                    <img
-                      src={
-                        item.image === "https://app-test-i.ru/api/image/null"
-                          ? BeReporter
-                          : item.image
-                      }
-                      className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[32vh]  md:h-[40vh] "
-                    />
-                  </Link>
-                  <div className=" bg-black opacity-40  text-white p-1 mt-2 mr-2 ml-2">
-                    <FaPencil className="inline-flex  mr-2" />
-                    <span className=" text-xs sm:text-md p-2">
-                      {new Date(item.createdAt).toLocaleDateString(
-                        "ar",
-                        DateOptions
-                      )}
-                    </span>
-                    <span className=" mr-2 ml-2">|</span>
-                    <RiEyeFill className="inline-flex  mr-2" />
-
-                    <span className="p-2 m-2"> {item.watchCount}</span>
+                  <div className="relative">
+                    <Link to={`/articles/${item.id}`}>
+                      <img
+                        src={
+                          item.image === "https://app-test-i.ru/api/image/null"
+                            ? BeReporter
+                            : item.image
+                        }
+                        className="w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+                        alt={item.title}
+                      />
+                      <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+                        <span className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-xs sm:text-sm rounded-full">
+                          {CATEGORIES[item.category].AR}
+                        </span>
+                      </div>
+                    </Link>
                   </div>
-                  <Link to={`/articles/${item.id}`}>
-                    <h3 className="  bg-gradient-to-r from-red-900 to-zinc-700 opacity-90 mr-2 ml-2 p-2 border-white text-xs md:text-xs  md:text-lg min-h-3 font-bold text-white ">
-                      {item.title}
-                    </h3>
-                  </Link>
-                  <h5 className="   text-wrap indent-px opacity-60 bg-zinc-500 mr-2 ml-2 p-4 border-white text-xs  md:text-xs min-h-3 font-bold text-slate-300">
-                    {item.shortContent}
+
+                  <div className="p-4 sm:p-6">
+                    <div className="flex justify-between items-center text-zinc-400 mb-4">
+                      <div className="flex items-center gap-2">
+                        <FaPencil className="text-red-500" />
+                        <span className="text-sm">
+                          {new Date(item.createdAt).toLocaleDateString(
+                            "ar",
+                            DateOptions
+                          )}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <RiEyeFill className="text-red-500" />
+                        <span>{item.watchCount}</span>
+                      </div>
+                    </div>
+
+                    <Link to={`/articles/${item.id}`}>
+                      <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 hover:text-red-500 transition-colors">
+                        {item.title}
+                      </h3>
+                    </Link>
+
+                    <p className="text-zinc-400 text-sm mb-4 line-clamp-3">
+                      {item.shortContent}
+                    </p>
+
                     <Link
                       to={`/articles/${item.id}`}
-                      className=" inline-flex mr-2 ml-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-800  hover:bg-red-600   "
+                      className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-sm rounded-lg hover:from-red-900 hover:to-zinc-800 transition-all duration-300"
                     >
                       اقرأ المزيد
                     </Link>
-                  </h5>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <MainPageCat id={BRUSSELS.ID} cat={BRUSSELS.AR} />
+          {/* Category Sections */}
+          <div className="space-y-1">
+            {[
+              BRUSSELS,
+              ANTWERP,
+              LIEGE,
+              FLANDERS,
+              WALLONIA,
+              GERMANOPHONE,
+              POLITIC,
+              LAW,
+              ECONOMIC,
+              ACCIDENT,
+              CULTURE,
+            ].map((category) => (
+              <div
+                key={category.ID}
+                className="bg-zinc-900/80 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-zinc-800"
+              >
+                <MainPageCat id={category.ID} cat={category.AR} />
+              </div>
+            ))}
+          </div>
 
-          <MainPageCat id={ANTWERP.ID} cat={ANTWERP.AR} />
-
-          <MainPageCat id={LIEGE.ID} cat={LIEGE.AR} />
-
-          <MainPageCat id={FLANDERS.ID} cat={FLANDERS.AR} />
-
-          <MainPageCat id={WALLONIA.ID} cat={WALLONIA.AR} />
-
-          <MainPageCat id={GERMANOPHONE.ID} cat={GERMANOPHONE.AR} />
-
-          <MainPageCat id={POLITIC.ID} cat={POLITIC.AR} />
-
-          <MainPageCat id={LAW.ID} cat={LAW.AR} />
-
-          <MainPageCat id={ECONOMIC.ID} cat={ECONOMIC.AR} />
-
-          <MainPageCat id={ACCIDENT.ID} cat={ACCIDENT.AR} />
-
-          <MainPageCat id={CULTURE.ID} cat={CULTURE.AR} />
-        </>
+          {/* Back to Top Button */}
+          {showBackToTop && (
+            <button
+              onClick={toTop}
+              className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 bg-red-500 text-white p-2 sm:p-3 rounded-full shadow-lg hover:bg-red-600 transition-all duration-300 z-50"
+            >
+              <IoArrowUpCircle size={20} className="sm:w-6 sm:h-6" />
+            </button>
+          )}
+        </div>
       )}
-    </>
+    </div>
   );
 }

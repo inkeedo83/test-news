@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
@@ -6,8 +6,9 @@ import baseUrl from "../../assets/contants";
 import { IoHome } from "react-icons/io5";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
-
-import BeReporter from "../../assets/BeReporter.png";
+import BeReporter from "../../assets/BeReporter.jpg";
+import ArticleCard from "./ArticleCard";
+import LoadingSkeleton from "../common/LoadingSkeleton";
 
 const DateOptions = {
   weekday: "long",
@@ -18,101 +19,104 @@ const { MAIN } = CATEGORIES;
 
 export default function SearchResulte() {
   const { id } = useParams();
-  console.log(id);
-
-  //states
-  const [isloading, setIsloading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [data, setData] = useState([]);
-  const [count, setCount] = useState([]);
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 9;
 
   const toTop = () => {
     window.scrollTo(0, 0);
   };
 
   useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+
     axios
       .get(`${baseUrl}/public/articles?pattern=${id}`)
-      .then((res) => (console.log(res), setData(res.data.data)))
-
-      .catch((err) => console.log(err));
+      .then((res) => {
+        setData(res.data.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setIsLoading(false);
+      });
     toTop();
   }, [id]);
 
-  console.log(data, "render searchpage ");
+  const paginatedData = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return data.slice(start, start + itemsPerPage);
+  }, [data, page]);
+
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  if (isLoading) return <LoadingSkeleton count={6} />;
+  if (error)
+    return (
+      <div className="text-red-500 text-center mt-10">حدث خطأ: {error}</div>
+    );
+  if (!data.length)
+    return (
+      <div className="text-gray-400 text-center mt-10">لا توجد نتائج للبحث</div>
+    );
 
   return (
-    <>
-      {data === null ? (
-        isloading && (
-          <span className=" text-red-600 bold text-xl h-30 ">is loading </span>
-        )
-      ) : (
-        <>
-          <div className=" flex pt-24 sm:pt-32 mr-4 text-md  sm:text-xl leading-loose  text-zink-600">
-            <a
-              className=" inline-flex  text-red-600 hover:text-black ml-2"
-              href={`/`}
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 px-3 sm:px-4 py-4 sm:py-8">
+      <nav className="container mt-60 sm:mt-56 mx-auto max-w-7xl mb-4 sm:mb-8">
+        <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-400">
+          <Link
+            className="flex items-center text-red-500 hover:text-red-400 transition-colors"
+            to="/"
+          >
+            <IoHome className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
+            <span className="hidden sm:inline">{MAIN.AR}</span>
+          </Link>
+          {["/", "الاخبار", "نتائج البحث"].map((item, index) => (
+            <span
+              key={index}
+              className="flex items-center text-gray-500 whitespace-nowrap"
             >
-              <IoHome className="size-4 sm:size-6 mt-2 ml-2" />
+              <span className="mx-1 sm:mx-2">/</span>
+              <span>{item}</span>
+            </span>
+          ))}
+        </div>
+      </nav>
 
-              {MAIN.AR}
-            </a>
+      <div className="container mx-auto max-w-7xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+          {paginatedData.map((item) => (
+            <ArticleCard key={item.id} article={item} />
+          ))}
+        </div>
 
-            <span className="text-red-600 ml-2 ">/</span>
-            <span className="text-red-600 ml-2  ">الاخبار</span>
-            <span className="text-red-600  ml-2 ">/</span>
-            <span className="text-red-600 ml-2  ">نتائج البحث</span>
-          </div>
-          <div className=" sm:m-0 bg-white grid grid-cols-1 grid-rows-4 sm:grid-cols-3 sm:grid-rows-3 gap-1 sm:gap-1 ">
-            {data.map((item) => (
-              <div
-                key={item.id}
-                className="mt-10 mr-1 ml-1 bg-slate-900 text-sm md:w-[30vw] sm:text-l rounded-xl"
-              >
-                <h3 className=" absolute  opacity-80 text-white text-center sm:text-lg w-auto rounded-md h-18 sm:w-fit  p-2 mr-2 mt-2 mb-2 text-xs bg-red-900 sm:font-bold">
-                  {CATEGORIES[item.category].AR}
-                </h3>{" "}
-                <Link to={`/articles/${item.id}`}>
-                  <img
-                    src={
-                      item.image === "https://app-test-i.ru/api/image/null"
-                        ? BeReporter
-                        : item.image
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8 sm:mt-12 overflow-x-auto pb-4">
+            <div className="inline-flex rounded-full bg-gray-800/50 backdrop-blur-md p-1 sm:p-2">
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i + 1)}
+                  className={`
+                    min-w-[2.5rem] px-2 sm:px-4 py-1 sm:py-2 mx-0.5 sm:mx-1 
+                    text-sm rounded-full transition-all duration-200
+                    ${
+                      page === i + 1
+                        ? "bg-red-600 text-white"
+                        : "text-gray-400 hover:bg-gray-700/50"
                     }
-                    className=" border-2 bg-white border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[40vh]  md:h-[40vh] "
-                  />
-                </Link>
-                <div className=" bg-black opacity-40  text-white p-1 mt-2 mr-2 ml-2">
-                  <FaPencil className="inline-flex  mr-2" />
-                  <span className=" text-xs sm:text-md p-2">
-                    {new Date(item.createdAt).toLocaleDateString(
-                      "ar",
-                      DateOptions
-                    )}
-                  </span>
-                  <span className=" mr-2 ml-2">|</span>
-                  <RiEyeFill className="inline-flex  mr-2" />
-                  <span className="p-2 m-2"> {item.watchCount}</span>
-                </div>
-                <Link to={`/articles/${item.id}`}>
-                  <h3 className="  bg-gradient-to-r from-red-900 to-zinc-700 opacity-90 mr-2 ml-2 p-2 border-white text-md  md:text-lg min-h-3 font-bold text-white ">
-                    {item.title}
-                  </h3>
-                </Link>
-                <h5 className="  opacity-60 bg-zink-500 mr-2 ml-2 p-4 border-white text-md  md:text-lg min-h-3 font-bold text-slate-300">
-                  {item.shortContent}
-                  <Link
-                    to={`/articles/${item.id}`}
-                    className=" inline-flex mr-2 ml-2 items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-800  hover:bg-red-600   "
-                  >
-                    اقرأ المزيد
-                  </Link>
-                </h5>
-              </div>
-            ))}
+                  `}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
           </div>
-        </>
-      )}
-    </>
+        )}
+      </div>
+    </div>
   );
 }

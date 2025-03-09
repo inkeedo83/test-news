@@ -2,112 +2,106 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import baseUrl from "../../assets/contants";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.png";
+import BeReporter from "../../assets/BeReporter.jpg";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 
+const {
+  POLITIC,
+  BRUSSELS,
+  ANTWERP,
+  FLANDERS,
+  WALLONIA,
+  LIEGE,
+  GERMANOPHONE,
+  ECONOMIC,
+  LAW,
+  CULTURE,
+  ACCIDENT,
+} = CATEGORIES;
 const DateOptions = {
-  weekday: "long",
   month: "short",
   day: "numeric",
 };
+
 export default function LatestNews() {
   const [data, setData] = useState([]);
   const http = `${baseUrl}/public/articles?limit=5&order=DESC&offset=${Math.floor(
     Math.random() * 100
   )}`;
+
   useEffect(() => {
     fetch(http)
-      .then((res) => {
-        const resulte = res.json();
-        return resulte;
-      })
+      .then((res) => res.json())
       .then((resulte) => {
         setData(resulte.data);
       })
-
       .catch((err) => console.log(err));
   }, []);
 
   return (
-    <>
-      <h3 className="  text-white sm:text-lg w-fit rounded-md h-18 sm:w-fit p-3   sm:p-1 text-xs bg-red-900  sm:font-bold">
+    <div className="dark:bg-gray-900/70 bg-zink-600/70 backdrop-blur-md rounded-xl overflow-hidden animate-fadeIn">
+      <h3 className=" backdrop-blur-md bg-gradient-to-r from-red-950/90 via-zinc-950/90 to-red-950/90 rounded-2xl shadow-2xl text-white  px-6 py-4 text-lg font-bold">
         اخر الاخبار
       </h3>
-      <div className="  rounded-md bg-zinc-900 h broder border-2  text-xs border-red-900">
-        {data &&
-          data.map((item) => (
-            <div
-              key={item.id}
-              className=" grid grid-cols-5 border border-2 border-red-900"
-            >
-              <div className="col-span-2">
-                <Link to={`/articles/${item.id}`}>
+
+      <div className="divide-y divide-red-900/30 dark:divide-red-700/30">
+        {data?.map((item, index) => (
+          <div
+            key={item.id}
+            className="group p-4 hover:bg-zinc-200 transition-colors animate-slideIn"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            <div className="flex space-x-4">
+              <Link to={`/articles/${item.id}`} className="shrink-0">
+                <div className="relative w-32 h-32 overflow-hidden rounded-lg">
+                  <div className="absolute top-0 right-0 bg-red-600 text-white w-8 h-8 flex items-center justify-center rounded-tl-lg rounded-br-lg z-10 text-xl font-bold transform group-hover:scale-110 transition-transform">
+                    {data.indexOf(item) + 1}
+                  </div>
                   <img
-                    style={
-                      screen
-                        ? { height: "120px", width: "180px" }
-                        : { height: "90px", width: "90px" }
-                    }
                     src={
                       item.image === "https://app-test-i.ru/api/image/null"
                         ? BeReporter
                         : item.image
                     }
-                    className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-6 m-2 sm:h-[100px] sm:w-[150px] "
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
                   />
-                </Link>
-              </div>
-              <div className=" text-xs col-span-3 mt-3 sm:mr-0 mr-4 text-white  text-red-900">
-                <RiEyeFill className="inline-flex   " />
-                <p className="inline p-1">{item.watchCount} </p>
-                <span className=" mr-1 ml-1">|</span>
-
-                <FaPencil className="inline-flex " />
-                <p className="inline p-4  ">
-                  {" "}
-                  {new Date(item.createdAt).toLocaleDateString(
-                    "ar",
-                    DateOptions
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 dark:from-white/50 to-transparent"></div>
+                  {item.category && (
+                    <div className="absolute bottom-2 right-2 bg-red-600/80 text-white text-xs px-2 py-1 rounded-full">
+                      {CATEGORIES[item.category].AR}
+                    </div>
                   )}
-                </p>
+                </div>
+              </Link>
+
+              <div className="flex-1 p-4 rounded-lg space-y-3">
+                <div className="flex items-center  text-red-600 text-xs mr-4 mb-2">
+                  <RiEyeFill className="mr-1 ml-2" />
+                  <span>{item.watchCount}</span>
+                  <span className="mx-2 ml-2">•</span>
+                  <FaPencil className="mr-1 ml-2" />
+                  <span>
+                    {new Date(item.createdAt).toLocaleDateString(
+                      "ar",
+                      DateOptions
+                    )}
+                  </span>
+                </div>
 
                 <Link to={`/articles/${item.id}`}>
-                  <div className=" bg-gradient-to-r mt-1 sm:h-16 h-16  rounded-md from-red-900 to-zinc-700  ml-4">
-                    <h4 className=" sm:text-lg text--sm dark:text-white  m-1 p-1 text-white    ">
-                      {item.title}
-                    </h4>
-                  </div>
+                  <h4 className="text-red-600 mr-4 font-semibold line-clamp-2 group-hover:text-red-500 dark:group-hover:text-red-700 transition-colors">
+                    {item.title}
+                  </h4>
                 </Link>
+                <p className="text-zinc-400 text-sm  mr-4 mb-4 line-clamp-3">
+                  {item.shortContent}
+                </p>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
-}
-{
-  //   <Link href={`/categories/${item.category}`}>
-  //   <h3 className="text-white  hover:text-black text-center sm:text-sm w-auto rounded-md h-fit sm:w-fit  p-1 mr-2  mt-1 text-xs bg-red-900 sm:font-bold">
-  //     {CATEGORIES[item.category].AR}
-  //   </h3>
-  // </Link>{" "}
-  /* <div>
-<div className="p-2 mr-2 ml-2  h-10  dark:text-white text-red-900">
-                <span className="text-md p-2 m-2 dark:text-white text-red-900">
-            
-
-                <RiEyeFill className="inline-flex  mr-2" />
-
-                <span className="p-2 m-2 dark:text-white text-red-900">
-                  {item.watchCount}
-                </span>
-              </div>
-
-              <Link to={`/articles/${item.id}`}>
-                <h4 className=" mb-1 mr-2 ml-2 hover:text-red-900 dark:text-white text-red-900 sm:text-md w-fit text-justify  h-18 sm:w-auto sm:h-[40px] p-1  sm:font-bold ">
-                  {item.title}
-                </h4>
-              </Link>
-            </div> */
 }

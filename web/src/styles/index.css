@@ -4,12 +4,7 @@
 
 /*  links style */
 
-* {
-  font-family: "Cairo", sans-serif;
-  font-weight: 300;
-  font-style: normal;
-  line-height: 2;
-}
-.NewsTitle {
+.logo {
   font-family: "Marhey", sans-serif;
+  font-size: 2rem;
 }

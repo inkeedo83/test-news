@@ -1,8 +1,10 @@
 import { CATEGORIES } from "../../assets/categories.constant";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { FaSun } from "react-icons/fa6";
+import Weather from "../Weather/Weather";
+import { useDarkMode } from "../../context/DarkModeContext"; // Import useDarkMode
 import { BsFillMoonStarsFill } from "react-icons/bs";
+import { RiSunLine } from "react-icons/ri"; // Import modern icons
 
 const {
   MAIN,
@@ -19,12 +21,11 @@ const {
   CULTURE,
 } = CATEGORIES;
 
-function Navbar(props) {
+function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchData, setSearchData] = useState("");
-
-  const DarkMode = props.DarkTheme;
-  const ChangeDarkMode = props.changeDarkTheme;
+  const [showWeather, setShowWeather] = useState(true);
+  const { isDarkMode, toggleDarkMode } = useDarkMode(); // Use DarkModeContext
 
   const ToggelBtn = () => {
     setIsOpen(!isOpen);
@@ -46,122 +47,143 @@ function Navbar(props) {
 
   const screen = window.screen.width > 960;
 
+  useEffect(() => {
+    const controlWeather = () => {
+      if (window.scrollY > 0) {
+        // Any scroll
+        setShowWeather(false);
+      } else {
+        // Back to top
+        setShowWeather(true);
+      }
+    };
+
+    window.addEventListener("scroll", controlWeather);
+    return () => window.removeEventListener("scroll", controlWeather);
+  }, []); // Remove lastScrollY dependency
+
   return (
     <>
-      <nav className="   fixed bg-red-900 md:text-md w-full sm:w-screen z-10 sm:text-xl ">
-        <h1 className="NewsTitle text-md sm:text-2xl  p-2 text-white relative right-28 sm:right-[42vw]">
-          مــراســل بـلـجـيـكـا
-        </h1>
+      <nav className="fixed bg-gradient-to-r from-red-900/90 to-black dark:from-slate-900 dark:to-black md:text-md w-full sm:w-screen z-10 sm:text-xl">
+        <div className="container mx-auto">
+          {/* Top Bar */}
+          <div className="flex place-content-center py-2">
+            <span className="logo animate-wave text-2xl mt-2 text-white font-extrabold">
+              مُراسل بلجيكا
+            </span>
+          </div>
+          <div
+            className={`
+                overflow-hidden transition-all duration-300
+                ${showWeather ? "h-28 opacity-100" : "h-0 opacity-0"}
+                `}
+          >
+            <div className="flex justify-center px-4 py-2">
+              <Weather />
+            </div>
+          </div>
 
-        {!screen ? (
-          <div className="  relative bottom-[66px] md:right-[700px] start-[290px] items-center justify-between p-6 h-4 ">
-            <div className="">
-              <button onClick={ToggelBtn}>
+          {!screen ? (
+            <div className="flex justify-between items-center">
+              <button className="relative bottom-5 " onClick={ToggelBtn}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
                   stroke="white"
-                  className=" h-10 w-10 sm:w-24  mt-10"
+                  className="h-10 w-10 sm:w-24 mt-10"
                 >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
-                  />{" "}
+                  />
                 </svg>
               </button>
+              <button
+                onClick={toggleDarkMode}
+                className="h-12 w-12 rounded-lg p-1"
+              >
+                {isDarkMode ? (
+                  <RiSunLine className="text-yellow-400 hover:text-yellow-300 size-8" />
+                ) : (
+                  <BsFillMoonStarsFill className="text-blue-500/100 hover:text-blue-500 size-6" />
+                )}
+              </button>
             </div>
-          </div>
-        ) : (
-          <div>
-            {/*  start desktop view */}
-            <ul>
-              <div className="flex flex-rows-1 items-center">
-                <div className=" text-white rounded-sm   m-2 hover:text-black hover:bg-white">
-                  {/* horizantal btn */}
-                  <button>
-                    <Link to={`/`} target="_blank">
-                      {MAIN.AR}
-                    </Link>
-                  </button>
-                </div>
-
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${BRUSSELS.ID}`}>{BRUSSELS.AR}</Link>
-                  </button>
-                </div>
-
-                <div className=" text-white rounded-sm p-2  m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${ANTWERP.ID}`}>{ANTWERP.AR}</Link>
-                  </button>
-                </div>
-
-                <div className=" text-white rounded-sm p-2  m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${LIEGE.ID}`}>{LIEGE.AR}</Link>
-                  </button>
-                </div>
-
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${FLANDERS.ID}`}>{FLANDERS.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm  p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${WALLONIA.ID}`}>{WALLONIA.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${GERMANOPHONE.ID}`}>
-                      {GERMANOPHONE.AR}
-                    </Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2  m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${POLITIC.ID}`}>{POLITIC.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${LAW.ID}`}>{LAW.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${ECONOMIC.ID}`}>{ECONOMIC.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${ACCIDENT.ID}`}>{ACCIDENT.AR}</Link>
-                  </button>
-                </div>
-                <div className=" text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white">
-                  <button>
-                    <Link to={`/categories/${CULTURE.ID}`}>{CULTURE.AR}</Link>
-                  </button>
-                </div>
-                {/*  start change to dark or light theme
-                 */}
-
-                {/*  end change to dark or light theme
-                 */}
-
+          ) : (
+            <div>
+              {/*  start desktop view */}
+              <ul className="flex items-center justify-center space-x-4">
+                {[
+                  { id: MAIN.ID, label: MAIN.AR, link: "/" },
+                  {
+                    id: BRUSSELS.ID,
+                    label: BRUSSELS.AR,
+                    link: `/categories/${BRUSSELS.ID}`,
+                  },
+                  {
+                    id: ANTWERP.ID,
+                    label: ANTWERP.AR,
+                    link: `/categories/${ANTWERP.ID}`,
+                  },
+                  {
+                    id: LIEGE.ID,
+                    label: LIEGE.AR,
+                    link: `/categories/${LIEGE.ID}`,
+                  },
+                  {
+                    id: FLANDERS.ID,
+                    label: FLANDERS.AR,
+                    link: `/categories/${FLANDERS.ID}`,
+                  },
+                  {
+                    id: WALLONIA.ID,
+                    label: WALLONIA.AR,
+                    link: `/categories/${WALLONIA.ID}`,
+                  },
+                  {
+                    id: GERMANOPHONE.ID,
+                    label: GERMANOPHONE.AR,
+                    link: `/categories/${GERMANOPHONE.ID}`,
+                  },
+                  {
+                    id: POLITIC.ID,
+                    label: POLITIC.AR,
+                    link: `/categories/${POLITIC.ID}`,
+                  },
+                  { id: LAW.ID, label: LAW.AR, link: `/categories/${LAW.ID}` },
+                  {
+                    id: ECONOMIC.ID,
+                    label: ECONOMIC.AR,
+                    link: `/categories/${ECONOMIC.ID}`,
+                  },
+                  {
+                    id: ACCIDENT.ID,
+                    label: ACCIDENT.AR,
+                    link: `/categories/${ACCIDENT.ID}`,
+                  },
+                  {
+                    id: CULTURE.ID,
+                    label: CULTURE.AR,
+                    link: `/categories/${CULTURE.ID}`,
+                  },
+                ].map((category) => (
+                  <li
+                    key={category.id}
+                    className="text-white rounded-sm p-2 m-2 hover:text-black hover:bg-white dark:hover:bg-slate-700 dark:hover:text-white"
+                  >
+                    <Link to={category.link}>{category.label}</Link>
+                  </li>
+                ))}
                 {/* searchbarstart */}
-
-                <div className="flex rounded-full border-2    border-white overflow-hidden max-w-md mx-auto font-[sans-serif]">
+                <div className="flex rounded-full border-2 border-white dark:border-slate-600 overflow-hidden max-w-md mx-auto font-[sans-serif]">
                   <input
                     onChange={(e) => setSearchData(e.target.value)}
                     type="text"
                     placeholder="ابحث هنا..."
-                    className="w-full outline-none bg-white text-sm px-3 sm:px-5 py-1 sm:py-3"
+                    className="w-full outline-none bg-white dark:bg-slate-800 dark:text-white text-sm px-3 sm:px-5 py-1 sm:py-3"
                   />
                   <Link
                     to={
@@ -175,7 +197,7 @@ function Navbar(props) {
                         searchData;
                       }}
                       type="button"
-                      className="flex items-center justify-center sm:bg-red-900 sm:bg-red-900 sm:hover:bg-red-950 px-6 py-4"
+                      className="flex items-center justify-center sm:bg-red-900 sm:hover:bg-red-950 px-6 py-4"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -187,150 +209,133 @@ function Navbar(props) {
                       </svg>
                     </button>
                   </Link>
-                  <div className="h-[50px] w-[70px]  flex justify-center items-center ">
-                    <button
-                      onClick={() => ChangeDarkMode(!DarkMode)}
-                      className="size-10  "
-                    >
-                      <BsFillMoonStarsFill className="fill-sky-400 hover:fill-sky-300  mt-[1px]   hover:size-[25px] size-[23px] rounded-xl block dark:hidden mr-1" />
-                      <FaSun className="fill-yellow-300  hover:fill-yellow-200 hover:size-[25px] size-[23px] hidden dark:block mr-1" />
+                </div>
+                <button onClick={toggleDarkMode} className="p-2 pr-0">
+                  {isDarkMode ? (
+                    <RiSunLine className="text-yellow-400 hover:text-yellow-300 size-[30px]" />
+                  ) : (
+                    <BsFillMoonStarsFill className="text-blue-500/100 hover:text-blue-500 size-[22px]" />
+                  )}
+                </button>
+              </ul>
+              {/* searchbarend */}
+            </div>
+          )}
+          {/*  start mobile view */}
+          {isOpen ? (
+            <div
+              className="absolute  left-0 top-[70px] w-screen min-h-screen  p-28 z-50 text-center text-black bg-white dark:bg-slate-900 dark:text-white"
+              ref={menuRef}
+            >
+              <ul className="grid grid-cols-1 space-y-2">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="absolute top-1 left-1 size-10 border-2 rounded-md dark:border-white border-red-700 text-black dark:text-white"
+                >
+                  x
+                </button>
+                {[
+                  { id: MAIN.ID, label: MAIN.AR, link: "/" },
+                  {
+                    id: BRUSSELS.ID,
+                    label: BRUSSELS.AR,
+                    link: `/categories/${BRUSSELS.ID}`,
+                  },
+                  {
+                    id: ANTWERP.ID,
+                    label: ANTWERP.AR,
+                    link: `/categories/${ANTWERP.ID}`,
+                  },
+                  {
+                    id: LIEGE.ID,
+                    label: LIEGE.AR,
+                    link: `/categories/${LIEGE.ID}`,
+                  },
+                  {
+                    id: FLANDERS.ID,
+                    label: FLANDERS.AR,
+                    link: `/categories/${FLANDERS.ID}`,
+                  },
+                  {
+                    id: WALLONIA.ID,
+                    label: WALLONIA.AR,
+                    link: `/categories/${WALLONIA.ID}`,
+                  },
+                  {
+                    id: GERMANOPHONE.ID,
+                    label: GERMANOPHONE.AR,
+                    link: `/categories/${GERMANOPHONE.ID}`,
+                  },
+                  {
+                    id: POLITIC.ID,
+                    label: POLITIC.AR,
+                    link: `/categories/${POLITIC.ID}`,
+                  },
+                  { id: LAW.ID, label: LAW.AR, link: `/categories/${LAW.ID}` },
+                  {
+                    id: ECONOMIC.ID,
+                    label: ECONOMIC.AR,
+                    link: `/categories/${ECONOMIC.ID}`,
+                  },
+                  {
+                    id: ACCIDENT.ID,
+                    label: ACCIDENT.AR,
+                    link: `/categories/${ACCIDENT.ID}`,
+                  },
+                  {
+                    id: CULTURE.ID,
+                    label: CULTURE.AR,
+                    link: `/categories/${CULTURE.ID}`,
+                  },
+                ].map((category) => (
+                  <div
+                    key={category.id}
+                    className="rounded-sm   hover:bg-red-400"
+                  >
+                    <button onClick={ToggelBtn}>
+                      <Link to={category.link}>{category.label}</Link>
                     </button>
                   </div>
-                </div>
-                {/* searchbarend*/}
-              </div>
-            </ul>
-            {/*  end desktop view */}
-          </div>
-        )}
-        {/*  start mobile view */}
-        {isOpen ? (
-          <div
-            className=" absolute  opacity-90  top-[40px]  min-h-screen  w-screen p-5 z-50 text-center  text-black bg-white dark:bg-black dark:text-white   "
-            ref={menuRef}
-          >
-            <ul className=" grid grid-cols-1 ">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="absolute top-1 left-1  size-10  border-2 rounded-md dark:border-white  border-red-700  text-black dark:text-white  "
-              >
-                x
-              </button>
-              <div className=" rounded-sm  mt-10 hover:bg-red-400  ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/`}>{MAIN.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${BRUSSELS.ID}`}>{BRUSSELS.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${ANTWERP.ID}`}>{ANTWERP.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${LIEGE.ID}`}>{LIEGE.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${FLANDERS.ID}`}>{FLANDERS.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${WALLONIA.ID}`}>{WALLONIA.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${GERMANOPHONE.ID}`}>
-                    {GERMANOPHONE.AR}
-                  </Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${POLITIC.ID}`}>{POLITIC.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${LAW.ID}`}>{LAW.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-2 hover:bg-red-400 ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${ECONOMIC.ID}`}>{ECONOMIC.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400  ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${ACCIDENT.ID}`}>{ACCIDENT.AR}</Link>
-                </button>
-              </div>
-              <div className="  rounded-sm  m-1 hover:bg-red-400  ">
-                <button onClick={ToggelBtn}>
-                  <Link to={`/categories/${CULTURE.ID}`}>{CULTURE.AR}</Link>
-                </button>
-              </div>
-
-              {/* searchbarstart */}
-
-              <div className="flex rounded-full border-2 border-red-700 dark:border-white overflow-hidden max-w-md mx-auto font-[sans-serif]">
-                <input
-                  onChange={(e) => setSearchData(e.target.value)}
-                  type="text"
-                  placeholder="ابحث هنا..."
-                  className="w-full outline-none dark:bg-white bg-red-200 text-sm text-black  px-3 sm:px-5 py-1 sm:py-3"
-                />
-                <Link
-                  to={
-                    searchData === ""
-                      ? `/articles/pattern/??`
-                      : `/articles/pattern/${searchData}`
-                  }
-                >
-                  <button
-                    onClick={() => {
-                      searchData;
-                      setIsOpen(false);
-                    }}
-                    type="button"
-                    className="flex items-center justify-center  dark:bg-black  px-6 py-4"
+                ))}
+                {/* searchbarstart */}
+                <div className="flex rounded-full border-2 border-red-700 dark:border-slate-600 overflow-hidden max-w-md mx-auto font-[sans-serif]">
+                  <input
+                    onChange={(e) => setSearchData(e.target.value)}
+                    type="text"
+                    placeholder="ابحث هنا..."
+                    className="w-full outline-none bg-red-400 dark:bg-slate-900 text-black dark:text-white text-sm px-3 sm:px-5 py-1 sm:py-3"
+                  />
+                  <Link
+                    to={
+                      searchData === ""
+                        ? `/articles/pattern/??`
+                        : `/articles/pattern/${searchData}`
+                    }
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 192.904 192.904"
-                      width="22px"
-                      className="dark:fill-white fill-red-700 "
+                    <button
+                      onClick={() => {
+                        searchData;
+                        setIsOpen(false);
+                      }}
+                      type="button"
+                      className="flex items-center justify-center dark:bg-black px-6 py-4"
                     >
-                      <path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z"></path>
-                    </svg>
-                  </button>
-                </Link>
-
-                {/* searchbarend*/}
-                {/* darkmode mobile  */}
-                <div>
-                  <button
-                    onClick={() => (
-                      ChangeDarkMode(!DarkMode), setIsOpen(false)
-                    )}
-                    className="h-12 w-12 rounded-lg p-1 mt-1 "
-                  >
-                    <BsFillMoonStarsFill className="fill-sky-900 hover:fill-sky-500 hover:size-8 size-6 rounded-xl block dark:hidden" />
-                    <FaSun className="fill-yellow-500  hover:fill-yellow-400 hover:size-8 size-6 hidden dark:block" />
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 192.904 192.904"
+                        width="22px"
+                        className="dark:fill-white fill-red-700"
+                      >
+                        <path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z"></path>
+                      </svg>
+                    </button>
+                  </Link>
                 </div>
-              </div>
-            </ul>
-          </div>
-        ) : null}
+              </ul>
+            </div>
+          ) : null}
+          {/* searchbarend */}
+        </div>
       </nav>
     </>
   );
