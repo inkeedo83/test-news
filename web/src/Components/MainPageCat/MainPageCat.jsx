@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import axios from "axios";
 import baseUrl from "../../assets/contants";
 import { CATEGORIES } from "../../assets/categories.constant";
@@ -47,7 +47,7 @@ export default function MainPageCat({ id, cat }) {
                   <img
                     src={
                       item.image === "https://app-test-i.ru/api/image/null"
-                        ? BeReporter
+                        ? BeReporterNew
                         : item.image
                     }
                     className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"

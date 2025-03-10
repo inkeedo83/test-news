@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
 
 const DateOptions = {
   weekday: "long",
@@ -24,7 +24,7 @@ const ArticleCard = memo(({ article }) => {
             <img
               src={
                 article.image === "https://app-test-i.ru/api/image/null"
-                  ? BeReporter
+                  ? BeReporterNew
                   : article.image
               }
               alt={article.title}

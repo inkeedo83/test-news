@@ -6,7 +6,7 @@ import baseUrl from "../../assets/contants";
 import { IoHome } from "react-icons/io5";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
 
 const DateOptions = {
   weekday: "long",
@@ -83,7 +83,7 @@ export default function ReadArticleByCat() {
                 <img
                   src={
                     item.image === "https://app-test-i.ru/api/image/null"
-                      ? BeReporter
+                      ? BeReporterNew
                       : item.image
                   }
                   className=" border-2  border-red-600  rounded-xl p-1 md:p-1 sm:p-3 w-[100vw] sm:w-[60vw] h-[40vh]  md:h-[40vh] "

@@ -7,7 +7,7 @@ import { CATEGORIES } from "../../assets/categories.constant";
 import { IoHome } from "react-icons/io5";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import { Link } from "react-router-dom";
 import {
   FaFacebookF,
@@ -102,7 +102,7 @@ export default function ReadArticleByID() {
                 <img
                   src={
                     data.image === "https://app-test-i.ru/api/image/null"
-                      ? BeReporter
+                      ? BeReporterNew
                       : data.image
                   }
                   alt={data.title}

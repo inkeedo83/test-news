@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 import baseUrl from "../../assets/contants";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
 
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
@@ -64,7 +64,7 @@ export function OneArtical() {
                   <img
                     src={
                       item.image === "https://app-test-i.ru/api/image/null"
-                        ? BeReporter
+                        ? BeReporterNew
                         : item.image
                     }
                     className="w-full h-full object-cover"

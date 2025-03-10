@@ -5,7 +5,8 @@ import baseUrl from "../../assets/contants";
 import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
-import BeReporter from "../../assets/BeReporter.jpg";
+import BeReporterNew from "../../assets/BeReporterNew.jpg";
+
 import { WriterEffect } from "../WriterEffect/WriterEffect";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
@@ -97,7 +98,7 @@ export default function MainPageTest() {
                   <img
                     src={
                       data[0].image === "https://app-test-i.ru/api/image/null"
-                        ? BeReporter
+                        ? BeReporterNew
                         : data[0].image
                     }
                     className="w-full h-full object-cover"
