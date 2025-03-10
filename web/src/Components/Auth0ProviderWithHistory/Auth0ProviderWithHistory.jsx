@@ -7,6 +7,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
 
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
+  console.log("VITE_AUTH0_DOMAIN:", clientId);
 
   if (!domain || !clientId) {
     console.error("Missing Auth0 domain or client ID");
@@ -21,7 +22,6 @@ const Auth0ProviderWithHistory = ({ children }) => {
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      // Updated to use authorizationParams.redirect_uri
       authorizationParams={{ redirect_uri: window.location.origin }}
       onRedirectCallback={onRedirectCallback}
     >
