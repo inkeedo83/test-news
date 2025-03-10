@@ -263,11 +263,16 @@ export function AdminPanel() {
             className="w-full rounded-md bg-slate-400 p-2"
           >
             <option value="">Select Category</option>
-            <option value="BRUSSELS">BRUSSELS</option>
-            <option value="ANTWERP">ANTWERP</option>
-            <option value="LIEGE">LIEGE</option>
-            <option value="FLANDERS">FLANDERS</option>
-            <option value="WALLONIA">WALLONIA</option>
+            <option value="BRUSSELS">بروكسل</option>
+            <option value="ANTWERP">انتورب</option>
+            <option value="LIEGE">لياج</option>
+            <option value="FLANDERS">فلاندرز</option>
+            <option value="WALLONIA">والونيا</option>
+            <option value="GERMANOPHONE">جرمانوفون</option>
+            <option value="POLITIC">سياسة</option>
+            <option value="ECONOMIC">اقتصاد</option>
+            <option value="LAW">قوانين</option>
+            <option value="ACCIDENT">حوادث</option>
           </select>
           <input
             type="file"
@@ -368,12 +373,16 @@ export function AdminPanel() {
             onChange={handleEditChange}
             className="w-full rounded-md bg-slate-400 p-2"
           >
-            <option value="">Select Category</option>
-            <option value="BRUSSELS">BRUSSELS</option>
-            <option value="ANTWERP">ANTWERP</option>
-            <option value="LIEGE">LIEGE</option>
-            <option value="FLANDERS">FLANDERS</option>
-            <option value="WALLONIA">WALLONIA</option>
+            <option value="BRUSSELS">بروكسل</option>
+            <option value="ANTWERP">انتورب</option>
+            <option value="LIEGE">لياج</option>
+            <option value="FLANDERS">فلاندرز</option>
+            <option value="WALLONIA">والونيا</option>
+            <option value="GERMANOPHONE">جرمانوفون</option>
+            <option value="POLITIC">سياسة</option>
+            <option value="ECONOMIC">اقتصاد</option>
+            <option value="LAW">قوانين</option>
+            <option value="ACCIDENT">حوادث</option>
           </select>
           <input
             type="file"
