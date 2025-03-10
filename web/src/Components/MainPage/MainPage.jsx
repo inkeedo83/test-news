@@ -153,7 +153,7 @@ export default function MainPageTest() {
                       <img
                         src={
                           item.image === "https://app-test-i.ru/api/image/null"
-                            ? BeReporter
+                            ? BeReporterNew
                             : item.image
                         }
                         className="w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
