@@ -1,200 +1,472 @@
 import { useState } from "react";
-import axios from "axios";
-import BeReporter from "../../assets/BeReporter.png";
+import TagsManager from "../Tags/TagsManager"; // added import
 
 export function AdminPanel() {
-  const [formData, setFormData] = useState({
+  // States for add, edit and delete functionalities
+  const [addData, setAddData] = useState({
     title: "",
     content: "",
     category: "",
     image: null,
+    isImportant: false,
+    tags: "",
   });
+  const [editData, setEditData] = useState({
+    id: "",
+    title: "",
+    content: "",
+    category: "",
+    image: null,
+    isImportant: false,
+    tags: "",
+  });
+  const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [message, setMessage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
-  const [delId, setDelId] = useState("");
 
-  const validateForm = () => {
-    if (!formData.title.trim()) return "العنوان مطلوب";
-    if (!formData.content.trim()) return "نص الخبر مطلوب";
-    if (!formData.category) return "الفئة مطلوبة";
-    return null;
-  };
-
-  const handleChange = (e) => {
+  // Handlers for Add functionality
+  const handleAddChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    setError("");
+    setAddData((prev) => ({ ...prev, [name]: value }));
+    setMessage("");
   };
 
-  const handleImageChange = (e) => {
+  const handleAddImage = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData((prev) => ({ ...prev, image: file }));
+      setAddData((prev) => ({ ...prev, image: file }));
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
-  const resetForm = () => {
-    setFormData({ title: "", content: "", category: "", image: null });
-    setImagePreview("");
-    setSuccess("");
-    setError("");
+  const handleAddCheckboxChange = (e) => {
+    setAddData((prev) => ({ ...prev, isImportant: e.target.checked }));
+    setMessage("");
   };
 
-  const handleSubmit = async (e) => {
+  // Updated handleAddSubmit to use JSON if no image, else use FormData with tags as JSON string
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
+    if (
+      !addData.title.trim() ||
+      !addData.content.trim() ||
+      !addData.category.trim()
+    ) {
+      setMessage("العنوان والمحتوى والفئة مطلوبة");
       return;
     }
-
     setLoading(true);
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value) formDataToSend.append(key, value);
-    });
-
     try {
-      await axios.post("https://app-test-i.ru/api/articles", formDataToSend, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const formData = new FormData();
+      Object.entries(addData).forEach(([key, value]) => {
+        if (key === "tags") {
+          formData.append("tagsIds", value.trim());
+        } else {
+          formData.append(
+            key,
+            typeof value === "boolean" ? value.toString() : value
+          );
+        }
       });
-      setSuccess("تم نشر الخبر بنجاح");
-      resetForm();
+      const response = await fetch("https://app-test-i.ru/api/articles", {
+        method: "POST",
+        body: formData,
+      });
+      if (!response.ok) throw new Error("حدث خطأ أثناء إضافة الخبر");
+      setMessage("تم إضافة الخبر بنجاح");
+      setAddData({
+        title: "",
+        content: "",
+        category: "",
+        image: null,
+        isImportant: false,
+        tags: "",
+      });
+      setImagePreview("");
     } catch (err) {
-      setError(err.response?.data?.message || "حدث خطأ أثناء نشر الخبر");
+      setMessage(err.message || "حدث خطأ أثناء إضافة الخبر");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async () => {
-    if (!delId.trim()) {
-      setError("الرجاء إدخال معرف الخبر");
+  // Handlers for Edit functionality
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+    setMessage("");
+  };
+
+  const handleEditImage = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setEditData((prev) => ({ ...prev, image: file }));
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleEditCheckboxChange = (e) => {
+    setEditData((prev) => ({ ...prev, isImportant: e.target.checked }));
+    setMessage("");
+  };
+
+  const loadArticle = async () => {
+    if (!editData.id.trim()) {
+      setMessage("الرجاء إدخال معرف الخبر للتحميل");
       return;
     }
-
     setLoading(true);
     try {
-      await axios.delete(`https://app-test-i.ru/api/articles/${delId}`);
-      setSuccess("تم حذف الخبر بنجاح");
-      setDelId("");
+      const response = await fetch(
+        `https://app-test-i.ru/api/articles/${editData.id}`
+      );
+      if (!response.ok) throw new Error("الخبر غير موجود");
+      const article = await response.json();
+      setEditData({
+        id: editData.id,
+        title: article.title || "",
+        content: article.content || "",
+        category: article.category || "",
+        image: null,
+        isImportant: article.isImportant || false,
+        tags: article.tags || "",
+      });
+      if (article.image) {
+        setImagePreview(`https://app-test-i.ru/api/image/${article.image}`);
+      }
+      setMessage("تم تحميل الخبر بنجاح");
     } catch (err) {
-      setError("حدث خطأ أثناء حذف الخبر");
+      setMessage(err.message || "الخبر غير موجود");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Similar update can be applied to handleEditSubmit:
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !editData.id.trim() ||
+      !editData.title.trim() ||
+      !editData.content.trim() ||
+      !editData.category.trim()
+    ) {
+      setMessage("جميع الحقول مطلوبة للتعديل");
+      return;
+    }
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      ["title", "content", "category", "image", "isImportant", "tags"].forEach(
+        (key) => {
+          if (editData[key] !== null && editData[key] !== undefined) {
+            if (key === "tags") {
+              formData.append("tagsIds", editData[key].trim());
+            } else {
+              formData.append(
+                key,
+                typeof editData[key] === "boolean"
+                  ? editData[key].toString()
+                  : editData[key]
+              );
+            }
+          }
+        }
+      );
+      const response = await fetch(
+        `https://app-test-i.ru/api/articles/${editData.id}`,
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
+      if (!response.ok) throw new Error("حدث خطأ أثناء تحديث الخبر");
+      setMessage("تم تحديث الخبر بنجاح");
+      setEditData({
+        id: "",
+        title: "",
+        content: "",
+        category: "",
+        image: null,
+        isImportant: false,
+        tags: "",
+      });
+      setImagePreview("");
+    } catch (err) {
+      setMessage(err.message || "حدث خطأ أثناء تحديث الخبر");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handler for Delete functionality
+  const handleDelete = async () => {
+    if (!deleteId.trim()) {
+      setMessage("الرجاء إدخال معرف الخبر للحذف");
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://app-test-i.ru/api/articles/${deleteId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) throw new Error("حدث خطأ أثناء حذف الخبر");
+      setMessage("تم حذف الخبر بنجاح");
+      setDeleteId("");
+    } catch (err) {
+      setMessage(err.message || "حدث خطأ أثناء حذف الخبر");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto pt-6 px-4">
-      {error && (
-        <div className="bg-red-100 text-red-700 p-3 rounded mb-4">{error}</div>
-      )}
-      {success && (
-        <div className="bg-green-100 text-green-700 p-3  rounded mb-4">
-          {success}
-        </div>
-      )}
-
-      <h1 className="text-2xl  mt-72 font-bold text-red-800 text-center mb-8">
-        واجهة الادمن
-      </h1>
-
-      <form
-        onSubmit={handleSubmit}
-        className="bg-orange-300 p-6 rounded-lg space-y-4"
-      >
-        <div>
-          <label className="block text-red-800 mb-2">الفئات</label>
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="w-full rounded-md bg-slate-400 p-2"
-          >
-            <option value="">اختر الفئة</option>
-            <option value="BRUSSELS">بروكسل</option>
-            <option value="ANTWERP">انتورب</option>
-            <option value="LIEGE">لياج</option>
-            <option value="FLANDERS">فلاندرز</option>
-            <option value="WALLONIA">والونيا</option>
-            <option value="GERMANOPHONE">جرمانوفون</option>
-            <option value="LAW">قوانين</option>
-            <option value="ECONOMIC">اقتصاد و مال</option>
-            <option value="ACCIDENT">حوادث و جريمه</option>
-            <option value="CULTURE">ثقافه</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-red-800 mb-2">العنوان</label>
+    <div className="max-w-4xl mx-auto pt-72 px-4">
+      {/* إضافة خبر Section */}
+      <section className="bg-teal-400 p-6 rounded-lg mb-8">
+        <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
+          إضافة خبر
+        </h1>
+        <form onSubmit={handleAddSubmit} className="space-y-4">
+          {/* ...existing input fields... */}
+          <p className="text-sm font-bold text-red-800 text-center mb-4">
+            {" "}
+            عنوان الخبر{" "}
+          </p>
           <input
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="w-full rounded-md bg-slate-400 p-2"
             type="text"
+            name="title"
+            value={addData.title}
+            onChange={handleAddChange}
+            placeholder="Title"
+            className="w-full rounded-md bg-slate-400 p-2"
           />
-        </div>
-
-        <div>
-          <label className="block text-red-800 mb-2">نص الخبر</label>
+          <p className="text-sm font-bold text-red-800 text-center mb-4">
+            {" "}
+            نص الخبر{" "}
+          </p>
           <textarea
             name="content"
-            value={formData.content}
-            onChange={handleChange}
-            className="w-full rounded-md bg-slate-400 p-2 min-h-[200px]"
+            value={addData.content}
+            onChange={handleAddChange}
+            placeholder="Content"
+            className="w-full rounded-md bg-slate-400 p-2 min-h-[100px]"
           />
-        </div>
-
-        <div>
+          <select
+            name="category"
+            value={addData.category}
+            onChange={handleAddChange}
+            className="w-full rounded-md bg-slate-400 p-2"
+          >
+            <option value="">Select Category</option>
+            <option value="BRUSSELS">BRUSSELS</option>
+            <option value="ANTWERP">ANTWERP</option>
+            <option value="LIEGE">LIEGE</option>
+            <option value="FLANDERS">FLANDERS</option>
+            <option value="WALLONIA">WALLONIA</option>
+          </select>
           <input
             type="file"
-            onChange={handleImageChange}
-            className="block w-full text-white rounded-xl bg-red-800 p-3"
+            onChange={handleAddImage}
+            className="w-full text-white rounded-xl bg-red-800 p-3"
           />
-        </div>
-
-        {imagePreview && (
-          <div className="bg-slate-600 p-4 rounded">
-            <p className="text-white mb-2">معاينة الخبر</p>
-            <img
-              src={imagePreview}
-              alt="Preview"
-              className="max-w-[400px] max-h-[400px] object-contain mx-auto"
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={addData.isImportant}
+              onChange={handleAddCheckboxChange}
             />
-          </div>
-        )}
+            <span>خبر هام</span>
+          </label>
+          <p className="text-sm font-bold text-red-800 text-center mb-4">
+            {" "}
+            tag Id{" "}
+          </p>
+          {/* New input field for tags */}
+          <input
+            type="text"
+            name="tags"
+            value={addData.tags}
+            onChange={handleAddChange}
+            placeholder="أدخل الوسوم (مثال: politics, economy)"
+            className="w-full rounded-md bg-slate-400 p-2"
+          />
+          {imagePreview && (
+            <div className="bg-slate-600 p-4 rounded text-center">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="max-w-[200px] mx-auto"
+              />
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700"
+          >
+            {loading ? "جاري الإضافة..." : "إضافة الخبر"}
+          </button>
+        </form>
+      </section>
+      {/* تعديل خبر Section */}
+      <section className="bg-orange-300 p-6 rounded-lg mb-8">
+        <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
+          تعديل خبر
+        </h1>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700 disabled:opacity-50"
+        <div className="mb-4">
+          <input
+            type="text"
+            name="id"
+            value={editData.id}
+            onChange={(e) =>
+              setEditData((prev) => ({ ...prev, id: e.target.value }))
+            }
+            placeholder="Article ID"
+            className="w-full rounded-md bg-slate-400 p-2"
+          />
+          <button
+            onClick={loadArticle}
+            disabled={loading}
+            className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700 mt-2"
+          >
+            {loading ? "جاري التحميل..." : "تحميل الخبر"}
+          </button>
+        </div>
+        <p className="text-sm font-bold text-red-800 text-center mb-4">
+          {" "}
+          عنوان الخبر بعد التعديل{" "}
+        </p>
+        <form onSubmit={handleEditSubmit} className="space-y-4">
+          <input
+            type="text"
+            name="title"
+            value={editData.title}
+            onChange={handleEditChange}
+            placeholder="Title"
+            className="w-full rounded-md bg-slate-400 p-2"
+          />
+          <p className="text-sm font-bold text-red-800 text-center mb-4">
+            {" "}
+            نص الخبر بعد التعديل{" "}
+          </p>
+          <textarea
+            name="content"
+            value={editData.content}
+            onChange={handleEditChange}
+            placeholder="Content"
+            className="w-full rounded-md bg-slate-400 p-2 min-h-[100px]"
+          />
+          <select
+            name="category"
+            value={editData.category}
+            onChange={handleEditChange}
+            className="w-full rounded-md bg-slate-400 p-2"
+          >
+            <option value="">Select Category</option>
+            <option value="BRUSSELS">BRUSSELS</option>
+            <option value="ANTWERP">ANTWERP</option>
+            <option value="LIEGE">LIEGE</option>
+            <option value="FLANDERS">FLANDERS</option>
+            <option value="WALLONIA">WALLONIA</option>
+          </select>
+          <input
+            type="file"
+            onChange={handleEditImage}
+            className="w-full text-white rounded-xl bg-red-800 p-3"
+          />
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={editData.isImportant}
+              onChange={handleEditCheckboxChange}
+            />
+            <span>خبر هام</span>
+          </label>
+          <p className="text-sm font-bold text-red-800 text-center mb-4">
+            {" "}
+            tag Id{" "}
+          </p>
+          {/* New input field for tags */}
+          <input
+            type="text"
+            name="tags"
+            value={editData.tags}
+            onChange={handleEditChange}
+            placeholder="أدخل الوسوم (مثال: politics, economy)"
+            className="w-full rounded-md bg-slate-400 p-2"
+          />
+          {imagePreview && (
+            <div className="bg-slate-600 p-4 rounded text-center">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="max-w-[200px] mx-auto"
+              />
+            </div>
+          )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700"
+          >
+            {loading ? "جاري التعديل..." : "تعديل الخبر"}
+          </button>
+        </form>
+      </section>
+      {message && (
+        <div
+          className={`p-3 rounded mb-4 ${
+            message.includes("successfully")
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
         >
-          {loading ? "جاري النشر..." : "اضف الخبر"}
-        </button>
-      </form>
+          {message}
+        </div>
+      )}
 
-      <div className="mt-8 bg-orange-300 p-6 rounded-lg">
-        <h2 className="text-xl font-bold mb-4">حذف خبر</h2>
+      {/* حذف خبر Section */}
+      <section className="bg-red-300 p-6 rounded-lg">
+        <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
+          حذف خبر
+        </h1>
         <input
           type="text"
-          value={delId}
-          onChange={(e) => setDelId(e.target.value)}
-          placeholder="ادخل معرف الخبر"
+          value={deleteId}
+          onChange={(e) => setDeleteId(e.target.value)}
+          placeholder="Article ID"
           className="w-full rounded-md bg-slate-400 p-2 mb-4"
         />
         <button
           onClick={handleDelete}
           disabled={loading}
-          className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700 disabled:opacity-50"
+          className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700"
         >
           {loading ? "جاري الحذف..." : "حذف الخبر"}
         </button>
-      </div>
+      </section>
+      {message && (
+        <div
+          className={`p-3 rounded mb-4 ${
+            message.includes("successfully")
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message}
+        </div>
+      )}
+
+      {/* Tags Manager Section */}
+      <section className="mt-8">
+        <TagsManager />
+      </section>
     </div>
   );
 }

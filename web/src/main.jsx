@@ -7,7 +7,11 @@ import Auth0ProviderWithHistory from "/src/Components/Auth0ProviderWithHistory/A
 
 const domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-console.log(domain);
+
+if (!domain || !clientId) {
+  console.error("Missing Auth0 domain or client ID");
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Auth0ProviderWithHistory>

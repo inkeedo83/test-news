@@ -79,7 +79,7 @@ export default function ReadArticleByID() {
               </span>
             </div>
             <div className="bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8 transition-all duration-300">
-              <h1 className="text-4xl font-extrabold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-red-950">
+              <h1 className="text-4xl font-extrabold text-center mb-6 bg-clip-text text-red-900 dark:text-white">
                 {data.title}
               </h1>
               <div className="flex items-center  justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">

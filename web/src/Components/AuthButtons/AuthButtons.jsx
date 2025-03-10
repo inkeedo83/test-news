@@ -5,11 +5,11 @@ const AuthButtons = () => {
   const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
 
   return (
-    <div className="text-center mt-4">
+    <div className="text-center pt-72  mt-4">
       {!isAuthenticated ? (
         <button
           onClick={() => loginWithRedirect()}
-          className="text-white rounded-xl bg-red-800 p-3"
+          className="text-white rounded-xl bg-red-800   p-3"
         >
           Login
         </button>

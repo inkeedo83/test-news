@@ -8,6 +8,11 @@ const Auth0ProviderWithHistory = ({ children }) => {
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
+  if (!domain || !clientId) {
+    console.error("Missing Auth0 domain or client ID");
+    return null; // or handle the error as needed
+  }
+
   const onRedirectCallback = (appState) => {
     navigate(appState?.returnTo || "/admin");
   };
