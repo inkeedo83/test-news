@@ -4,13 +4,6 @@ import App from "/src/Components/APP/App";
 import "/src/styles/index.css";
 import Auth0ProviderWithHistory from "/src/Components/Auth0ProviderWithHistory/Auth0ProviderWithHistory";
 
-const domain = import.meta.env.VITE_AUTH0_DOMAIN;
-const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-
-// Debug logging to verify .env values
-console.log("VITE_AUTH0_DOMAIN:", domain);
-console.log("VITE_AUTH0_CLIENT_ID:", clientId);
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <Auth0ProviderWithHistory>

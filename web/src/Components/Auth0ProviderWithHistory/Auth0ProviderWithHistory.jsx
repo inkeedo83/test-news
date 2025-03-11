@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 const Auth0ProviderWithHistory = ({ children }) => {
   const navigate = useNavigate();
 
-  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
-  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-  console.log("VITE_AUTH0_DOMAIN:", clientId);
-
+  const domain =
+    import.meta.env.VITE_AUTH0_DOMAIN ?? "dev-l68rxy2gc8yazd51.eu.auth0.com";
+  const clientId =
+    import.meta.env.VITE_AUTH0_CLIENT_ID ?? "69RyT89I9EMjNPQLB1CBXl8V52K87lzX";
+  console.log({ domain, clientId });
   if (!domain || !clientId) {
     console.error("Missing Auth0 domain or client ID");
-    return null; // or handle the error as needed
+    return null;
   }
 
   const onRedirectCallback = (appState) => {
