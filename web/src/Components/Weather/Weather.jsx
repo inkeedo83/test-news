@@ -30,7 +30,7 @@ export default function Weather() {
         setLoading(true);
 
         const KEY = "02424f83edf54e8bba6130631251103";
-        const apiUrl = `http://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=brussels&lang=AR&days=3`;
+        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=brussels&lang=AR&days=3`;
         const response = await axios.get(apiUrl);
         setData(response.data);
         console.log("Weather data:", data);
