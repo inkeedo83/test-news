@@ -29,7 +29,7 @@ export default function Weather() {
       try {
         setLoading(true);
 
-        const KEY = "32a8e14d5ade45d4a1285128252802";
+        const KEY = "02424f83edf54e8bba6130631251103";
         const apiUrl = `http://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=brussels&lang=AR&days=3`;
         const response = await axios.get(apiUrl);
         setData(response.data);
