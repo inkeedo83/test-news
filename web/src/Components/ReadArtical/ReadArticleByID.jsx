@@ -56,7 +56,7 @@ export default function ReadArticleByID() {
           )
         ) : (
           <>
-            <div className=" mt-56 flex items-center justify-start mb-4">
+            <div className="mt-56 flex items-center justify-start mb-4">
               <Link
                 className="text-red-600 hover:text-red-800 dark:hover:text-red-400 ml-2"
                 to="/"
@@ -82,7 +82,7 @@ export default function ReadArticleByID() {
               <h1 className="text-4xl font-extrabold text-center mb-6 bg-clip-text text-red-900 dark:text-white">
                 {data.title}
               </h1>
-              <div className="flex items-center  justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
                 <div className="flex items-center">
                   <span className="ml-2">مراسل بلجيكا</span>
                   <FaPencil className="inline-block mx-1" />
@@ -109,14 +109,26 @@ export default function ReadArticleByID() {
                   className="rounded-2xl transition-transform duration-300 hover:scale-105 w-full object-cover max-h-[500px]"
                 />
               </div>
-              <div className="text-lg leading-relaxed mb-6">
-                <p>{data.content}</p>
+              <div className="text-lg leading-relaxed mb-2 space-y-4">
+                {data.content.split("\n\n").map((paragraph, index) => {
+                  const lines = paragraph.split("\n");
+                  return (
+                    <p key={index} className="mb-1">
+                      <span className="font-bold ">{lines[0]}</span>
+                      {lines.slice(1).map((line, idx) => (
+                        <span key={idx}>
+                          <br />
+                          {line}
+                        </span>
+                      ))}
+                    </p>
+                  );
+                })}
               </div>
               <div className="mt-6">
                 <h2 className="text-2xl font-semibold text-center mb-4">
                   شارك الخبر مع أصدقائك
                 </h2>
-                {/* New share buttons */}
                 <div className="flex justify-center space-x-4">
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
@@ -170,7 +182,7 @@ export default function ReadArticleByID() {
               </div>
               <div className="mt-8 flex justify-center">
                 <button
-                  className="bg-red-700 hover:bg-red-800  text-white font-bold py-2 px-6 rounded-full transition-all duration-300 shadow-lg"
+                  className="bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 shadow-lg"
                   onClick={() => navigate(-1)}
                 >
                   الرجوع
