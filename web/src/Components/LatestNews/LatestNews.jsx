@@ -26,9 +26,7 @@ const DateOptions = {
 
 export default function LatestNews() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=5&order=DESC&offset=${Math.floor(
-    Math.random() * 100
-  )}`;
+  const http = `${baseUrl}/public/articles?limit=5&order=DESC`;
 
   useEffect(() => {
     fetch(http)
