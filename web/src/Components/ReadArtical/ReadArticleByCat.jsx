@@ -82,7 +82,7 @@ export default function ReadArticleByCat() {
               <Link to={`/articles/${item.id}`}>
                 <img
                   src={
-                    item.image === "https://app-test-i.ru/api/image/null"
+                    item.image === `${baseUrl}/image/null`
                       ? BeReporterNew
                       : item.image
                   }

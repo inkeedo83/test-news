@@ -23,7 +23,7 @@ const ArticleCard = memo(({ article }) => {
           <div className="relative overflow-hidden rounded-xl aspect-video sm:aspect-[4/3]">
             <img
               src={
-                article.image === "https://app-test-i.ru/api/image/null"
+                article.image === `${baseUrl}/image/null`
                   ? BeReporterNew
                   : article.image
               }

@@ -26,7 +26,10 @@ export const validationSchema = z.object({
   MINIO_USE_SSL: booleanEnv,
   MINIO_USER: z.string(),
   MINIO_PASSWORD: z.string(),
-  MINIO_BUCKET: z.string()
+  MINIO_BUCKET: z.string(),
+
+  AUTH0_DOMAIN: z.string(),
+  AUTH0_AUDIENCE: z.string()
 });
 
 export type AppConfig = z.infer<typeof validationSchema>;

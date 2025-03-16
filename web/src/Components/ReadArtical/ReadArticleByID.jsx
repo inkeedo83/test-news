@@ -101,7 +101,7 @@ export default function ReadArticleByID() {
               <div className="flex justify-center mb-6">
                 <img
                   src={
-                    data.image === "https://app-test-i.ru/api/image/null"
+                    data.image === `${baseUrl}/image/null`
                       ? BeReporterNew
                       : data.image
                   }

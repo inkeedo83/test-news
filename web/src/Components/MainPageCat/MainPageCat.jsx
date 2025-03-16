@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import axios from "axios";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { CATEGORIES } from "../../assets/categories.constant";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
@@ -46,7 +46,7 @@ export default function MainPageCat({ id, cat }) {
                 <Link to={`/articles/${item.id}`}>
                   <img
                     src={
-                      item.image === "https://app-test-i.ru/api/image/null"
+                      item.image === `${baseUrl}/image/null`
                         ? BeReporterNew
                         : item.image
                     }
