@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { IoHome } from "react-icons/io5";
 import ArticleCard from "./ArticleCard";
 import LoadingSkeleton from "../common/LoadingSkeleton";

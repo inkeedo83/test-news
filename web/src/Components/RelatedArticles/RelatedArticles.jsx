@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import { RiEyeFill } from "react-icons/ri";

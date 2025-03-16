@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { RelatedArticles } from "../../Components/RelatedArticles/RelatedArticles";
 import { CATEGORIES } from "../../assets/categories.constant";
 import { IoHome } from "react-icons/io5";
