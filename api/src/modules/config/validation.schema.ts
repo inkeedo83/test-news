@@ -28,8 +28,8 @@ export const validationSchema = z.object({
   MINIO_PASSWORD: z.string(),
   MINIO_BUCKET: z.string(),
 
-  AUTH0_DOMAIN: z.string(),
-  AUTH0_AUDIENCE: z.string()
+  ISSUER_BASE_URL: z.string(),
+  AUDIENCE: z.string()
 });
 
 export type AppConfig = z.infer<typeof validationSchema>;

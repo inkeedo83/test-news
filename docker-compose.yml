@@ -51,8 +51,8 @@ services:
       MINIO_USER: admin
       MINIO_PASSWORD: 6MzW9o7mcLYUs4XTu
       MINIO_BUCKET: bucket
-      AUTH0_DOMAIN: dev-l68rxy2gc8yazd51.eu.auth0.com
-      AUTH0_AUDIENCE: https://app-test-i.ru
+      ISSUER_BASE_URL: https://dev-db3dqhq33npuy18i.us.auth0.com
+      AUDIENCE: https://auth0-m2m-back.com
 
   frontend:
     build:

@@ -33,11 +33,11 @@ import {
   UpdateArticleDto
 } from 'src/modules/article/dto/article.dto';
 import { ArticleService } from 'src/modules/article/services/article.service';
-import { Auth0Guard } from 'src/modules/auth0/auth0.guard';
+import { AuthorizationGuard } from 'src/modules/auth0/authorization.guard';
 
 @ApiTags('Articles')
 @ApiBearerAuth('jwt')
-@UseGuards(Auth0Guard)
+@UseGuards(AuthorizationGuard)
 @Controller('articles')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
