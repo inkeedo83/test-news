@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Weather from "../Weather/Weather";
 import { useLocalization } from "../../hooks/useLocalization";
-import LanguageSwitcher from "../common/LanguageSwitcher";
 import ThemeSwitcher from "../common/ThemeSwitcher";
 
 const {
@@ -99,7 +98,6 @@ function Navbar() {
                 </svg>
               </button>
               <div className="flex items-center">
-                <LanguageSwitcher className="mr-2" />
                 <ThemeSwitcher />
               </div>
             </div>
@@ -206,7 +204,6 @@ function Navbar() {
                   </Link>
                 </div>
                 <div className="flex items-center">
-                  <LanguageSwitcher className="pr-2" />
                   <ThemeSwitcher />
                 </div>
               </ul>

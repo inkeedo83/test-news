@@ -4,32 +4,27 @@ import PropTypes from "prop-types";
 export const LanguageContext = createContext();
 
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState(() => {
-    // Get language settings from localStorage if they exist
-    const storedPreference = localStorage.getItem("language");
-    // Default to Arabic as it's the original language of the application
-    return storedPreference ? storedPreference : "AR";
-  });
+  // Всегда используем арабский язык
+  const [language] = useState("AR");
 
   useEffect(() => {
-    // Update localStorage when language changes
-    localStorage.setItem("language", language);
-    // Also add attribute to html to indicate text direction
-    if (language === "AR") {
-      document.documentElement.setAttribute("dir", "rtl");
-    } else {
-      document.documentElement.setAttribute("dir", "ltr");
-    }
-  }, [language]);
+    // Всегда устанавливаем арабский в localStorage
+    localStorage.setItem("language", "AR");
+    // Устанавливаем направление текста RTL для арабского
+    document.documentElement.setAttribute("dir", "rtl");
+  }, []);
 
+  // Сохраняем функции для возможного использования в будущем
   const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "AR" ? "EN" : "AR"));
+    // Функция отключена, но сохранена для будущего использования
+    console.log("Language switching is disabled, only Arabic is available");
+    return;
   };
 
-  const setLanguagePreference = (lang) => {
-    if (lang === "AR" || lang === "EN") {
-      setLanguage(lang);
-    }
+  const setLanguagePreference = () => {
+    // Функция отключена, но сохранена для будущего использования
+    console.log("Language switching is disabled, only Arabic is available");
+    return;
   };
 
   return (
