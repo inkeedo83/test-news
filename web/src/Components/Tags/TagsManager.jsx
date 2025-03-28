@@ -8,7 +8,7 @@ export function TagsManager({ getAccessTokenSilently }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  // Функция для обновления токена перед запросом
+  // Function to update token before request
   const updateToken = async () => {
     try {
       console.log("TagsManager: Getting a fresh access token...");
@@ -27,23 +27,23 @@ export function TagsManager({ getAccessTokenSilently }) {
     }
   };
 
-  // Функция для обработки ошибок авторизации
+  // Function for handling authorization errors
   const handleAuthError = async (callback) => {
     try {
       return await callback();
     } catch (error) {
       if (error.message === "UNAUTHORIZED") {
-        // Если токен недействительный, пробуем обновить его и повторить запрос
+        // If the token is invalid, try to update it and retry the request
         const tokenUpdated = await updateToken();
         if (tokenUpdated) {
           try {
             return await callback();
           } catch (retryError) {
-            setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+            setMessage("Authorization error. Please login again.");
             throw retryError;
           }
         } else {
-          setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+          setMessage("Authorization error. Please login again.");
           throw error;
         }
       }
@@ -54,7 +54,7 @@ export function TagsManager({ getAccessTokenSilently }) {
   const fetchTags = async () => {
     setLoading(true);
     try {
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       const response = await handleAuthError(async () => {
         return await get("tags");
       });
@@ -82,7 +82,7 @@ export function TagsManager({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       const data = await handleAuthError(async () => {
         return await post("tags", { name: tagStr });
       });
@@ -101,7 +101,7 @@ export function TagsManager({ getAccessTokenSilently }) {
   const deleteTag = async (tagId) => {
     setLoading(true);
     try {
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       await handleAuthError(async () => {
         await del(`tags/${tagId}`);
       });

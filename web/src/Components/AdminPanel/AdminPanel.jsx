@@ -28,7 +28,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
   const [message, setMessage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
 
-  // Функция для обновления токена перед запросом
+  // Function to update token before request
   const updateToken = async () => {
     try {
       console.log("AdminPanel: Getting a fresh access token...");
@@ -47,23 +47,23 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
   };
 
-  // Функция для обработки ошибок авторизации
+  // Function for handling authorization errors
   const handleAuthError = async (callback) => {
     try {
       return await callback();
     } catch (error) {
       if (error.message === "UNAUTHORIZED") {
-        // Если токен недействительный, пробуем обновить его и повторить запрос
+        // If the token is invalid, try to update it and retry the request
         const tokenUpdated = await updateToken();
         if (tokenUpdated) {
           try {
             return await callback();
           } catch (retryError) {
-            setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+            setMessage("Authorization error. Please login again.");
             throw retryError;
           }
         } else {
-          setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+          setMessage("Authorization error. Please login again.");
           throw error;
         }
       }
@@ -91,7 +91,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     setMessage("");
   };
 
-  // Обновленная функция добавления статьи
+  // Updated function for adding an article
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -116,7 +116,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         }
       });
 
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       await handleAuthError(async () => {
         await post("articles", formData);
       });
@@ -158,7 +158,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     setMessage("");
   };
 
-  // Обновленная функция загрузки статьи
+  // Updated function for loading an article
   const loadArticle = async () => {
     if (!editData.id.trim()) {
       setMessage("الرجاء إدخال معرف الخبر للتحميل");
@@ -166,7 +166,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       const article = await handleAuthError(async () => {
         return await get(`articles/${editData.id}`);
       });
@@ -191,7 +191,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
   };
 
-  // Обновленная функция редактирования статьи
+  // Updated function for editing an article
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -223,7 +223,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         }
       );
 
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       await handleAuthError(async () => {
         await patch(`articles/${editData.id}`, formData);
       });
@@ -246,7 +246,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
   };
 
-  // Обновленная функция удаления статьи
+  // Updated function for deleting an article
   const handleDelete = async () => {
     if (!deleteId.trim()) {
       setMessage("الرجاء إدخال معرف الخبر للحذف");
@@ -254,7 +254,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
-      // Используем новую функцию API с обработкой ошибок авторизации
+      // Using new API function with authorization error handling
       await handleAuthError(async () => {
         await del(`articles/${deleteId}`);
       });
