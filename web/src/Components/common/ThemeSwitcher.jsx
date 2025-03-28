@@ -1,6 +1,7 @@
-import { useDarkMode } from "../../context/DarkModeContext";
+import { useDarkMode } from "../../hooks/useDarkMode";
 import { BsFillMoonStarsFill } from "react-icons/bs";
 import { RiSunLine } from "react-icons/ri";
+import PropTypes from "prop-types";
 
 /**
  * Component for switching between dark/light theme
@@ -25,3 +26,7 @@ export default function ThemeSwitcher({ className = "" }) {
     </button>
   );
 }
+
+ThemeSwitcher.propTypes = {
+  className: PropTypes.string,
+};

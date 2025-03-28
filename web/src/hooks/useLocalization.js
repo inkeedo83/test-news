@@ -1,4 +1,4 @@
-import { useLanguage } from "../context/LanguageContext";
+import { useLanguage } from "./useLanguage";
 import { LOCALIZATION } from "../assets/localization";
 import { CATEGORIES } from "../assets/categories.constant";
 

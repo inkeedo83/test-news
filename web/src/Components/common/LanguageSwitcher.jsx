@@ -1,5 +1,6 @@
-import { useLanguage } from "../../context/LanguageContext";
+import { useLanguage } from "../../hooks/useLanguage";
 import { MdLanguage } from "react-icons/md";
+import PropTypes from "prop-types";
 
 /**
  * Component for switching language
@@ -21,3 +22,7 @@ export default function LanguageSwitcher({ className = "" }) {
     </button>
   );
 }
+
+LanguageSwitcher.propTypes = {
+  className: PropTypes.string,
+};
