@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import AdminPanel from "../AdminPanel/AdminPanel";
-import { saveAuthToken } from "../../services/api";
+import { saveAuthToken, removeAuthToken } from "../../services/api";
 
 const AdminProtectedRoute = () => {
   const { isAuthenticated, loginWithRedirect, logout, getAccessTokenSilently } =
@@ -34,6 +34,10 @@ const AdminProtectedRoute = () => {
 
   // Функция для выхода из системы
   const handleLogout = () => {
+    // Удаляем токен из localStorage
+    removeAuthToken();
+
+    // Вызываем стандартный logout из Auth0
     logout({ returnTo: window.location.origin });
   };
 
