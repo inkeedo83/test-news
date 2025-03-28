@@ -6,7 +6,7 @@ const AuthButtons = () => {
   const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } =
     useAuth0();
 
-  // Автоматически получаем токен при монтировании компонента и сохраняем его
+  // Automatically get token when component mounts and save it
   useEffect(() => {
     const getToken = async () => {
       if (isAuthenticated) {
@@ -29,12 +29,12 @@ const AuthButtons = () => {
     getToken();
   }, [isAuthenticated, getAccessTokenSilently]);
 
-  // Функция для выхода из системы
+  // Function for logging out
   const handleLogout = () => {
-    // Удаляем токен из localStorage
+    // Remove token from localStorage
     removeAuthToken();
 
-    // Вызываем стандартный logout из Auth0
+    // Call standard Auth0 logout
     logout({ returnTo: window.location.origin });
   };
 

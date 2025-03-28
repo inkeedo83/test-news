@@ -1,8 +1,8 @@
 import baseUrl from "../assets/constants";
 
 /**
- * Функция для получения токена аутентификации из локального хранилища
- * @returns {string|null} Токен аутентификации или null, если токен не найден
+ * Function to get authentication token from local storage
+ * @returns {string|null} Authentication token or null if token not found
  */
 export const getAuthToken = () => {
   const token = localStorage.getItem("auth_token");
@@ -14,8 +14,8 @@ export const getAuthToken = () => {
 };
 
 /**
- * Функция для сохранения токена аутентификации в локальном хранилище
- * @param {string} token - Токен аутентификации
+ * Function to save authentication token in local storage
+ * @param {string} token - Authentication token
  */
 export const saveAuthToken = (token) => {
   console.log(
@@ -26,7 +26,7 @@ export const saveAuthToken = (token) => {
 };
 
 /**
- * Функция для удаления токена аутентификации из локального хранилища
+ * Function to remove authentication token from local storage
  */
 export const removeAuthToken = () => {
   console.log("Removing auth token from localStorage");
@@ -34,23 +34,23 @@ export const removeAuthToken = () => {
 };
 
 /**
- * Универсальная функция для выполнения API-запросов с авторизацией
- * @param {string} endpoint - Конечная точка API (относительный путь)
- * @param {Object} options - Параметры запроса (метод, тело и т.д.)
- * @returns {Promise<any>} Результат запроса в формате JSON
+ * Universal function for making API requests with authorization
+ * @param {string} endpoint - API endpoint (relative path)
+ * @param {Object} options - Request parameters (method, body, etc.)
+ * @returns {Promise<any>} Request result in JSON format
  */
 export const apiRequest = async (endpoint, options = {}) => {
   const isPublicEndpoint = endpoint.includes("public");
   const token = getAuthToken();
 
-  // Подготовка заголовков
+  // Preparing headers
   const headers = {
     ...options.headers,
   };
 
-  // Добавляем заголовок авторизации, если это не публичный эндпоинт и токен доступен
+  // Add authorization header if it's not a public endpoint and token is available
   if (!isPublicEndpoint && token) {
-    headers["Authorization"] = `Bearer ${token}`; // Обратите внимание на использование квадратных скобок
+    headers["Authorization"] = `Bearer ${token}`; // Note the use of square brackets
     console.log(
       `Adding Authorization header for endpoint ${endpoint}:`,
       headers.Authorization
@@ -61,8 +61,8 @@ export const apiRequest = async (endpoint, options = {}) => {
     );
   }
 
-  // Если данные отправляются как FormData, не добавляем Content-Type,
-  // браузер сам установит правильный заголовок с boundary
+  // If data is sent as FormData, don't add Content-Type,
+  // browser will set the correct header with boundary
   if (
     !(options.body instanceof FormData) &&
     !headers["Content-Type"] &&
@@ -71,7 +71,7 @@ export const apiRequest = async (endpoint, options = {}) => {
     headers["Content-Type"] = "application/json";
   }
 
-  // Полный URL запроса
+  // Full request URL
   const url = `${baseUrl}${
     endpoint.startsWith("/") ? endpoint : `/${endpoint}`
   }`;
@@ -86,60 +86,60 @@ export const apiRequest = async (endpoint, options = {}) => {
 
     console.log(`API response from ${url}, status: ${response.status}`);
 
-    // Если ответ не успешен из-за проблем с авторизацией, попробовать обновить токен
+    // If response is not successful due to authorization issues, try to refresh token
     if (response.status === 401 && !isPublicEndpoint) {
       console.log("Received 401 Unauthorized response, token might be invalid");
 
-      // Удаляем текущий токен
+      // Remove current token
       removeAuthToken();
 
-      // Здесь можно выбросить специальную ошибку, которую обработает UI
+      // Here we can throw a special error that will be handled by UI
       throw new Error("UNAUTHORIZED");
     }
 
-    // Проверка на успешность ответа для других ошибок
+    // Check for success for other errors
     if (!response.ok) {
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
-    // Для метода DELETE обычно нет JSON ответа
+    // For DELETE method usually there is no JSON response
     if (options.method === "DELETE") {
       return { success: true };
     }
 
-    // Для остальных методов парсим JSON ответ
+    // For other methods parse JSON response
     return await response.json();
   } catch (error) {
-    // Если это наша специальная ошибка авторизации, пробрасываем её дальше
+    // If this is our special authorization error, pass it further
     if (error.message === "UNAUTHORIZED") {
       throw error;
     }
 
-    // Другие ошибки логируем и преобразуем в понятный формат
+    // Log other errors and transform to a readable format
     console.error("API Request failed:", error);
     throw new Error(`API Request failed: ${error.message}`);
   }
 };
 
 /**
- * Функция для отправки GET-запроса
- * @param {string} endpoint - Конечная точка API
- * @param {Object} options - Дополнительные параметры запроса
- * @returns {Promise<any>} Результат запроса в формате JSON
+ * Function for sending GET request
+ * @param {string} endpoint - API endpoint
+ * @param {Object} options - Additional request parameters
+ * @returns {Promise<any>} Request result in JSON format
  */
 export const get = (endpoint, options = {}) => {
   return apiRequest(endpoint, { ...options, method: "GET" });
 };
 
 /**
- * Функция для отправки POST-запроса
- * @param {string} endpoint - Конечная точка API
- * @param {Object|FormData} data - Данные для отправки
- * @param {Object} options - Дополнительные параметры запроса
- * @returns {Promise<any>} Результат запроса в формате JSON
+ * Function for sending POST request
+ * @param {string} endpoint - API endpoint
+ * @param {Object|FormData} data - Data to send
+ * @param {Object} options - Additional request parameters
+ * @returns {Promise<any>} Request result in JSON format
  */
 export const post = (endpoint, data, options = {}) => {
-  // Если данные не являются FormData, преобразуем их в JSON
+  // If data is not FormData, convert to JSON
   const body = data instanceof FormData ? data : JSON.stringify(data);
 
   return apiRequest(endpoint, {
@@ -150,14 +150,14 @@ export const post = (endpoint, data, options = {}) => {
 };
 
 /**
- * Функция для отправки PATCH-запроса
- * @param {string} endpoint - Конечная точка API
- * @param {Object|FormData} data - Данные для отправки
- * @param {Object} options - Дополнительные параметры запроса
- * @returns {Promise<any>} Результат запроса в формате JSON
+ * Function for sending PATCH request
+ * @param {string} endpoint - API endpoint
+ * @param {Object|FormData} data - Data to send
+ * @param {Object} options - Additional request parameters
+ * @returns {Promise<any>} Request result in JSON format
  */
 export const patch = (endpoint, data, options = {}) => {
-  // Если данные не являются FormData, преобразуем их в JSON
+  // If data is not FormData, convert to JSON
   const body = data instanceof FormData ? data : JSON.stringify(data);
 
   return apiRequest(endpoint, {
@@ -168,10 +168,10 @@ export const patch = (endpoint, data, options = {}) => {
 };
 
 /**
- * Функция для отправки DELETE-запроса
- * @param {string} endpoint - Конечная точка API
- * @param {Object} options - Дополнительные параметры запроса
- * @returns {Promise<any>} Результат запроса в формате JSON
+ * Function for sending DELETE request
+ * @param {string} endpoint - API endpoint
+ * @param {Object} options - Additional request parameters
+ * @returns {Promise<any>} Request result in JSON format
  */
 export const del = (endpoint, options = {}) => {
   return apiRequest(endpoint, { ...options, method: "DELETE" });

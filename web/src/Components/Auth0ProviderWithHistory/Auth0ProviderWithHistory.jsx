@@ -5,9 +5,11 @@ import PropTypes from "prop-types";
 const Auth0ProviderWithHistory = ({ children }) => {
   const navigate = useNavigate();
 
-  const domain = import.meta.env.VITE_AUTH0_DOMAIN;
-  const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
-  const audience = "https://auth0-m2m-back.com"; // Целевая аудиенция для API
+  const domain =
+    import.meta.env.VITE_AUTH0_DOMAIN ?? "dev-db3dqhq33npuy18i.us.auth0.com";
+  const clientId =
+    import.meta.env.VITE_AUTH0_CLIENT_ID ?? "W7HlCSMiHjbt0n9AgKYqaAYBlXp4lwEU";
+  const audience = "https://auth0-m2m-back.com"; // Target API audience
 
   if (!domain || !clientId) {
     console.error("Missing Auth0 domain or client ID");
@@ -15,7 +17,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
     return null;
   }
 
-  // Функция вызывается после завершения аутентификации
+  // Function called after authentication is completed
   const onRedirectCallback = (appState) => {
     console.log(
       "Auth0 redirect callback called, navigating to:",
@@ -32,12 +34,12 @@ const Auth0ProviderWithHistory = ({ children }) => {
       clientId={clientId}
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: audience, // Указываем аудиторию для получения токена доступа
+        audience: audience, // Specify audience for access token
         scope: "openid profile email",
       }}
       onRedirectCallback={onRedirectCallback}
-      cacheLocation="localstorage" // Сохраняем состояние в localStorage
-      useRefreshTokens={true} // Включаем использование refresh токенов
+      cacheLocation="localstorage" // Store state in localStorage
+      useRefreshTokens={true} // Enable refresh tokens
     >
       {children}
     </Auth0Provider>
