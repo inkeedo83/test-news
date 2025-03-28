@@ -11,6 +11,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
 
   if (!domain || !clientId) {
     console.error("Missing Auth0 domain or client ID");
+    console.log("Domain:", domain, "ClientId:", clientId);
     return null;
   }
 
@@ -23,6 +24,8 @@ const Auth0ProviderWithHistory = ({ children }) => {
     navigate(appState?.returnTo || "/admin");
   };
 
+  console.log("Auth0Provider initialized with audience:", audience);
+
   return (
     <Auth0Provider
       domain={domain}
@@ -30,6 +33,7 @@ const Auth0ProviderWithHistory = ({ children }) => {
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: audience, // Указываем аудиторию для получения токена доступа
+        scope: "openid profile email",
       }}
       onRedirectCallback={onRedirectCallback}
       cacheLocation="localstorage" // Сохраняем состояние в localStorage

@@ -13,7 +13,10 @@ const AuthButtons = () => {
         try {
           console.log("AuthButtons: Getting access token...");
           const token = await getAccessTokenSilently({
-            audience: "https://auth0-m2m-back.com",
+            authorizationParams: {
+              audience: "https://auth0-m2m-back.com",
+              scope: "openid profile email",
+            },
           });
           console.log("AuthButtons: Token received, saving to localStorage");
           saveAuthToken(token);
