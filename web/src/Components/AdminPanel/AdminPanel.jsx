@@ -1,7 +1,10 @@
 import { useState } from "react";
-import TagsManager from "../Tags/TagsManager"; // added import
+import TagsManager from "../Tags/TagsManager";
 import baseUrl from "../../assets/constants";
-export function AdminPanel() {
+import { post, get, patch, del, saveAuthToken } from "../../services/api";
+import PropTypes from "prop-types";
+
+export function AdminPanel({ getAccessTokenSilently }) {
   // States for add, edit and delete functionalities
   const [addData, setAddData] = useState({
     title: "",
@@ -25,6 +28,46 @@ export function AdminPanel() {
   const [message, setMessage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
 
+  // Функция для обновления токена перед запросом
+  const updateToken = async () => {
+    try {
+      console.log("AdminPanel: Getting a fresh access token...");
+      const token = await getAccessTokenSilently({
+        audience: "https://auth0-m2m-back.com",
+      });
+      console.log("AdminPanel: New token received, saving to localStorage");
+      saveAuthToken(token);
+      return true;
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return false;
+    }
+  };
+
+  // Функция для обработки ошибок авторизации
+  const handleAuthError = async (callback) => {
+    try {
+      return await callback();
+    } catch (error) {
+      if (error.message === "UNAUTHORIZED") {
+        // Если токен недействительный, пробуем обновить его и повторить запрос
+        const tokenUpdated = await updateToken();
+        if (tokenUpdated) {
+          try {
+            return await callback();
+          } catch (retryError) {
+            setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+            throw retryError;
+          }
+        } else {
+          setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+          throw error;
+        }
+      }
+      throw error;
+    }
+  };
+
   // Handlers for Add functionality
   const handleAddChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +88,7 @@ export function AdminPanel() {
     setMessage("");
   };
 
-  // Updated handleAddSubmit to use JSON if no image, else use FormData with tags as JSON string
+  // Обновленная функция добавления статьи
   const handleAddSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -69,11 +112,12 @@ export function AdminPanel() {
           );
         }
       });
-      const response = await fetch(`${baseUrl}/articles`, {
-        method: "POST",
-        body: formData,
+
+      // Используем новую функцию API с обработкой ошибок авторизации
+      await handleAuthError(async () => {
+        await post("articles", formData);
       });
-      if (!response.ok) throw new Error("حدث خطأ أثناء إضافة الخبر");
+
       setMessage("تم إضافة الخبر بنجاح");
       setAddData({
         title: "",
@@ -111,6 +155,7 @@ export function AdminPanel() {
     setMessage("");
   };
 
+  // Обновленная функция загрузки статьи
   const loadArticle = async () => {
     if (!editData.id.trim()) {
       setMessage("الرجاء إدخال معرف الخبر للتحميل");
@@ -118,9 +163,11 @@ export function AdminPanel() {
     }
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/articles/${editData.id}`);
-      if (!response.ok) throw new Error("الخبر غير موجود");
-      const article = await response.json();
+      // Используем новую функцию API с обработкой ошибок авторизации
+      const article = await handleAuthError(async () => {
+        return await get(`articles/${editData.id}`);
+      });
+
       setEditData({
         id: editData.id,
         title: article.title || "",
@@ -141,7 +188,7 @@ export function AdminPanel() {
     }
   };
 
-  // Similar update can be applied to handleEditSubmit:
+  // Обновленная функция редактирования статьи
   const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (
@@ -172,11 +219,12 @@ export function AdminPanel() {
           }
         }
       );
-      const response = await fetch(`${baseUrl}/articles/${editData.id}`, {
-        method: "PATCH",
-        body: formData,
+
+      // Используем новую функцию API с обработкой ошибок авторизации
+      await handleAuthError(async () => {
+        await patch(`articles/${editData.id}`, formData);
       });
-      if (!response.ok) throw new Error("حدث خطأ أثناء تحديث الخبر");
+
       setMessage("تم تحديث الخبر بنجاح");
       setEditData({
         id: "",
@@ -195,7 +243,7 @@ export function AdminPanel() {
     }
   };
 
-  // Handler for Delete functionality
+  // Обновленная функция удаления статьи
   const handleDelete = async () => {
     if (!deleteId.trim()) {
       setMessage("الرجاء إدخال معرف الخبر للحذف");
@@ -203,10 +251,11 @@ export function AdminPanel() {
     }
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/articles/${deleteId}`, {
-        method: "DELETE",
+      // Используем новую функцию API с обработкой ошибок авторизации
+      await handleAuthError(async () => {
+        await del(`articles/${deleteId}`);
       });
-      if (!response.ok) throw new Error("حدث خطأ أثناء حذف الخبر");
+
       setMessage("تم حذف الخبر بنجاح");
       setDeleteId("");
     } catch (err) {
@@ -466,10 +515,14 @@ export function AdminPanel() {
 
       {/* Tags Manager Section */}
       <section className="mt-8">
-        <TagsManager />
+        <TagsManager getAccessTokenSilently={getAccessTokenSilently} />
       </section>
     </div>
   );
 }
+
+AdminPanel.propTypes = {
+  getAccessTokenSilently: PropTypes.func.isRequired,
+};
 
 export default AdminPanel;

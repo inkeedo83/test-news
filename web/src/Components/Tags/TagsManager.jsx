@@ -1,22 +1,64 @@
 import { useState, useEffect } from "react";
-import baseUrl from "../../assets/constants";
+import { get, post, del, saveAuthToken } from "../../services/api";
+import PropTypes from "prop-types";
 
-export function TagsManager() {
+export function TagsManager({ getAccessTokenSilently }) {
   const [tags, setTags] = useState([]);
   const [newTag, setNewTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  // Функция для обновления токена перед запросом
+  const updateToken = async () => {
+    try {
+      console.log("TagsManager: Getting a fresh access token...");
+      const token = await getAccessTokenSilently({
+        audience: "https://auth0-m2m-back.com",
+      });
+      console.log("TagsManager: New token received, saving to localStorage");
+      saveAuthToken(token);
+      return true;
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      return false;
+    }
+  };
+
+  // Функция для обработки ошибок авторизации
+  const handleAuthError = async (callback) => {
+    try {
+      return await callback();
+    } catch (error) {
+      if (error.message === "UNAUTHORIZED") {
+        // Если токен недействительный, пробуем обновить его и повторить запрос
+        const tokenUpdated = await updateToken();
+        if (tokenUpdated) {
+          try {
+            return await callback();
+          } catch (retryError) {
+            setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+            throw retryError;
+          }
+        } else {
+          setMessage("Ошибка авторизации. Пожалуйста, войдите снова.");
+          throw error;
+        }
+      }
+      throw error;
+    }
+  };
+
   const fetchTags = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/tags`);
-      if (!response.ok) throw new Error("Error fetching tags");
-      const data = await response.json();
+      // Используем новую функцию API с обработкой ошибок авторизации
+      const response = await handleAuthError(async () => {
+        return await get("tags");
+      });
+
       // Update setTags to match the API response structure.
-      // If the API returns an array directly, use:
-      setTags(data.data);
-      console.log(data.data);
+      setTags(response.data);
+      console.log(response.data);
     } catch (err) {
       setMessage(err.message || "Error fetching tags");
     } finally {
@@ -37,17 +79,11 @@ export function TagsManager() {
     }
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/tags`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }, // using JSON
-        // Change key from "tag" to "name"
-        body: JSON.stringify({ name: tagStr }),
+      // Используем новую функцию API с обработкой ошибок авторизации
+      const data = await handleAuthError(async () => {
+        return await post("tags", { name: tagStr });
       });
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`حدث خطأ أثناء إضافة الوسم: ${errorText}`);
-      }
-      const data = await response.json();
+
       console.log("Response data:", data);
       setMessage("تم إضافة الوسم بنجاح");
       setNewTag(""); // Clear input value
@@ -62,10 +98,11 @@ export function TagsManager() {
   const deleteTag = async (tagId) => {
     setLoading(true);
     try {
-      const response = await fetch(`${baseUrl}/tags/${tagId}`, {
-        method: "DELETE",
+      // Используем новую функцию API с обработкой ошибок авторизации
+      await handleAuthError(async () => {
+        await del(`tags/${tagId}`);
       });
-      if (!response.ok) throw new Error("حدث خطأ أثناء حذف الوسم");
+
       setMessage("تم حذف الوسم بنجاح");
       fetchTags();
     } catch (err) {
@@ -120,5 +157,9 @@ export function TagsManager() {
     </div>
   );
 }
+
+TagsManager.propTypes = {
+  getAccessTokenSilently: PropTypes.func.isRequired,
+};
 
 export default TagsManager;
