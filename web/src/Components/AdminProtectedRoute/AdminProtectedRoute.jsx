@@ -14,7 +14,10 @@ const AdminProtectedRoute = () => {
         try {
           console.log("AdminProtectedRoute: Getting access token...");
           const token = await getAccessTokenSilently({
-            audience: "https://auth0-m2m-back.com",
+            authorizationParams: {
+              audience: "https://auth0-m2m-back.com",
+              scope: "openid profile email",
+            },
           });
           console.log(
             "AdminProtectedRoute: Token received, saving to localStorage"

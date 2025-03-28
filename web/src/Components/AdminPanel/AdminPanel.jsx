@@ -33,7 +33,10 @@ export function AdminPanel({ getAccessTokenSilently }) {
     try {
       console.log("AdminPanel: Getting a fresh access token...");
       const token = await getAccessTokenSilently({
-        audience: "https://auth0-m2m-back.com",
+        authorizationParams: {
+          audience: "https://auth0-m2m-back.com",
+          scope: "openid profile email",
+        },
       });
       console.log("AdminPanel: New token received, saving to localStorage");
       saveAuthToken(token);

@@ -13,7 +13,10 @@ export function TagsManager({ getAccessTokenSilently }) {
     try {
       console.log("TagsManager: Getting a fresh access token...");
       const token = await getAccessTokenSilently({
-        audience: "https://auth0-m2m-back.com",
+        authorizationParams: {
+          audience: "https://auth0-m2m-back.com",
+          scope: "openid profile email",
+        },
       });
       console.log("TagsManager: New token received, saving to localStorage");
       saveAuthToken(token);
