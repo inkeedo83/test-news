@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { CATEGORIES } from "../../assets/categories.constant";
+import { useLocalization } from "../../hooks/useLocalization";
 
 function Footer() {
   const {
@@ -12,9 +13,10 @@ function Footer() {
     GERMANOPHONE,
     ECONOMIC,
     LAW,
-    CULTURE,
     ACCIDENT,
   } = CATEGORIES;
+
+  const { getText, getLocalizedText } = useLocalization();
 
   return (
     <footer className="w-full bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -23,7 +25,7 @@ function Footer() {
           {/* About Us Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              من نحن
+              {getLocalizedText("FOOTER.ABOUT_US.TITLE")}
             </h3>
             <ul className="space-y-2">
               <li>
@@ -31,7 +33,7 @@ function Footer() {
                   href=""
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  من نحن
+                  {getLocalizedText("FOOTER.ABOUT_US.ABOUT")}
                 </a>
               </li>
               <li>
@@ -39,7 +41,7 @@ function Footer() {
                   href=""
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  الاحكام و الشروط
+                  {getLocalizedText("FOOTER.ABOUT_US.TERMS")}
                 </a>
               </li>
               <li>
@@ -47,7 +49,7 @@ function Footer() {
                   href=""
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  سياسه الخصوصيه
+                  {getLocalizedText("FOOTER.ABOUT_US.PRIVACY")}
                 </a>
               </li>
             </ul>
@@ -56,27 +58,27 @@ function Footer() {
           {/* Quick Links Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              روابط سريعه
+              {getLocalizedText("FOOTER.QUICK_LINKS.TITLE")}
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { title: "بروكسل", id: BRUSSELS.ID },
-                { title: "انتورب", id: ANTWERP.ID },
-                { title: "لباج", id: LIEGE.ID },
-                { title: "فلاندرز", id: FLANDERS.ID },
-                { title: "والونيا", id: WALLONIA.ID },
-                { title: "جرمانوفون", id: GERMANOPHONE.ID },
-                { title: "سياسه", id: POLITIC.ID },
-                { title: "قوانين", id: LAW.ID },
-                { title: "اقتصاد", id: ECONOMIC.ID },
-                { title: "حوادث", id: ACCIDENT.ID },
+                { id: BRUSSELS.ID, category: BRUSSELS },
+                { id: ANTWERP.ID, category: ANTWERP },
+                { id: LIEGE.ID, category: LIEGE },
+                { id: FLANDERS.ID, category: FLANDERS },
+                { id: WALLONIA.ID, category: WALLONIA },
+                { id: GERMANOPHONE.ID, category: GERMANOPHONE },
+                { id: POLITIC.ID, category: POLITIC },
+                { id: LAW.ID, category: LAW },
+                { id: ECONOMIC.ID, category: ECONOMIC },
+                { id: ACCIDENT.ID, category: ACCIDENT },
               ].map((item) => (
                 <Link
                   key={item.id}
                   to={`/categories/${item.id}`}
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  {item.title}
+                  {getText(item.category)}
                 </Link>
               ))}
             </div>
@@ -85,7 +87,7 @@ function Footer() {
           {/* Social Media Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              تواصل معنا
+              {getLocalizedText("FOOTER.CONTACT.TITLE")}
             </h3>
             <div className="flex flex-wrap gap-4">
               {[
@@ -128,7 +130,7 @@ function Footer() {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
           >
-            العودة إلى الأعلى ↑
+            {getLocalizedText("BUTTONS.BACK_TO_TOP")}
           </button>
         </div>
       </div>
