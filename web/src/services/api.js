@@ -1,37 +1,5 @@
 import baseUrl from "../assets/constants";
-
-/**
- * Function to get authentication token from local storage
- * @returns {string|null} Authentication token or null if token not found
- */
-export const getAuthToken = () => {
-  const token = localStorage.getItem("auth_token");
-  console.log(
-    "Getting auth token from localStorage:",
-    token ? "Token exists" : "No token"
-  );
-  return token;
-};
-
-/**
- * Function to save authentication token in local storage
- * @param {string} token - Authentication token
- */
-export const saveAuthToken = (token) => {
-  console.log(
-    "Saving auth token to localStorage:",
-    token ? "Token provided" : "No token"
-  );
-  localStorage.setItem("auth_token", token);
-};
-
-/**
- * Function to remove authentication token from local storage
- */
-export const removeAuthToken = () => {
-  console.log("Removing auth token from localStorage");
-  localStorage.removeItem("auth_token");
-};
+import { getAuthToken, removeAuthToken } from "./auth";
 
 /**
  * Universal function for making API requests with authorization
@@ -50,7 +18,7 @@ export const apiRequest = async (endpoint, options = {}) => {
 
   // Add authorization header if it's not a public endpoint and token is available
   if (!isPublicEndpoint && token) {
-    headers["Authorization"] = `Bearer ${token}`; // Note the use of square brackets
+    headers["Authorization"] = `Bearer ${token}`;
     console.log(
       `Adding Authorization header for endpoint ${endpoint}:`,
       headers.Authorization

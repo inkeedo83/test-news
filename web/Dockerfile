@@ -5,6 +5,18 @@ FROM node:18-alpine AS build
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
+# Define build arguments
+ARG VITE_AUTH0_DOMAIN
+ARG VITE_AUTH0_CLIENT_ID
+ARG VITE_AUTH0_AUDIENCE
+ARG VITE_BASE_URL
+
+# Set environment variables from build arguments
+ENV VITE_AUTH0_DOMAIN=${VITE_AUTH0_DOMAIN}
+ENV VITE_AUTH0_CLIENT_ID=${VITE_AUTH0_CLIENT_ID}
+ENV VITE_AUTH0_AUDIENCE=${VITE_AUTH0_AUDIENCE}
+ENV VITE_BASE_URL=${VITE_BASE_URL}
+
 # Copy the package.json and yarn.lock to install dependencies
 COPY package.json ./
 

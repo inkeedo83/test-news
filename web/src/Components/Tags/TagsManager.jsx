@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-import { get, post, del, saveAuthToken } from "../../services/api";
+import { get, post, del } from "../../services/api";
+import { saveAuthToken } from "../../services/auth";
 import PropTypes from "prop-types";
+import { AUTH0_AUDIENCE } from "../../assets/env";
 
 export function TagsManager({ getAccessTokenSilently }) {
   const [tags, setTags] = useState([]);
@@ -14,7 +16,7 @@ export function TagsManager({ getAccessTokenSilently }) {
       console.log("TagsManager: Getting a fresh access token...");
       const token = await getAccessTokenSilently({
         authorizationParams: {
-          audience: "https://auth0-m2m-back.com",
+          audience: AUTH0_AUDIENCE,
           scope: "openid profile email",
         },
       });

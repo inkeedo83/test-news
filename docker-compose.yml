@@ -6,9 +6,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: alinews
-      POSTGRES_PASSWORD: L2bBvWt7Xo5Hhcmy
-      POSTGRES_DB: alinews
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -19,8 +19,8 @@ services:
       - "9000:9000"
       - "9001:9001"
     environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: 6MzW9o7mcLYUs4XTu
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
@@ -34,29 +34,38 @@ services:
     depends_on:
       - db
       - minio
+    env_file:
+      - .env
     environment:
       NODE_ENV: production
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: alinews
-      DB_USERNAME: alinews
-      DB_PASSWORD: L2bBvWt7Xo5Hhcmy
-      ENABLE_LOGGER: y
-      ENABLE_DATABASE_LOGGER: n
-      PORT: 5000
-      BASE_URL: https://app-test-i.ru
-      MINIO_HOST: minio
-      MINIO_PORT: 9000
-      MINIO_USE_SSL: n
-      MINIO_USER: admin
-      MINIO_PASSWORD: 6MzW9o7mcLYUs4XTu
-      MINIO_BUCKET: bucket
-      ISSUER_BASE_URL: https://dev-db3dqhq33npuy18i.us.auth0.com
-      AUDIENCE: https://auth0-m2m-back.com
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      ENABLE_LOGGER: ${ENABLE_LOGGER}
+      ENABLE_DATABASE_LOGGER: ${ENABLE_DATABASE_LOGGER}
+      PORT: ${PORT}
+      BASE_URL: ${BASE_URL}
+      MINIO_HOST: ${MINIO_HOST}
+      MINIO_PORT: ${MINIO_PORT}
+      MINIO_USE_SSL: ${MINIO_USE_SSL}
+      MINIO_USER: ${MINIO_USER}
+      MINIO_PASSWORD: ${MINIO_PASSWORD}
+      MINIO_BUCKET: ${MINIO_BUCKET}
+      ISSUER_BASE_URL: ${ISSUER_BASE_URL}
+      AUDIENCE: ${AUDIENCE}
 
   frontend:
+    env_file:
+      - .env
     build:
       context: ./web
+      args:
+        - VITE_AUTH0_DOMAIN=${VITE_AUTH0_DOMAIN}
+        - VITE_AUTH0_CLIENT_ID=${VITE_AUTH0_CLIENT_ID}
+        - VITE_AUTH0_AUDIENCE=${VITE_AUTH0_AUDIENCE}
+        - VITE_BASE_URL=${VITE_BASE_URL}
     container_name: frontend
     ports:
       - "5010:80"

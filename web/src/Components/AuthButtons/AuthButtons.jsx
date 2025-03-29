@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
-import { saveAuthToken, removeAuthToken } from "../../services/api";
+import { saveAuthToken, removeAuthToken } from "../../services/auth";
+import { AUTH0_AUDIENCE } from "../../assets/env";
 
 const AuthButtons = () => {
   const { loginWithRedirect, logout, isAuthenticated, getAccessTokenSilently } =
@@ -14,7 +15,7 @@ const AuthButtons = () => {
           console.log("AuthButtons: Getting access token...");
           const token = await getAccessTokenSilently({
             authorizationParams: {
-              audience: "https://auth0-m2m-back.com",
+              audience: AUTH0_AUDIENCE,
               scope: "openid profile email",
             },
           });
