@@ -1,15 +1,17 @@
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import {
+  AUTH0_DOMAIN,
+  AUTH0_CLIENT_ID,
+  AUTH0_AUDIENCE,
+} from "../../assets/env";
 
 const Auth0ProviderWithHistory = ({ children }) => {
   const navigate = useNavigate();
-
-  const domain =
-    import.meta.env.VITE_AUTH0_DOMAIN ?? "dev-db3dqhq33npuy18i.us.auth0.com";
-  const clientId =
-    import.meta.env.VITE_AUTH0_CLIENT_ID ?? "W7HlCSMiHjbt0n9AgKYqaAYBlXp4lwEU";
-  const audience = "https://auth0-m2m-back.com"; // Target API audience
+  const domain = AUTH0_DOMAIN;
+  const clientId = AUTH0_CLIENT_ID;
+  const audience = AUTH0_AUDIENCE;
 
   if (!domain || !clientId) {
     console.error("Missing Auth0 domain or client ID");

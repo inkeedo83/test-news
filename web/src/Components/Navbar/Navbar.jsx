@@ -2,9 +2,11 @@ import { CATEGORIES } from "../../assets/categories.constant";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Weather from "../Weather/Weather";
-import { useDarkMode } from "../../context/DarkModeContext"; // Import useDarkMode
+import { useLocalization } from "../../hooks/useLocalization";
+// import ThemeSwitcher from "../common/ThemeSwitcher";
 import { BsFillMoonStarsFill } from "react-icons/bs";
-import { RiSunLine } from "react-icons/ri"; // Import modern icons
+import { RiSunLine } from "react-icons/ri";
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 const {
   MAIN,
@@ -31,6 +33,8 @@ function Navbar() {
   const [showCities, setShowCities] = useState(false); // New state for desktop cities submenu
   const [showMobileCities, setShowMobileCities] = useState(false); // New state for mobile cities submenu
 
+  const { getText, getLocalizedText } = useLocalization();
+
   const ToggleBtn = () => {
     setIsOpen(!isOpen);
   };
@@ -47,7 +51,6 @@ function Navbar() {
   useEffect(() => {
     const handler = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
-        //check for null before proceeding
         setIsOpen(false);
       }
     };
@@ -69,17 +72,15 @@ function Navbar() {
   useEffect(() => {
     const controlWeather = () => {
       if (window.scrollY > 0) {
-        // Any scroll
         setShowWeather(false);
       } else {
-        // Back to top
         setShowWeather(true);
       }
     };
 
     window.addEventListener("scroll", controlWeather);
     return () => window.removeEventListener("scroll", controlWeather);
-  }, []); // Remove lastScrollY dependency
+  }, []);
 
   return (
     <nav className="fixed bg-gradient-to-r from-red-900/90 to-black dark:from-slate-900 dark:to-black md:text-md w-full sm:w-screen z-10 sm:text-xl">
@@ -88,7 +89,7 @@ function Navbar() {
         <div className="flex flex-col">
           <div className="flex justify-center py-2">
             <span className="logo animate-wave text-2xl mt-2 text-white font-extrabold">
-              مُراسل بلجيكا
+              {getLocalizedText("SITE_NAME")}
             </span>
           </div>
           <div

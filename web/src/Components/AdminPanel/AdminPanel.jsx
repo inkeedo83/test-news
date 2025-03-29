@@ -1,8 +1,10 @@
 import { useState } from "react";
 import TagsManager from "../Tags/TagsManager";
 import baseUrl from "../../assets/constants";
-import { post, get, patch, del, saveAuthToken } from "../../services/api";
+import { post, get, patch, del } from "../../services/api";
+import { saveAuthToken } from "../../services/auth";
 import PropTypes from "prop-types";
+import { AUTH0_AUDIENCE } from "../../assets/env";
 
 export function AdminPanel({ getAccessTokenSilently }) {
   // States for add, edit and delete functionalities
@@ -34,7 +36,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       console.log("AdminPanel: Getting a fresh access token...");
       const token = await getAccessTokenSilently({
         authorizationParams: {
-          audience: "https://auth0-m2m-back.com",
+          audience: AUTH0_AUDIENCE,
           scope: "openid profile email",
         },
       });
