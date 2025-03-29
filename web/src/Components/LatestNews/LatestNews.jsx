@@ -40,7 +40,7 @@ export default function LatestNews() {
   return (
     <div className="dark:bg-gray-900/70 bg-zink-600/70 backdrop-blur-md rounded-xl overflow-hidden animate-fadeIn">
       <h3 className=" backdrop-blur-md bg-gradient-to-r from-red-950/90 via-zinc-950/90 to-red-950/90 rounded-2xl shadow-2xl text-white  px-6 py-4 text-lg font-bold">
-        اخر الاخبار
+        احدث المقالات{" "}
       </h3>
 
       <div className="divide-y divide-red-900/30 dark:divide-red-700/30">
@@ -88,13 +88,10 @@ export default function LatestNews() {
                 </div>
 
                 <Link to={`/articles/${item.id}`}>
-                  <h4 className="text-red-600 mr-4 font-semibold line-clamp-2 group-hover:text-red-500 dark:group-hover:text-red-700 transition-colors">
+                  <h4 className="text-red-600 mr-4 font-semibold group-hover:text-red-500 dark:group-hover:text-red-700 transition-colors">
                     {item.title}
                   </h4>
                 </Link>
-                <p className="text-zinc-400 text-sm  mr-4 mb-4 line-clamp-3">
-                  {item.shortContent}
-                </p>
               </div>
             </div>
           </div>

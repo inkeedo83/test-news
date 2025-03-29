@@ -4,12 +4,12 @@ const CATEGORIES = {
   FLANDERS: {
     ID: "FLANDERS",
     EN: " Flanders",
-    AR: " فلاندرز",
+    AR: " الاقليم الفلمنكي",
   },
   WALLONIA: {
     ID: "WALLONIA",
     EN: " Wallonia",
-    AR: " والونيا",
+    AR: " الاقليم الوالوني",
   },
   BRUSSELS: {
     ID: "BRUSSELS",
@@ -29,7 +29,7 @@ const CATEGORIES = {
   GERMANOPHONE: {
     ID: "GERMANOPHONE",
     EN: " Germanophone",
-    AR: " جرمانوفون",
+    AR: " الاقليم الالماني",
   },
 
   POLITIC: {

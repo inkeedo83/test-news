@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { OneArtical } from "../OneArtical/OneArtical";
+import TwoArticals from "../TwoArticals/TwoArticals";
 import baseUrl from "../../assets/contants";
 import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
+import NewsletterSubscribe from "../NewsletterSubscribe/NewsletterSubscribe";
 
 import { WriterEffect } from "../WriterEffect/WriterEffect";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
-import Weather from "../Weather/Weather";
+
 import { IoArrowUpCircle } from "react-icons/io5";
 
 const DateOptions = {
@@ -62,13 +63,13 @@ export default function MainPageTest() {
       })
       .then((resulte) => {
         setData(resulte.data);
+
         setIsloading(false);
       })
 
       .catch((err) => console.log(err));
     toTop();
   }, []);
-  const screen = window.screen.width > 500;
 
   // Loading skeleton component
   const LoadingSkeleton = () => (
@@ -88,7 +89,12 @@ export default function MainPageTest() {
         <LoadingSkeleton />
       ) : (
         <div className="container mx-auto px-2 sm:px-4 py-0">
-          <WriterEffect data={data} />
+          <div className="space-y-4">
+            {" "}
+            {/* Changed from space-y-0 to space-y-4 */}
+            <NewsletterSubscribe />
+            <WriterEffect data={data} />
+          </div>
 
           {/* Featured Article */}
           {data.length > 0 && (
@@ -127,11 +133,11 @@ export default function MainPageTest() {
             <h3 className="inline-block bg-gradient-to-r from-red-950 to-zinc-900 text-white px-3 py-1 sm:px-4 sm:py-2 mt-2 mb-2 rounded-lg shadow-lg transform hover:scale-105 transition-all text-lg sm:text-xl font-bold">
               في الاتجاهين
             </h3>
-            <div className="grid w-full sm:w-screen lg:grid-cols-3 gap-2 sm:gap-4">
-              <div className="lg:col-span-2">
-                <OneArtical />
+            <div className="grid w-full sm:w-screen lg:grid-cols-3 gap-2 sm:gap-1">
+              <div className="lg:col-span-2 bg-zinc-900/80 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+                <TwoArticals />
               </div>
-              <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+              <div className="bg-zinc-900/80  sm:ml-24 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
                 <LatestNews />
               </div>
             </div>

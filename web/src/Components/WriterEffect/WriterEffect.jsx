@@ -4,7 +4,7 @@ export function WriterEffect(props) {
   let arr = props.data;
 
   return (
-    <div className="relative mt-56 mx-2 sm:mx-4 mb-6">
+    <div className="relative mt-0 mx-2 sm:mx-4 mb-6">
       <div className="relative overflow-hidden backdrop-blur-md bg-gradient-to-r from-red-950/90 via-zinc-950/90 to-red-950/90 rounded-2xl shadow-2xl">
         {/* Animated gradient background */}
         <div className="absolute inset-0 bg-gradient-to-r from-red-500/20 via-zinc-500/20 to-red-500/20 animate-pulse"></div>

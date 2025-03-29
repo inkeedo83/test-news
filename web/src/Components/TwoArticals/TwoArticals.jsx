@@ -8,13 +8,9 @@ import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 
-export function OneArtical() {
-  const [isloading, setIsloading] = useState(true);
-  const [israndom, setIsrandom] = useState();
+export default function TwoArticals() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=2&offset=${Math.floor(
-    Math.random() * 50
-  )}`;
+  const http = `${baseUrl}/public/articles?limit=2&order=DESC`;
 
   const DateOptions = {
     weekday: "long",
@@ -22,11 +18,6 @@ export function OneArtical() {
     day: "numeric",
   };
 
-  //screen render
-  const screen = window.screen.width > 500;
-  const PicStyle = screen
-    ? { width: "800px", height: "600px" }
-    : { width: "450px", height: "350px" };
   useEffect(() => {
     fetch(http)
       .then((res) => {
@@ -55,19 +46,17 @@ export function OneArtical() {
 
           <div className="flex flex-row h-full">
             <div
-              className={`${
-                index % 2 === 0 ? "sm:order-2" : "sm:order-2"
-              }  sm:w-1/2`}
+              className={`${index % 2 === 0 ? "order-2" : "order-1"}  sm:w-1/2`}
             >
               <Link to={`/articles/${item.id}`}>
-                <div className="relative h-[30vh] sm:h-[40vh]">
+                <div className="relative h-[50vh]">
                   <img
                     src={
                       item.image === "https://app-test-i.ru/api/image/null"
                         ? BeReporterNew
                         : item.image
                     }
-                    className="w-full h-full object-cover"
+                    className="sm:w-full w-72 h-full sm:object-cover  "
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent sm:bg-gradient-to-r"></div>
                 </div>
@@ -76,7 +65,7 @@ export function OneArtical() {
 
             <div
               className={`${
-                index % 2 === 0 ? "sm:order-1" : "sm:order-2"
+                index % 2 === 0 ? "order-1" : "order-2"
               } w-full sm:w-1/2 p-4 sm:p-6`}
             >
               <div className="flex items-center justify-between text-gray-400 mb-3 sm:mb-4">

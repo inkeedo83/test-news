@@ -52,7 +52,6 @@ function Footer() {
               </li>
             </ul>
           </div>
-
           {/* Quick Links Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">
@@ -60,16 +59,17 @@ function Footer() {
             </h3>
             <div className="grid grid-cols-2 gap-2">
               {[
-                { title: "بروكسل", id: BRUSSELS.ID },
-                { title: "انتورب", id: ANTWERP.ID },
-                { title: "لباج", id: LIEGE.ID },
-                { title: "فلاندرز", id: FLANDERS.ID },
-                { title: "والونيا", id: WALLONIA.ID },
-                { title: "جرمانوفون", id: GERMANOPHONE.ID },
-                { title: "سياسه", id: POLITIC.ID },
-                { title: "قوانين", id: LAW.ID },
-                { title: "اقتصاد", id: ECONOMIC.ID },
-                { title: "حوادث", id: ACCIDENT.ID },
+                { title: BRUSSELS.AR, id: BRUSSELS.ID },
+                { title: ANTWERP.AR, id: ANTWERP.ID },
+                { title: LIEGE.AR, id: LIEGE.ID },
+                { title: FLANDERS.AR, id: FLANDERS.ID },
+                { title: WALLONIA.AR, id: WALLONIA.ID },
+                { title: GERMANOPHONE.AR, id: GERMANOPHONE.ID },
+                { title: POLITIC.AR, id: POLITIC.ID },
+                { title: LAW.AR, id: LAW.ID },
+                { title: ECONOMIC.AR, id: ECONOMIC.ID },
+                { title: CULTURE.AR, id: CULTURE.ID },
+                { title: ACCIDENT.AR, id: ACCIDENT.ID },
               ].map((item) => (
                 <Link
                   key={item.id}
@@ -81,7 +81,6 @@ function Footer() {
               ))}
             </div>
           </div>
-
           {/* Social Media Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">

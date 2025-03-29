@@ -5,7 +5,7 @@ export default function PageNotFound() {
     <div className="   flex flex-col  items-center  h-fit p-24 ">
       {" "}
       <h1
-        className="text-xl text-red-500 mt-20 text-center 
+        className="text-xl text-red-500 mt-72 text-center 
        font-bold"
       >
         الصفحه غير موجوده

@@ -20,6 +20,9 @@ const SearchInvalidResulte = React.lazy(() =>
 const AdminProtectedRoute = React.lazy(() =>
   import("../AdminProtectedRoute/AdminProtectedRoute")
 );
+const NewsletterUnsubscribe = React.lazy(() =>
+  import("../NewsletterUnsubscribe/NewsletterUnsubscribe")
+);
 
 function App() {
   return (
@@ -37,6 +40,7 @@ function App() {
               path="/articles/pattern/??"
               element={<SearchInvalidResulte />}
             />
+            <Route path="/unsubscribe" element={<NewsletterUnsubscribe />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Suspense>
