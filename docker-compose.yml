@@ -51,6 +51,8 @@ services:
       MINIO_USER: admin
       MINIO_PASSWORD: 6MzW9o7mcLYUs4XTu
       MINIO_BUCKET: bucket
+      ISSUER_BASE_URL: https://dev-db3dqhq33npuy18i.us.auth0.com
+      AUDIENCE: https://auth0-m2m-back.com
 
   frontend:
     build:

@@ -123,6 +123,12 @@ export class ReadArticlesDto extends BaseReadDto {
   @IsEnum(CATEGORIES)
   category?: Category;
 
+  @ApiProperty({ type: Boolean, required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
+  isImportant?: boolean;
+
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
   @Transform(({ value }: { value: string | string[] }) => {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TagsManager from "../Tags/TagsManager"; // added import
-
+import baseUrl from "../../assets/constants";
 export function AdminPanel() {
   // States for add, edit and delete functionalities
   const [addData, setAddData] = useState({
@@ -69,7 +69,7 @@ export function AdminPanel() {
           );
         }
       });
-      const response = await fetch("https://app-test-i.ru/api/articles", {
+      const response = await fetch(`${baseUrl}/articles`, {
         method: "POST",
         body: formData,
       });
@@ -118,9 +118,7 @@ export function AdminPanel() {
     }
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://app-test-i.ru/api/articles/${editData.id}`
-      );
+      const response = await fetch(`${baseUrl}/articles/${editData.id}`);
       if (!response.ok) throw new Error("الخبر غير موجود");
       const article = await response.json();
       setEditData({
@@ -133,7 +131,7 @@ export function AdminPanel() {
         tags: article.tags || "",
       });
       if (article.image) {
-        setImagePreview(`https://app-test-i.ru/api/image/${article.image}`);
+        setImagePreview(`${baseUrl}/image/${article.image}`);
       }
       setMessage("تم تحميل الخبر بنجاح");
     } catch (err) {
@@ -174,13 +172,10 @@ export function AdminPanel() {
           }
         }
       );
-      const response = await fetch(
-        `https://app-test-i.ru/api/articles/${editData.id}`,
-        {
-          method: "PATCH",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${baseUrl}/articles/${editData.id}`, {
+        method: "PATCH",
+        body: formData,
+      });
       if (!response.ok) throw new Error("حدث خطأ أثناء تحديث الخبر");
       setMessage("تم تحديث الخبر بنجاح");
       setEditData({
@@ -208,12 +203,9 @@ export function AdminPanel() {
     }
     setLoading(true);
     try {
-      const response = await fetch(
-        `https://app-test-i.ru/api/articles/${deleteId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const response = await fetch(`${baseUrl}/articles/${deleteId}`, {
+        method: "DELETE",
+      });
       if (!response.ok) throw new Error("حدث خطأ أثناء حذف الخبر");
       setMessage("تم حذف الخبر بنجاح");
       setDeleteId("");

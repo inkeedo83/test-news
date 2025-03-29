@@ -1,17 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import TwoArticals from "../TwoArticals/TwoArticals";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import MainPageCat from "../MainPageCat/MainPageCat";
 import LatestNews from "../LatestNews/LatestNews";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import NewsletterSubscribe from "../NewsletterSubscribe/NewsletterSubscribe";
-
 import { WriterEffect } from "../WriterEffect/WriterEffect";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
-
 import { IoArrowUpCircle } from "react-icons/io5";
 
 const DateOptions = {
@@ -103,7 +101,7 @@ export default function MainPageTest() {
                 <Link to={`/articles/${data[0].id}`}>
                   <img
                     src={
-                      data[0].image === "https://app-test-i.ru/api/image/null"
+                      data[0].image === `${baseUrl}/image/null`
                         ? BeReporterNew
                         : data[0].image
                     }
@@ -158,7 +156,7 @@ export default function MainPageTest() {
                     <Link to={`/articles/${item.id}`}>
                       <img
                         src={
-                          item.image === "https://app-test-i.ru/api/image/null"
+                          item.image === `${baseUrl}/image/null`
                             ? BeReporterNew
                             : item.image
                         }

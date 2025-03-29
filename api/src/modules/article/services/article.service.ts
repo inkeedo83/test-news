@@ -51,6 +51,7 @@ export class ArticleService {
     pattern,
     order,
     category,
+    isImportant,
     tagsIds
   }: ReadArticlesDto): Promise<PaginatedEntityDto<ArticleDto>> {
     const criteria1: FindOptionsWhere<Article> = pattern === undefined ? {} : { title: ILike(`%${pattern}%`) };
@@ -63,6 +64,10 @@ export class ArticleService {
     if (tagsIds) {
       criteria1.articleTags = { tagId: In(tagsIds) };
       criteria2.articleTags = { tagId: In(tagsIds) };
+    }
+    if (isImportant) {
+      criteria1.isImportant = isImportant;
+      criteria2.isImportant = isImportant;
     }
 
     const [data, count] = await this.manager.findAndCount(Article, {

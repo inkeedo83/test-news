@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 
 export function TagsManager() {
   const [tags, setTags] = useState([]);

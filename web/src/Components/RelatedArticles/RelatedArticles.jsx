@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
 import { RiEyeFill } from "react-icons/ri";
@@ -52,7 +52,7 @@ export function RelatedArticles() {
                 <div className="flex-shrink-0">
                   <img
                     src={
-                      item.image === "https://app-test-i.ru/api/image/null"
+                      item.image === `${baseUrl}/image/null`
                         ? BeReporterNew
                         : item.image
                     }

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { IoHome } from "react-icons/io5";
 import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
@@ -82,7 +82,7 @@ export default function ReadArticleByCat() {
               <Link to={`/articles/${item.id}`}>
                 <img
                   src={
-                    item.image === "https://app-test-i.ru/api/image/null"
+                    item.image === `${baseUrl}/image/null`
                       ? BeReporterNew
                       : item.image
                   }

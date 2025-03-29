@@ -8,10 +8,12 @@ import {
   Post,
   Query,
   UploadedFile,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiConsumes,
   ApiCreatedResponse,
@@ -31,8 +33,11 @@ import {
   UpdateArticleDto
 } from 'src/modules/article/dto/article.dto';
 import { ArticleService } from 'src/modules/article/services/article.service';
+import { AuthorizationGuard } from 'src/modules/auth0/authorization.guard';
 
 @ApiTags('Articles')
+@ApiBearerAuth('jwt')
+@UseGuards(AuthorizationGuard)
 @Controller('articles')
 export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}

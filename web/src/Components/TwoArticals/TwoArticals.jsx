@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-import baseUrl from "../../assets/contants";
+import baseUrl from "../../assets/constants";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
 
@@ -52,7 +52,7 @@ export default function TwoArticals() {
                 <div className="relative h-[50vh]">
                   <img
                     src={
-                      item.image === "https://app-test-i.ru/api/image/null"
+                      item.image === `${baseUrl}/image/null`
                         ? BeReporterNew
                         : item.image
                     }
