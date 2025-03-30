@@ -4,10 +4,20 @@ import { CategoryModule } from 'src/modules/category/category.module';
 import { AppConfigModule } from 'src/modules/config/config.module';
 import { DatabaseModule } from 'src/modules/database/database.module';
 import { AppLoggerModule } from 'src/modules/logger/appLogger.module';
+import { MailerModule } from 'src/modules/mailer/mailer.module';
 import { NewsModule } from 'src/modules/news/news.module';
 import { TagModule } from 'src/modules/tag/tag.module';
 
 @Module({
-  imports: [AppConfigModule, AppLoggerModule, DatabaseModule, ArticleModule, CategoryModule, TagModule, NewsModule]
+  imports: [
+    AppConfigModule,
+    AppLoggerModule,
+    DatabaseModule,
+    ArticleModule,
+    CategoryModule,
+    TagModule,
+    NewsModule,
+    MailerModule
+  ]
 })
 export class AppModule {}

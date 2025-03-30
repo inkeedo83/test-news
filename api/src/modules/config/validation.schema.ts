@@ -29,7 +29,12 @@ export const validationSchema = z.object({
   MINIO_BUCKET: z.string(),
 
   ISSUER_BASE_URL: z.string(),
-  AUDIENCE: z.string()
+  AUDIENCE: z.string(),
+
+  MAILER_HOST: z.string(),
+  MAILER_PORT: z.coerce.number().int().positive(),
+  MAILER_USERNAME: z.string(),
+  MAILER_PASSWORD: z.string()
 });
 
 export type AppConfig = z.infer<typeof validationSchema>;
