@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { post } from "../../services/api";
 
 export default function NewsletterSubscribe() {
   const [email, setEmail] = useState("");
@@ -14,9 +15,11 @@ export default function NewsletterSubscribe() {
 
     try {
       setStatus("Thank you for subscribing!");
-      setEmail("");
+      setEmail(email);
+      await post("/public/subscribe", { email });
     } catch (error) {
       setStatus("An error occurred. Please try again.");
+      console.error(error);
     }
   };
 

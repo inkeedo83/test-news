@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { post } from "../../services/api";
 export default function NewsletterUnsubscribe() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -19,9 +19,11 @@ export default function NewsletterUnsubscribe() {
       // const response = await fetch('/api/unsubscribe', {...})
 
       setStatus("تم إلغاء اشتراكك بنجاح من النشرة الإخبارية");
-      setEmail("");
+      setEmail(email);
+      await post("/public/unsubscribe", { email });
     } catch (error) {
       setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
+      console.error(error);
     } finally {
       setLoading(false);
     }
