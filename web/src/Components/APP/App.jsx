@@ -49,6 +49,10 @@ function App() {
                   path="/articles/pattern/??"
                   element={<SearchInvalidResulte />}
                 />
+                <Route
+                  path="/newsletter/unsubscribe"
+                  element={<NewsletterUnsubscribe />}
+                />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </Suspense>

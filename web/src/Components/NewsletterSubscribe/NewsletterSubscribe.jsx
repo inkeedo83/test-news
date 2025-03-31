@@ -1,26 +1,40 @@
 import { useState } from "react";
 import { post } from "../../services/api";
+import { Link } from "react-router-dom";
 
 export default function NewsletterSubscribe() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [subscribedEmail, setSubscribedEmail] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email) {
-      setStatus("Please enter your email address");
+      setStatus("الرجاء إدخال عنوان البريد الإلكتروني");
       return;
     }
 
+    setLoading(true);
     try {
-      setStatus("Thank you for subscribing!");
-      setEmail(email);
       await post("/public/subscribe", { email });
+      setSubscribedEmail(email);
+      setSuccess(true);
+      setStatus("تم الاشتراك بنجاح في النشرة الإخبارية!");
+      setEmail("");
     } catch (error) {
-      setStatus("An error occurred. Please try again.");
+      setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
       console.error(error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const resetForm = () => {
+    setSuccess(false);
+    setStatus("");
   };
 
   return (
@@ -36,27 +50,55 @@ export default function NewsletterSubscribe() {
           اضف بريدك الإلكتروني لتصلك أحدث الأخبار والمقالات من موقعنا
         </p>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-2 sm:flex-row items-center justify-center sm:gap-3 max-w-2xl mx-auto"
-        >
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="ادخل بريدك الإلكتروني"
-            className="w-full sm:w-96 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-white/10 border border-red-400 text-white rounded-lg focus:ring-2 focus:ring-red-300 focus:border-transparent placeholder:text-red-200"
-            required
-          />
-          <button
-            type="submit"
-            className="w-full sm:w-auto px-4 sm:px-8 py-2 sm:py-3 bg-white text-red-600 text-sm sm:text-base font-semibold rounded-lg hover:bg-red-50 transition duration-150"
+        {!success ? (
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-2 sm:flex-row items-center justify-center sm:gap-3 max-w-2xl mx-auto"
           >
-            اشترك
-          </button>
-        </form>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="ادخل بريدك الإلكتروني"
+              className="w-full sm:w-96 px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-white/10 border border-red-400 text-white rounded-lg focus:ring-2 focus:ring-red-300 focus:border-transparent placeholder:text-red-200"
+              required
+              disabled={loading}
+            />
+            <button
+              type="submit"
+              className="w-full sm:w-auto px-4 sm:px-8 py-2 sm:py-3 bg-white text-red-600 text-sm sm:text-base font-semibold rounded-lg hover:bg-red-50 transition duration-150 disabled:opacity-50"
+              disabled={loading}
+            >
+              {loading ? "جاري الاشتراك..." : "اشترك"}
+            </button>
+          </form>
+        ) : (
+          <div className="bg-green-500/20 text-green-100 p-4 rounded-lg max-w-2xl mx-auto">
+            <p className="mb-2">
+              تم الاشتراك بنجاح! سيصلك آخر الأخبار على البريد: {subscribedEmail}
+            </p>
+            <div className="mt-4 flex flex-col sm:flex-row justify-center gap-3">
+              <p className="text-xs">
+                يمكنك{" "}
+                <Link
+                  to="/newsletter/unsubscribe"
+                  className="text-white underline"
+                >
+                  إلغاء الاشتراك
+                </Link>{" "}
+                في أي وقت
+              </p>
+              <button
+                onClick={resetForm}
+                className="text-xs text-white underline mt-2 sm:mt-0"
+              >
+                إضافة بريد إلكتروني آخر
+              </button>
+            </div>
+          </div>
+        )}
 
-        {status && (
+        {status && !success && (
           <p className="mt-4 sm:mt-6 text-xs sm:text-sm text-red-200 bg-red-500/10 py-2 sm:py-3 px-4 sm:px-6 rounded-lg inline-block border border-red-400/20">
             {status}
           </p>

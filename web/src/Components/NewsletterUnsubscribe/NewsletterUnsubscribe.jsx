@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { post } from "../../services/api";
+import { Link } from "react-router-dom";
+
 export default function NewsletterUnsubscribe() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [unsubscribedEmail, setUnsubscribedEmail] = useState("");
 
   const handleUnsubscribe = async (e) => {
     e.preventDefault();
@@ -15,18 +19,22 @@ export default function NewsletterUnsubscribe() {
 
     setLoading(true);
     try {
-      // Here you would make the API call to unsubscribe
-      // const response = await fetch('/api/unsubscribe', {...})
-
-      setStatus("تم إلغاء اشتراكك بنجاح من النشرة الإخبارية");
-      setEmail(email);
       await post("/public/unsubscribe", { email });
+      setUnsubscribedEmail(email);
+      setSuccess(true);
+      setStatus("تم إلغاء اشتراكك بنجاح من النشرة الإخبارية");
+      setEmail("");
     } catch (error) {
       setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
       console.error(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const resetForm = () => {
+    setSuccess(false);
+    setStatus("");
   };
 
   return (
@@ -42,41 +50,68 @@ export default function NewsletterUnsubscribe() {
           </p>
         </div>
 
-        <form onSubmit={handleUnsubscribe} className="space-y-6">
-          <div>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="أدخل بريدك الإلكتروني"
-              className="w-full px-4 py-3 bg-white/10 border border-red-400 text-white rounded-lg 
-                focus:ring-2 focus:ring-red-300 focus:border-transparent 
-                placeholder:text-red-200"
-              required
-            />
-          </div>
+        {!success ? (
+          <form onSubmit={handleUnsubscribe} className="space-y-6">
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="أدخل بريدك الإلكتروني"
+                className="w-full px-4 py-3 bg-white/10 border border-red-400 text-white rounded-lg 
+                  focus:ring-2 focus:ring-red-300 focus:border-transparent 
+                  placeholder:text-red-200"
+                required
+                disabled={loading}
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg
-              hover:bg-red-700 transition duration-150 disabled:opacity-50"
-          >
-            {loading ? "جاري إلغاء الاشتراك..." : "إلغاء الاشتراك"}
-          </button>
-        </form>
-
-        {status && (
-          <div className="mt-6 text-sm text-center">
-            <p
-              className={`p-3 rounded-lg ${
-                status.includes("بنجاح")
-                  ? "bg-green-500/20 text-green-100"
-                  : "bg-red-500/20 text-red-100"
-              }`}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full px-6 py-3 bg-red-600 text-white font-semibold rounded-lg
+                hover:bg-red-700 transition duration-150 disabled:opacity-50"
             >
+              {loading ? "جاري إلغاء الاشتراك..." : "إلغاء الاشتراك"}
+            </button>
+          </form>
+        ) : (
+          <div className="bg-green-500/20 text-green-100 p-4 rounded-lg">
+            <p className="mb-4">
+              تم إلغاء اشتراك البريد: {unsubscribedEmail} بنجاح
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                to="/"
+                className="inline-block mt-2 px-6 py-2 bg-red-600 text-white font-semibold rounded-lg
+                  hover:bg-red-700 transition duration-150"
+              >
+                العودة إلى الصفحة الرئيسية
+              </Link>
+              <button
+                onClick={resetForm}
+                className="inline-block mt-2 px-6 py-2 bg-red-600/50 text-white font-semibold rounded-lg
+                  hover:bg-red-700 transition duration-150"
+              >
+                إلغاء اشتراك بريد آخر
+              </button>
+            </div>
+          </div>
+        )}
+
+        {status && !success && (
+          <div className="mt-6 text-sm text-center">
+            <p className="p-3 rounded-lg bg-red-500/20 text-red-100">
               {status}
             </p>
+          </div>
+        )}
+
+        {!success && (
+          <div className="mt-8 text-center text-xs text-red-200">
+            <Link to="/" className="hover:text-white underline">
+              العودة إلى الصفحة الرئيسية
+            </Link>
           </div>
         )}
       </div>
