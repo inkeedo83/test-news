@@ -25,8 +25,15 @@ export default function NewsletterSubscribe() {
       setStatus("تم الاشتراك بنجاح في النشرة الإخبارية!");
       setEmail("");
     } catch (error) {
-      setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
       console.error(error);
+
+      if (error.message && error.message.includes("400")) {
+        setStatus("معلمات غير صحيحة. الرجاء التحقق من بريدك الإلكتروني.");
+      } else if (error.message && error.message.includes("409")) {
+        setStatus("أنت مشترك بالفعل في النشرة الإخبارية.");
+      } else {
+        setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
+      }
     } finally {
       setLoading(false);
     }
