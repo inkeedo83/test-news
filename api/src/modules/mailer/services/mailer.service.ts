@@ -1,4 +1,11 @@
-import { ConflictException, Injectable, InternalServerErrorException, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+  OnModuleInit
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import to from 'await-to-js';
 import { createTransport, Transporter } from 'nodemailer';
@@ -71,25 +78,26 @@ export class MailerService implements OnModuleInit {
     const isExist = await this.userEmailGuard(email);
 
     if (!isExist) {
-      await this.dataSource.manager.save(User, { email });
-
-      this.sendMail({
+      await this.sendMail({
         receiver: email,
         subject: 'Subscribe to our newsletter',
         text: 'Thank you for subscribing to our newsletter.'
       });
+      await this.dataSource.manager.save(User, { email });
     } else throw new ConflictException('Email already exist');
   }
 
   async unsubscribe(email: string): Promise<void> {
     const isExist = await this.userEmailGuard(email);
 
-    if (isExist) await this.dataSource.manager.delete(User, { email });
+    if (isExist) {
+      await this.sendMail({
+        receiver: email,
+        subject: 'Unsubscribe from our newsletter',
+        text: 'You have been unsubscribed from our newsletter.'
+      });
 
-    this.sendMail({
-      receiver: email,
-      subject: 'Unsubscribe from our newsletter',
-      text: 'You have been unsubscribed from our newsletter.'
-    });
+      await this.dataSource.manager.delete(User, { email });
+    } else throw new NotFoundException('Email not found');
   }
 }
