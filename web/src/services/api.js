@@ -1,5 +1,6 @@
 import baseUrl from "../assets/constants";
 import { getAuthToken, removeAuthToken } from "./auth";
+import axios from "axios";
 
 /**
  * Universal function for making API requests with authorization
@@ -19,7 +20,6 @@ export const apiRequest = async (endpoint, options = {}) => {
   // Add authorization header if it's not a public endpoint and token is available
   if (!isPublicEndpoint && token) {
     headers["Authorization"] = `Bearer ${token}`;
-
     console.log(
       `Adding Authorization header for endpoint ${endpoint}:`,
       headers.Authorization
@@ -48,45 +48,46 @@ export const apiRequest = async (endpoint, options = {}) => {
   console.log("Request headers:", headers);
 
   try {
-    const response = await fetch(url, {
-      ...options,
+    const response = await axios({
+      url,
+      method: options.method || "GET",
       headers,
+      data: options.body,
+      validateStatus: (status) => status >= 200 && status < 300,
     });
 
     console.log(`API response from ${url}, status: ${response.status}`);
-
-    // If response is not successful due to authorization issues, try to refresh token
-    if (response.status === 401 && !isPublicEndpoint) {
-      console.log("Received 401 Unauthorized response, token might be invalid");
-
-      // Remove current token
-      removeAuthToken();
-
-      // Here we can throw a special error that will be handled by UI
-      throw new Error("UNAUTHORIZED");
-    }
-
-    // Check for success for other errors
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.status} ${response.statusText}`);
-    }
 
     // For DELETE method usually there is no JSON response
     if (options.method === "DELETE") {
       return { success: true };
     }
 
-    // For other methods parse JSON response
-    return await response.json();
+    return response.data;
   } catch (error) {
-    // If this is our special authorization error, pass it further
-    if (error.message === "UNAUTHORIZED") {
-      throw error;
+    // Handle 401 Unauthorized error
+    if (error.response?.status === 401 && !isPublicEndpoint) {
+      console.log("Received 401 Unauthorized response, token might be invalid");
+      removeAuthToken();
+      throw new Error("UNAUTHORIZED");
     }
 
-    // Log other errors and transform to a readable format
+    // Handle other errors
     console.error("API Request failed:", error);
-    throw new Error(`API Request failed: ${error.message}`);
+
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      throw new Error(
+        `API Error: ${error.response.status} ${error.response.statusText}`
+      );
+    } else if (error.request) {
+      // The request was made but no response was received
+      throw new Error("No response received from server");
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      throw new Error(`Request setup failed: ${error.message}`);
+    }
   }
 };
 
