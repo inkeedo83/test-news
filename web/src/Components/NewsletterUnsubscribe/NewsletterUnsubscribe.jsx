@@ -25,7 +25,11 @@ export default function NewsletterUnsubscribe() {
       setStatus("تم إلغاء اشتراكك بنجاح من النشرة الإخبارية");
       setEmail("");
     } catch (error) {
-      setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
+      if (error.message.includes("404")) {
+        setStatus("لم يتم العثور على هذا البريد الإلكتروني في قائمة المشتركين");
+      } else {
+        setStatus("حدث خطأ. يرجى المحاولة مرة أخرى.");
+      }
       console.error(error);
     } finally {
       setLoading(false);
