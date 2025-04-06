@@ -83,7 +83,7 @@ function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed bg-gradient-to-r from-red-900/90 to-black dark:from-slate-900 dark:to-black md:text-md w-full sm:w-screen z-10 sm:text-xl">
+    <nav className="fixed bg-gradient-to-r from-rose-950 to-black  dark:from-slate-900 dark:to-black md:text-md w-full sm:w-screen z-10 sm:text-xl">
       <div className="container mx-auto">
         {/* Top Bar and Weather Section */}
         <div className="flex flex-col">
@@ -149,7 +149,6 @@ function Navbar() {
                   <Link to={category.link}>{category.label}</Link>
                 </li>
               ))}
-
               {/* Region Submenu */}
               <div className="relative static">
                 <button
@@ -204,7 +203,6 @@ function Navbar() {
                   </div>
                 </div>
               </div>
-
               {/* Cities Submenu */}
               <div className="relative static">
                 <button
@@ -257,7 +255,6 @@ function Navbar() {
                   </div>
                 </div>
               </div>
-
               {[
                 {
                   id: POLITIC.ID,
@@ -288,13 +285,20 @@ function Navbar() {
                   <Link to={category.link}>{category.label}</Link>
                 </li>
               ))}
-              {/* searchbarstart */}
-              <div className="flex rounded-full border-2 border-white dark:border-slate-600 overflow-hidden max-w-md mx-auto font-[sans-serif]">
+              {/* searchbar start */}
+              <div
+                className={`flex rounded-xl border border-white/40 overflow-hidden transition-all duration-300 mx-auto
+                      ${
+                        document.activeElement?.tagName === "INPUT"
+                          ? "w-[500px]"
+                          : "w-[200px]"
+                      }`}
+              >
                 <input
                   onChange={(e) => setSearchData(e.target.value)}
                   type="text"
                   placeholder="ابحث هنا..."
-                  className="w-full outline-none bg-white dark:bg-slate-800 dark:text-white text-sm px-3 sm:px-5 py-1 sm:py-3"
+                  className="w-full bg-white/10 text-white px-4 py-3 outline-none"
                 />
                 <Link
                   to={
@@ -308,7 +312,7 @@ function Navbar() {
                       searchData;
                     }}
                     type="button"
-                    className="flex items-center justify-center sm:bg-red-900 sm:hover:bg-red-950 px-6 py-4"
+                    className="flex items-center justify-center sm:bg-red-950 sm:hover:bg-red-900 px-6 py-4"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -325,17 +329,17 @@ function Navbar() {
                 {isDarkMode ? (
                   <RiSunLine className="text-yellow-400 hover:text-yellow-300 size-[30px]" />
                 ) : (
-                  <BsFillMoonStarsFill className="text-blue-500/100 hover:text-blue-500 size-[22px]" />
+                  <BsFillMoonStarsFill className="text-blue-100 hover:text-blue-500 size-[22px]" />
                 )}
               </button>
             </ul>
-            {/* searchbarend */}
+            {/* searchbar end */}
           </div>
         )}
-        {/*  start mobile view */}
+        {/* start mobile view */}
         {isOpen && (
           <div
-            className="absolute left-0 top-[64px] w-screen min-h-screen z-50 text-center text-black bg-gradient-to-r from-red-900 to-black dark:bg-gradient-to-r dark:from-slate-900 dark:to-black"
+            className="absolute left-0 top-[64px] w-screen min-h-screen z-50 text-center text-white bg-gradient-to-r from-rose-950 to-black dark:text-gray-200 dark:bg-gradient-to-r dark:from-gray-950 dark:via-zinc-950 dark:to-gray-950"
             ref={menuRef}
           >
             <div className="flex flex-col h-[calc(100vh-70px)] relative">
@@ -346,11 +350,10 @@ function Navbar() {
                   setShowMobileRegions(false);
                   setShowMobileCities(false);
                 }}
-                className="absolute top-4 right-4 size-10 border-2 rounded-full border-white/30 text-white/90 transition-all hover:rotate-90 duration-300 z-50"
+                className="absolute top-4 right-4 size-10 border-4 rounded-full border-white text-white/90 transition-all hover:rotate-90 duration-300 z-50"
               >
                 ×
               </button>
-
               {/* Menu Content */}
               <div className="flex-1 overflow-y-auto px-4 pt-16 pb-4">
                 {!showMobileRegions && !showMobileCities ? (
@@ -395,7 +398,7 @@ function Navbar() {
                     ].map((item) => (
                       <div
                         key={item.id}
-                        className="bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300"
+                        className="bg-white/10 hover:bg-white/30 rounded-xl transition-all duration-300"
                       >
                         {item.action ? (
                           <button
@@ -508,11 +511,17 @@ function Navbar() {
                   </div>
                 )}
               </div>
-
               {/* Fixed Bottom Section */}
               <div className="absolute bottom-0 left-0 right-0 p-4 space-y-4 bg-gradient-to-t from-black/80 to-transparent pt-8">
                 {/* Search Bar */}
-                <div className="flex rounded-xl border border-white/20 overflow-hidden">
+                <div
+                  className={`flex rounded-xl border border-white/20 overflow-hidden transition-all duration-300 mx-auto
+                        ${
+                          document.activeElement?.tagName === "INPUT"
+                            ? "w-[350px]"
+                            : "w-[200px]"
+                        }`}
+                >
                   <input
                     onChange={(e) => setSearchData(e.target.value)}
                     type="text"
