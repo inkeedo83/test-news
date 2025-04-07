@@ -5,6 +5,7 @@ import { RiEyeFill } from "react-icons/ri";
 import { FaPencil } from "react-icons/fa6";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
+import baseUrl from "../../assets/constants";
 
 const DateOptions = {
   weekday: "long",
