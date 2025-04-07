@@ -510,17 +510,15 @@ function Navbar() {
                     ))}
                   </div>
                 )}
-              </div>
-              {/* Fixed Bottom Section */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 space-y-4 bg-gradient-to-t from-black/80 to-transparent pt-8">
-                {/* Search Bar */}
+                {/* Search Bar moved below categories */}
+                <div className="mt-4"></div>
                 <div
                   className={`flex rounded-xl border border-white/20 overflow-hidden transition-all duration-300 mx-auto
-                        ${
-                          document.activeElement?.tagName === "INPUT"
-                            ? "w-[350px]"
-                            : "w-[200px]"
-                        }`}
+                            ${
+                              document.activeElement?.tagName === "INPUT"
+                                ? "w-[350px]"
+                                : "w-[200px]"
+                            }`}
                 >
                   <input
                     onChange={(e) => setSearchData(e.target.value)}
