@@ -25,6 +25,11 @@ const AdminProtectedRoute = React.lazy(() =>
 const NewsletterUnsubscribe = React.lazy(() =>
   import("../NewsletterUnsubscribe/NewsletterUnsubscribe")
 );
+const PrivacyPolicy = React.lazy(() =>
+  import("../../pages/privacy-policy.jsx")
+);
+const ContactUs = React.lazy(() => import("../../pages/contact-us.jsx"));
+const WhoAreWe = React.lazy(() => import("../../pages/who-are-we.jsx"));
 
 function App() {
   return (
@@ -53,6 +58,9 @@ function App() {
                   path="/newsletter/unsubscribe"
                   element={<NewsletterUnsubscribe />}
                 />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/contact-us" element={<ContactUs />} />
+                <Route path="/who-are-we" element={<WhoAreWe />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </Suspense>

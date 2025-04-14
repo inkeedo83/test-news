@@ -52,7 +52,7 @@ export default function MainPageTest() {
   useEffect(() => {
     fetch(
       `${baseUrl}/public/articles?limit=12&offset=${Math.floor(
-        Math.random() * 100
+        Math.random() * 10
       )}`
     )
       .then((res) => {
@@ -68,6 +68,8 @@ export default function MainPageTest() {
       .catch((err) => console.log(err));
     toTop();
   }, []);
+  // fetch end here
+  console.log(data);
 
   // Loading skeleton component
   const LoadingSkeleton = () => (

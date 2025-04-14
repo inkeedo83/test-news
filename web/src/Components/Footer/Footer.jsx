@@ -24,33 +24,29 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* About Us Section */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              {getLocalizedText("FOOTER.ABOUT_US.TITLE")}
-            </h3>
             <ul className="space-y-2">
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+                <a href="/who-are-we">
+                  {" "}
+                  {getLocalizedText("FOOTER.ABOUT_US.TITLE")}
+                </a>
+              </h3>
+
               <li>
                 <a
-                  href=""
+                  href="/contact-us"
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  {getLocalizedText("FOOTER.ABOUT_US.ABOUT")}
+                  تواصل معنا
                 </a>
               </li>
               <li>
-                <a
-                  href=""
+                <Link
+                  to="/privacy-policy"
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  {getLocalizedText("FOOTER.ABOUT_US.TERMS")}
-                </a>
-              </li>
-              <li>
-                <a
-                  href=""
-                  className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
-                >
-                  {getLocalizedText("FOOTER.ABOUT_US.PRIVACY")}
-                </a>
+                  سياسه الخصوصية
+                </Link>
               </li>
             </ul>
           </div>
@@ -85,7 +81,7 @@ function Footer() {
           {/* Social Media Section */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gray-800 dark:text-white">
-              {getLocalizedText("FOOTER.CONTACT.TITLE")}
+              {getLocalizedText("FOOTER.CONTACT.TITLE")} على
             </h3>
             <div className="flex flex-wrap gap-4">
               {[
