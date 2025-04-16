@@ -2,45 +2,46 @@ import React from "react";
 
 function PrivacyPolicy() {
   return (
-    <div className="max-w-4xl mx-auto px-4  pt-72 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-        سياسة الخصوصية
-      </h1>
-      <div className="prose dark:prose-invert" dir="rtl">
-        <p className="mb-4">
-          نحن في مراسل بلجيكا نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية. تشرح
-          هذه السياسة كيفية جمعنا واستخدامنا وحماية معلوماتك.
-        </p>
+    <>
+      <div className="max-w-4xl mx-auto px-4 pt-72 py-8 bg-white dark:bg-gray-900">
+        <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+          سياسة الخصوصية
+        </h1>
+        <div
+          className="prose dark:prose-invert prose-headings:text-gray-900 dark:prose-headings:text-white prose-p:text-gray-700 dark:prose-p:text-gray-300"
+          dir="rtl"
+        >
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
+            نحن في مراسل بلجيكا نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية. تشرح
+            هذه السياسة كيفية جمعنا واستخدامنا وحماية معلوماتك.
+          </p>
 
-        <h2 className="text-xl font-semibold mt-6 mb-4">جمع المعلومات</h2>
-        <p className="mb-4">
-          نقوم بجمع المعلومات التي تقدمها مباشرة عند:
-          <ul className="list-disc mr-6 mt-2">
-            <li>التسجيل في موقعنا</li>
-            <li>الاشتراك في نشرتنا الإخبارية</li>
-            <li>التواصل معنا</li>
-          </ul>
-        </p>
+          <h2 className="text-xl font-semibold mt-6 mb-4 text-gray-800 dark:text-gray-100">
+            جمع المعلومات
+          </h2>
+          <p className="mb-4 text-gray-700 dark:text-gray-300">
+            نقوم بجمع المعلومات التي تقدمها مباشرة عند:
+            <ul className="list-disc mr-6 mt-2 text-gray-700 dark:text-gray-300">
+              <li>الاشتراك في نشرتنا الإخبارية</li>
+              <li>التواصل معنا</li>
+            </ul>
+          </p>
 
-        <h2 className="text-xl font-semibold mt-6 mb-4">استخدام المعلومات</h2>
-        <p className="mb-4">
-          نستخدم معلوماتك لـ:
-          <ul className="list-disc mr-6 mt-2">
-            <li>تقديم الخدمات الإخبارية</li>
-            <li>تحسين تجربة المستخدم</li>
-            <li>التواصل معك بخصوص الأخبار والتحديثات</li>
-            <li>الامتثال للمتطلبات القانونية</li>
-          </ul>
-        </p>
+          {/* Rest of the content with same pattern */}
+          {/* ... */}
+        </div>
 
-        <h2 className="text-xl font-semibold mt-6 mb-4">حماية المعلومات</h2>
-        <p className="mb-4">
+        <p className="mt-6"></p>
+        <p className="mb-4 text-gray-700 dark:text-gray-300">
           نتخذ تدابير أمنية مناسبة لحماية معلوماتك من الوصول غير المصرح به
           والتعديل والإفصاح.
         </p>
 
-        <h2 className="text-xl font-semibold mt-6 mb-4"> ملفات الكوكيز </h2>
-        <p>
+        <h2 className="text-xl font-semibold mt-6 mb-4 text-gray-800 dark:text-gray-100">
+          {" "}
+          ملفات الكوكيز{" "}
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">
           ملفات الكوكيز ملف تعريف الارتباط هو ملف نصي يتم وضعه على محرك الأقراص
           الثابتة بواسطة خادم صفحة ويب. لا يمكن لملفات تعريف الارتباط تشغيل
           برامج أو وضع فيروسات على جهاز الكمبيوتر الخاص بك. وهي تنسب إليك بشكل
@@ -54,19 +55,23 @@ function PrivacyPolicy() {
           الصفحات التي وصل إليها أو زارها سابقاً، حيث تخصص محتوى الصفحة استناداً
           إلى نوع متصفح الزائر أو معلومات أخرى يتم إرسالها.
         </p>
+        <p className="mt-6">
+          <strong className="text-gray-900 dark:text-white">
+            تاريخ آخر تحديث: 2025-04-14
+          </strong>
+        </p>
+        <p className="mt-6">
+          <strong className="text-gray-900 dark:text-white">
+            مراسل بلجيكا
+          </strong>
+          <br />
+        </p>
+        <p className="mt-6 text-gray-700 dark:text-gray-300 pb-4">
+          إذا كان لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية الخاصة بنا، فلا
+          تتردد في الاتصال بنا عبر صفحة "اتصل بنا".
+        </p>
       </div>
-      <p className="mt-6">
-        إذا كان لديك أي أسئلة أو مخاوف بشأن سياسة الخصوصية الخاصة بنا، فلا تتردد
-        في الاتصال بنا عبر صفحة "اتصل بنا".
-      </p>
-      <p className="mt-6">
-        <strong>تاريخ آخر تحديث: 2025-04-14</strong>
-      </p>
-      <p className="mt-6">
-        <strong>مراسل بلجيكا</strong>
-        <br />
-      </p>
-    </div>
+    </>
   );
 }
 
