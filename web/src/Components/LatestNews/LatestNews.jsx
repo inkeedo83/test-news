@@ -88,7 +88,7 @@ export default function LatestNews() {
                 </div>
 
                 <Link to={`/articles/${item.id}`}>
-                  <h4 className="text-red-600 mr-4 font-semibold group-hover:text-red-500 dark:group-hover:text-red-700 transition-colors">
+                  <h4 className="text-white text-sm sm:text-lg mr-4 font-semibold group-hover:text-red-500 dark:group-hover:text-red-700 transition-colors">
                     {item.title}
                   </h4>
                 </Link>

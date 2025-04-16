@@ -38,25 +38,21 @@ export default function TwoArticals() {
           key={item.id}
           className="w-full relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl transform hover:scale-[1.01] transition-all duration-300"
         >
-          <div className="absolute top-4 right-4 z-10">
-            <span className="px-4 py-2 bg-red-900/90 text-white text-sm font-semibold rounded-full">
-              {CATEGORIES[item.category].AR}
-            </span>
-          </div>
-
-          <div className="flex flex-row h-full">
+          <div className="flex flex-col sm:flex-row h-full">
             <div
-              className={`${index % 2 === 0 ? "order-2" : "order-1"}  sm:w-1/2`}
+              className={`${
+                index % 2 === 0 ? "order-2" : "order-1"
+              } w-full sm:w-1/2`}
             >
               <Link to={`/articles/${item.id}`}>
-                <div className="relative h-[50vh]">
+                <div className="relative h-[300px] sm:h-[400px]">
                   <img
                     src={
                       item.image === `${baseUrl}/image/null`
                         ? BeReporterNew
                         : item.image
                     }
-                    className="sm:w-full w-72 h-full sm:object-cover  "
+                    className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent sm:bg-gradient-to-r"></div>
                 </div>

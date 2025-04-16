@@ -50,11 +50,7 @@ export default function MainPageTest() {
 
   // fetch start here
   useEffect(() => {
-    fetch(
-      `${baseUrl}/public/articles?limit=12&offset=${Math.floor(
-        Math.random() * 10
-      )}`
-    )
+    fetch(`${baseUrl}/public/articles?limit=12&order=DESC`)
       .then((res) => {
         const resulte = res.json();
         return resulte;
@@ -162,7 +158,7 @@ export default function MainPageTest() {
                             ? BeReporterNew
                             : item.image
                         }
-                        className="w-full h-48 sm:h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="  w-full h-48 sm:h-56 object-fill  transition-transform duration-300 group-hover:scale-105"
                         alt={item.title}
                       />
                       <div className="absolute top-2 right-2 sm:top-4 sm:right-4">

@@ -50,7 +50,7 @@ export default function MainPageCat({ id, cat }) {
                         ? BeReporterNew
                         : item.image
                     }
-                    className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-56 object-fill transition-transform duration-300 group-hover:scale-105"
                     alt={item.title}
                   />
                   <div className="absolute top-4 right-4">
