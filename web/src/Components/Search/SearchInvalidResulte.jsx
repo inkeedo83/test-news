@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 export default function SearchInvalidResulte() {
   const navigate = useNavigate();
   return (
-    <div className="   flex flex-col  items-center  h-fit mt-72 ">
+    <div className="   flex flex-col  items-center  h-fit pt-72 ">
       {" "}
       <h1
         className="text-xl text-red-500 mt-72 text-center 
