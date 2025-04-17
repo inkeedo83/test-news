@@ -73,7 +73,11 @@ export const CATEGORIES = [
   'ECONOMIC',
   'POLITIC',
   'ACCIDENT',
-  'CULTURE'
+  'CULTURE',
+  'HEALTH',
+  'EDUCATION',
+  'ARAB_COMMUNITY_NEWS',
+  'LOCAL_EVENTS'
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
