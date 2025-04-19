@@ -17,7 +17,6 @@ const { MAIN } = CATEGORIES;
 
 export default function ReadArticleByCat() {
   const { id } = useParams();
-  console.log(id);
 
   //states
   const [isloading, setIsloading] = useState(true);
@@ -41,8 +40,6 @@ export default function ReadArticleByCat() {
       .catch((err) => console.log(err));
     toTop();
   }, [id, page]);
-
-  console.log(data, "render by catigory");
 
   return (
     <div className="min-h-screen  bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200">

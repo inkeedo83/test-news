@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 import baseUrl from "../../assets/constants";
 import { CATEGORIES } from "../../assets/categories.constant";
 import BeReporterNew from "../../assets/BeReporterNew.jpg";
@@ -14,33 +15,37 @@ const DateOptions = {
 const toTop = () => {
   window.scrollTo(0, 0);
 };
-export function RelatedArticles() {
+export function RelatedArticles({ category, id }) {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=5&order=DESC`;
+  const [filteredData, setFilteredData] = useState([]);
+  const http = `${baseUrl}/public/articles?limit=5&&category=${category}`;
 
   useEffect(() => {
-    fetch(http)
-      .then((res) => {
-        const resulte = res.json();
-        return resulte;
-      })
-      .then((resulte) => {
-        setData(resulte.data);
-      })
-
-      .catch((err) => console.log(err));
-    toTop();
-  }, []);
-  const screen = window.screen.width > 500;
+    if (category && id) {
+      fetch(http)
+        .then((res) => res.json())
+        .then((resulte) => {
+          setData(resulte.data);
+          if (resulte.data) {
+            const filtered = resulte.data.filter((item) => item.id !== id);
+            setFilteredData(filtered);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      setFilteredData([]);
+    }
+  }, [category, id]);
+  toTop();
 
   return (
     <div className="w-full p-4">
-      <h3 className="text-xl font-bold mb-6 dark:text-white text-zinc-800">
-        مواضيع ذات صله
+      <h3 className="text-xl font-bold mb-6 bg-red-900  rounded-md h-10 w-fit p-2 dark:text-white text-zinc-800">
+        مواضيع اخرى تخص {CATEGORIES[category].AR}
       </h3>
       <div className="grid gap-4">
-        {data &&
-          data.map((item) => (
+        {filteredData &&
+          filteredData.map((item) => (
             <Link
               key={item.id}
               to={`/articles/${item.id}`}
@@ -83,3 +88,8 @@ export function RelatedArticles() {
     </div>
   );
 }
+
+RelatedArticles.propTypes = {
+  category: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+};

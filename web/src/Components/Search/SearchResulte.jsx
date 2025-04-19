@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { CATEGORIES } from "../../assets/categories.constant";
 import baseUrl from "../../assets/constants";
@@ -25,7 +25,7 @@ export default function SearchResulte() {
   const toTop = () => {
     window.scrollTo(0, 0);
   };
-
+  const navigate = useNavigate();
   useEffect(() => {
     setIsLoading(true);
     setError(null);
@@ -53,11 +53,23 @@ export default function SearchResulte() {
   if (isLoading) return <LoadingSkeleton count={6} />;
   if (error)
     return (
-      <div className="text-red-500 text-center mt-10">حدث خطأ: {error}</div>
+      <div className="text-red-500 text-center pt-72">حدث خطأ: {error}</div>
     );
   if (!data.length)
     return (
-      <div className="text-gray-400 text-center mt-10">لا توجد نتائج للبحث</div>
+      <>
+        <div className="text-gray-400 text-center pt-72">
+          لا توجد نتائج للبحث
+          <div>
+            <button
+              className=" mt-10 mb-10  text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 mb-1 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+              onClick={() => navigate("/")}
+            >
+              عوده الى الرئيسية
+            </button>
+          </div>
+        </div>
+      </>
     );
 
   return (
@@ -71,12 +83,11 @@ export default function SearchResulte() {
             <IoHome className="w-4 h-4 sm:w-5 sm:h-5 ml-1" />
             <span className="hidden sm:inline">{MAIN.AR}</span>
           </Link>
-          {["/", "الاخبار", "نتائج البحث"].map((item, index) => (
+          {["/", "نتائج البحث"].map((item, index) => (
             <span
               key={index}
               className="flex items-center text-gray-500 whitespace-nowrap"
             >
-              <span className="mx-1 sm:mx-2">/</span>
               <span>{item}</span>
             </span>
           ))}
@@ -113,6 +124,14 @@ export default function SearchResulte() {
             </div>
           </div>
         )}
+        <div>
+          <button
+            className=" mt-10 mb-10 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-1 mb-1 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+            onClick={() => navigate("/")}
+          >
+            عوده الى الرئيسية
+          </button>
+        </div>
       </div>
     </div>
   );

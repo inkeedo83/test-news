@@ -65,7 +65,6 @@ export default function MainPageTest() {
     toTop();
   }, []);
   // fetch end here
-  console.log(data);
 
   // Loading skeleton component
   const LoadingSkeleton = () => (

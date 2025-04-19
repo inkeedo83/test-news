@@ -28,8 +28,6 @@ const Auth0ProviderWithHistory = ({ children }) => {
     navigate(appState?.returnTo || "/admin");
   };
 
-  console.log("Auth0Provider initialized with audience:", audience);
-
   return (
     <Auth0Provider
       domain={domain}

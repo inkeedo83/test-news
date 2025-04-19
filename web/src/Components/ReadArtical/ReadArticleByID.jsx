@@ -42,7 +42,6 @@ export default function ReadArticleByID() {
     toTop();
   }, [id]);
 
-  console.log(data);
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-purple-50 dark:bg-gradient-to-r dark:from-gray-900 dark:to-gray-800 text-gray-900 dark:text-gray-100">
       <div className="container mx-auto py-16 px-4">
@@ -192,7 +191,9 @@ export default function ReadArticleByID() {
           </>
         )}
       </div>
-      <RelatedArticles />
+      {data && data ? (
+        <RelatedArticles category={data.category} id={data.id} />
+      ) : null}
     </div>
   );
 }

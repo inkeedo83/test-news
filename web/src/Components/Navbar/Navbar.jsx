@@ -287,7 +287,7 @@ function Navbar() {
               ))}
               {/* searchbar start */}
               <div
-                className={`flex rounded-xl border border-white/40 overflow-hidden transition-all duration-300 mx-auto
+                className={`flex rounded-xl border mb-1 border-white/40 overflow-hidden transition-all duration-300 mx-auto
                       ${
                         document.activeElement?.tagName === "INPUT"
                           ? "w-[500px]"
@@ -312,7 +312,7 @@ function Navbar() {
                       searchData;
                     }}
                     type="button"
-                    className="flex items-center justify-center sm:bg-red-950 sm:hover:bg-red-900 px-6 py-4"
+                    className="flex items-center justify-center sm:bg-red-950 sm:hover:bg-red-900 dark:sm:hover:bg-gray-900 px-6 py-4"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
