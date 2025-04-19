@@ -34,10 +34,6 @@ export function WriterEffect(props) {
             />
           </div>
         </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-full"></div>
-        <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-red-500/20 to-transparent rounded-tr-full"></div>
       </div>
     </div>
   );
