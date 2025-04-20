@@ -59,7 +59,11 @@ const categories: Category[] = [
   'POLITIC',
   'ECONOMIC',
   'ACCIDENT',
-  'CULTURE'
+  'CULTURE',
+  'HEALTH',
+  'EDUCATION',
+  'ARAB_COMMUNITY_NEWS',
+  'LOCAL_EVENTS'
 ];
 
 export const CATEGORIES = [
