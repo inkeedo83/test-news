@@ -3,7 +3,7 @@ import axios from "axios";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useLocalization } from "../../hooks/useLocalization";
 
-export default function Weather() {
+export default function WeatherWidget() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

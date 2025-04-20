@@ -30,6 +30,7 @@ const PrivacyPolicy = React.lazy(() =>
 );
 const ContactUs = React.lazy(() => import("../../pages/contact-us.jsx"));
 const WhoAreWe = React.lazy(() => import("../../pages/who-are-we.jsx"));
+import Weather from "../Weather/DaysWeather.jsx";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/contact-us" element={<ContactUs />} />
                 <Route path="/who-are-we" element={<WhoAreWe />} />
+                <Route path="/weather" element={<Weather />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
             </Suspense>
