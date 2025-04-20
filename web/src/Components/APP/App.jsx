@@ -5,7 +5,6 @@ import Footer from "../Footer/Footer";
 import { DarkModeProvider } from "../../context/DarkModeContext";
 import { LanguageProvider } from "../../context/LanguageContext";
 import Auth0ProviderWithHistory from "../Auth0ProviderWithHistory/Auth0ProviderWithHistory";
-import Weather from "../Weather/weather.jsx";
 
 // Lazy load components
 const MainPage = React.lazy(() => import("../MainPage/MainPage"));
