@@ -37,15 +37,10 @@ export function RelatedArticles({ category, id }) {
     }
   }, [category, id]);
   toTop();
-  console.log("filteredData", filteredData);
-  console.log("category", category);
-  console.log("id", id);
-  console.log("data", data);
-  console.log("http", http);
 
   return (
     <div className="w-full p-4">
-      <h3 className="text-xl font-bold mb-6 bg-red-900  rounded-md h-10 w-fit p-2 dark:text-white text-zinc-800">
+      <h3 className="text-xl font-bold mb-6 bg-red-900  rounded-md h-10 w-fit p-2 text-white ">
         مواضيع اخرى تخص {CATEGORIES[category].AR}
       </h3>
       <div className="grid gap-4">
