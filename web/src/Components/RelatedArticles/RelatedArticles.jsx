@@ -37,6 +37,11 @@ export function RelatedArticles({ category, id }) {
     }
   }, [category, id]);
   toTop();
+  console.log("filteredData", filteredData);
+  console.log("category", category);
+  console.log("id", id);
+  console.log("data", data);
+  console.log("http", http);
 
   return (
     <div className="w-full p-4">
