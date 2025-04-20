@@ -21,6 +21,10 @@ const {
   ECONOMIC,
   ACCIDENT,
   CULTURE,
+  HEALTH,
+  EDUCATION,
+  LOCAL_EVENTS,
+  ARAB_COMMUNITY_NEWS,
 } = CATEGORIES;
 
 function Navbar() {
@@ -277,6 +281,29 @@ function Navbar() {
                   label: CULTURE.AR,
                   link: `/categories/${CULTURE.ID}`,
                 },
+                {
+                  id: HEALTH.ID,
+                  label: HEALTH.AR,
+                  link: `/categories/${HEALTH.ID}`,
+                },
+                {
+                  id: EDUCATION.ID,
+                  label: EDUCATION.AR,
+                  link: `/categories/${EDUCATION.ID}`,
+                },
+                {
+                  id: ARAB_COMMUNITY_NEWS.ID,
+
+                  label: ARAB_COMMUNITY_NEWS.AR,
+
+                  link: `/categories/ARAB_COMMUNITY_NEWS`,
+                },
+
+                {
+                  id: LOCAL_EVENTS.ID,
+                  label: LOCAL_EVENTS.AR,
+                  link: `/categories/${LOCAL_EVENTS.ID}`,
+                },
               ].map((category) => (
                 <li
                   key={category.id}
@@ -357,7 +384,7 @@ function Navbar() {
               {/* Menu Content */}
               <div className="flex-1 overflow-y-auto px-4 pt-16 pb-4">
                 {!showMobileRegions && !showMobileCities ? (
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     {[
                       { id: MAIN.ID, label: MAIN.AR, link: "/" },
                       {
@@ -395,6 +422,29 @@ function Navbar() {
                         label: CULTURE.AR,
                         link: `/categories/${CULTURE.ID}`,
                       },
+                      {
+                        id: HEALTH.ID,
+                        label: HEALTH.AR,
+                        link: `/categories/${HEALTH.ID}`,
+                      },
+                      {
+                        id: EDUCATION.ID,
+                        label: EDUCATION.AR,
+                        link: `/categories/${EDUCATION.ID}`,
+                      },
+                      {
+                        id: ARAB_COMMUNITY_NEWS.ID,
+
+                        label: ARAB_COMMUNITY_NEWS.AR,
+
+                        link: `/categories/ARAB_COMMUNITY_NEWS`,
+                      },
+
+                      {
+                        id: LOCAL_EVENTS.ID,
+                        label: LOCAL_EVENTS.AR,
+                        link: `/categories/${LOCAL_EVENTS.ID}`,
+                      },
                     ].map((item) => (
                       <div
                         key={item.id}
@@ -420,9 +470,9 @@ function Navbar() {
                     ))}
                   </div>
                 ) : showMobileRegions ? (
-                  <div className="grid grid-cols-1 gap-0">
+                  <div className="grid grid-cols-2 gap-2">
                     {/* Back Button */}
-                    <div className="bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300 mb-4">
+                    <div className="col-span-2 bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300 mb-4">
                       <button
                         onClick={() => setShowMobileRegions(false)}
                         className="block w-full p-4 text-white"
@@ -465,9 +515,9 @@ function Navbar() {
                     ))}
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 gap-0">
+                  <div className="grid grid-cols-2 gap-2">
                     {/* Back Button */}
-                    <div className="bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300 mb-4">
+                    <div className="col-span-2 bg-white/5 hover:bg-white/10 rounded-xl transition-all duration-300 mb-4">
                       <button
                         onClick={() => setShowMobileCities(false)}
                         className="block w-full p-4 text-white"

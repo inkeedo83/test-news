@@ -53,5 +53,25 @@ const CATEGORIES = {
     AR: " حوادث",
   },
   CULTURE: { ID: "CULTURE", EN: " Culture", AR: " ثقافة" },
+  HEALTH: {
+    ID: "HEALTH",
+    EN: " Health",
+    AR: " صحة",
+  },
+  EDUCATION: {
+    ID: "EDUCATION",
+    EN: " Education",
+    AR: " تعليم",
+  },
+  ARAB_COMMUNITY_NEWS: {
+    ID: "ARAB_COMMUNITY_NEWS",
+    EN: " Arab Community News",
+    AR: " الجالية العربية",
+  },
+  LOCAL_EVENTS: {
+    ID: "LOCAL_EVENTS",
+    EN: " Local Events",
+    AR: "محليات",
+  },
 };
 export { CATEGORIES };
