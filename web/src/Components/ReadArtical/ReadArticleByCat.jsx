@@ -23,7 +23,6 @@ export default function ReadArticleByCat() {
   const [data, setData] = useState([]);
   const [count, setCount] = useState([]);
   const [page, setPage] = useState(12);
-  console.log(page);
   const toTop = () => {
     window.scrollTo(0, 0);
   };
@@ -31,11 +30,7 @@ export default function ReadArticleByCat() {
   useEffect(() => {
     axios
       .get(`${baseUrl}/public/articles?limit=${page}&order=DESC&category=${id}`)
-      .then(
-        (res) => (
-          console.log(count), setData(res.data.data), setCount(res.data.count)
-        )
-      )
+      .then((res) => (setData(res.data.data), setCount(res.data.count)))
 
       .catch((err) => console.log(err));
     toTop();

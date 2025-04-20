@@ -1,7 +1,7 @@
 import { CATEGORIES } from "../../assets/categories.constant";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import Weather from "../Weather/Weather";
+import WeatherWidget from "../Weather/WeatherWidget";
 import { useLocalization } from "../../hooks/useLocalization";
 // import ThemeSwitcher from "../common/ThemeSwitcher";
 import { BsFillMoonStarsFill } from "react-icons/bs";
@@ -103,7 +103,7 @@ function Navbar() {
               `}
           >
             <div className="flex justify-center items-center px-4 py-2">
-              <Weather />
+              <WeatherWidget />
             </div>
           </div>
         </div>
@@ -145,7 +145,10 @@ function Navbar() {
           <div>
             {/* Start desktop view */}
             <ul className="flex items-center justify-center">
-              {[{ id: MAIN.ID, label: MAIN.AR, link: "/" }].map((category) => (
+              {[
+                { id: MAIN.ID, label: MAIN.AR, link: "/" },
+                { id: "weather", label: "الطقس", link: "/weather" },
+              ].map((category) => (
                 <li
                   key={category.id}
                   className="text-white rounded-sm p-2 hover:text-black hover:bg-white dark:hover:bg-slate-700 dark:hover:text-white"
@@ -387,6 +390,7 @@ function Navbar() {
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       { id: MAIN.ID, label: MAIN.AR, link: "/" },
+                      { id: "weather", label: "الطقس", link: "/weather" },
                       {
                         id: "regions",
                         label: "اقاليم",

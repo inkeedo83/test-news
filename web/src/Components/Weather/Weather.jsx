@@ -1,88 +1,70 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useLanguage } from "../../hooks/useLanguage";
-import { useLocalization } from "../../hooks/useLocalization";
 
 export default function Weather() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { language } = useLanguage();
-  const { getLocalizedText } = useLocalization();
-
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
         setLoading(true);
-
-        const KEY = "02424f83edf54e8bba6130631251103";
-        const apiLang = language === "AR" ? "ar" : "en";
-        const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=brussels&lang=${apiLang}&days=3`;
-
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(
+          `https://api.weatherapi.com/v1/forecast.json?key=c7e6edb50f2d41be802122547252004&q=brussels&days=7`
+        );
         setData(response.data);
       } catch (err) {
         setError(err.message);
-        console.error("Error fetching weather data:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchWeatherData();
-  }, [language]);
+  }, []);
 
-  if (loading) return <div className="text-center p-2">Loading...</div>;
+  if (loading)
+    return <div className="text-center p-4">Loading weather data...</div>;
   if (error)
-    return <div className="text-center text-red-500 p-2">Error: {error}</div>;
-  if (!data) return <div className="text-center p-2">No data available</div>;
-
-  const getDayLabel = (index) => {
-    if (index === 0) return getLocalizedText("WEATHER.TODAY");
-    if (index === 1) return language === "AR" ? "غداً" : "Tomorrow";
-    return language === "AR" ? "بعد غد" : "Day after";
-  };
+    return <div className="text-center text-red-500 p-4">Error: {error}</div>;
+  if (!data) return null;
 
   return (
-    <div
-      className="weather-widget h-21 w-screen  
-         bg-gradient-to-r dark:from-gray-800/90 dark:to-gray-700/90
-           from-red-900/90 to-blue-800/90 p-1 mr-1 ml-1 rounded-md shadow-lg backdrop-blur-sm flex items-center justify-between"
-    >
-      <div className="text-center text-white mb-2">
-        <div className="sm:text-lg text-md">
-          {language === "AR" ? "بروكسل" : "Brussels"}
-        </div>
-      </div>
-      {data ? (
-        <div className="flex items-center justify-between gap-0 text-white relative w-full">
-          {data.forecast.forecastday.map((day, index) => (
+    <div className="max-w-6xl mx-auto p-4 pt-72">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
+          7-Day Weather Forecast - Brussels
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          {data.forecast.forecastday.map((day) => (
             <div
               key={day.date}
-              className="flex-1 flex flex-col items-center p-1 ml-6 sm:m-0 rounded-lg hover:bg-white/10 transition-all duration-300"
+              className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center"
             >
-              <span className="text-md sm:text-lg font-medium mb-1">
-                {getDayLabel(index)}
-              </span>
-
-              <div className="flex items-center gap-0">
-                <img
-                  src={day.day.condition.icon}
-                  alt={day.day.condition.text}
-                  className="w-4 h-4"
-                />
-                <span className="sm:text-xl text-md font-bold">
-                  {day.day.maxtemp_c.toFixed(0)}°
-                </span>
-                <span className="sm:text-md text-xs dark:text-red-700 text-white m-1 font-bold">
-                  {day.day.mintemp_c.toFixed(0)}°
-                </span>
+              <div className="text-gray-600 dark:text-gray-300">
+                {new Date(day.date).toLocaleDateString("en-US", {
+                  weekday: "short",
+                })}
+              </div>
+              <img
+                src={day.day.condition.icon}
+                alt={day.day.condition.text}
+                className="mx-auto w-16 h-16"
+              />
+              <div className="text-lg font-semibold dark:text-white">
+                {Math.round(day.day.maxtemp_c)}°C
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                {Math.round(day.day.mintemp_c)}°C
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">
+                {day.day.condition.text}
               </div>
             </div>
           ))}
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }
