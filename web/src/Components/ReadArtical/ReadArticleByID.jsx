@@ -99,6 +99,7 @@ export default function ReadArticleByID() {
               </div>
               <div className="flex justify-center mb-6">
                 <img
+                  loading="lazy"
                   src={
                     data.image === `${baseUrl}/image/null`
                       ? BeReporterNew

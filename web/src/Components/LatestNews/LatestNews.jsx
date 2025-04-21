@@ -18,6 +18,10 @@ const {
   LAW,
   CULTURE,
   ACCIDENT,
+  HEALTH,
+  ARAB_COMMUNITY_NEWS,
+  LOCAL_EVENTS,
+  EDUCATION,
 } = CATEGORIES;
 const DateOptions = {
   month: "short",
@@ -57,6 +61,7 @@ export default function LatestNews() {
                     {data.indexOf(item) + 1}
                   </div>
                   <img
+                    loading="lazy"
                     src={
                       item.image === `${baseUrl}/image/null`
                         ? BeReporterNew

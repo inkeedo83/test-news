@@ -54,6 +54,7 @@ export function RelatedArticles({ category, id }) {
               <div className="flex flex-row-reverse gap-4 p-3">
                 <div className="flex-shrink-0">
                   <img
+                    loading="lazy"
                     src={
                       item.image === `${baseUrl}/image/null`
                         ? BeReporterNew

@@ -35,7 +35,7 @@ const toTop = () => {
   window.scrollTo(0, 0);
 };
 
-export default function MainPageTest() {
+export default function MainPage() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [isloading, setIsloading] = useState(true);
   const [data, setData] = useState([]);
@@ -101,6 +101,7 @@ export default function MainPageTest() {
                   }`}
                 >
                   <img
+                    loading="lazy"
                     src={
                       data.find((article) => article.isImportant).image ===
                       `${baseUrl}/image/null`
@@ -166,6 +167,7 @@ export default function MainPageTest() {
                     <div className="relative">
                       <Link to={`/articles/${item.id}`}>
                         <img
+                          loading="lazy"
                           src={
                             item.image === `${baseUrl}/image/null`
                               ? BeReporterNew

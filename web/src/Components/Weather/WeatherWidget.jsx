@@ -71,6 +71,7 @@ export default function WeatherWidget({ isMainPage = false }) {
 
               <div className="flex items-center gap-0">
                 <img
+                  loading="lazy"
                   src={day.day.condition.icon}
                   alt={day.day.condition.text}
                   className="w-4 h-4"

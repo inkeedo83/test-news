@@ -23,6 +23,7 @@ const ArticleCard = memo(({ article }) => {
         <Link to={`/articles/${article.id}`}>
           <div className="relative overflow-hidden rounded-xl aspect-video sm:aspect-[4/3]">
             <img
+              loading="lazy"
               src={
                 article.image === `${baseUrl}/image/null`
                   ? BeReporterNew

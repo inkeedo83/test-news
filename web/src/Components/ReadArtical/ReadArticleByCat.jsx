@@ -73,6 +73,7 @@ export default function ReadArticleByCat() {
               </h3>{" "}
               <Link to={`/articles/${item.id}`}>
                 <img
+                  loading="lazy"
                   src={
                     item.image === `${baseUrl}/image/null`
                       ? BeReporterNew

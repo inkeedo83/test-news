@@ -47,6 +47,7 @@ export default function TwoArticals() {
               <Link to={`/articles/${item.id}`}>
                 <div className="relative h-[300px] sm:h-[400px]">
                   <img
+                    loading="lazy"
                     src={
                       item.image === `${baseUrl}/image/null`
                         ? BeReporterNew

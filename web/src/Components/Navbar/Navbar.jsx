@@ -94,7 +94,7 @@ function Navbar() {
         {/* Top Bar and Weather Section */}
         <div className="flex flex-col">
           <div className="flex justify-center py-2">
-            <span className="logo animate-wave text-2xl mt-2 text-white font-extrabold">
+            <span className=" animate-wave text-2xl mt-2 text-white font-extrabold">
               {getLocalizedText("SITE_NAME")}
             </span>
           </div>
