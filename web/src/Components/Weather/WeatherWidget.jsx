@@ -3,7 +3,7 @@ import axios from "axios";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useLocalization } from "../../hooks/useLocalization";
 
-export default function WeatherWidget() {
+export default function WeatherWidget({ isMainPage = false }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,6 +12,8 @@ export default function WeatherWidget() {
   const { getLocalizedText } = useLocalization();
 
   useEffect(() => {
+    if (!isMainPage) return;
+
     const fetchWeatherData = async () => {
       try {
         setLoading(true);
@@ -31,8 +33,9 @@ export default function WeatherWidget() {
     };
 
     fetchWeatherData();
-  }, [language]);
+  }, [language, isMainPage]);
 
+  if (!isMainPage) return null;
   if (loading) return <div className="text-center p-2">Loading...</div>;
   if (error)
     return <div className="text-center text-red-500 p-2">Error: {error}</div>;

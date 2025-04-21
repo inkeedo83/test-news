@@ -41,7 +41,7 @@ export function RelatedArticles({ category, id }) {
   return (
     <div className="w-full p-4">
       <h3 className="text-xl font-bold mb-6 bg-red-900  rounded-md h-10 w-fit p-2 text-white ">
-        مواضيع اخرى تخص {CATEGORIES[category].AR}
+        مقالات اخرى تخص {CATEGORIES[category].AR}
       </h3>
       <div className="grid gap-4">
         {filteredData &&

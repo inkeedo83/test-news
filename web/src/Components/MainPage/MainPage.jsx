@@ -92,29 +92,41 @@ export default function MainPageTest() {
           </div>
 
           {/* Featured Article */}
-          {data.length > 0 && (
+          {data.length > 0 && data.find((article) => article.isImportant) && (
             <div className="mb-4 sm:mb-8">
               <div className="relative h-[300px] sm:h-[500px] rounded-xl overflow-hidden">
-                <Link to={`/articles/${data[0].id}`}>
+                <Link
+                  to={`/articles/${
+                    data.find((article) => article.isImportant).id
+                  }`}
+                >
                   <img
                     src={
-                      data[0].image === `${baseUrl}/image/null`
+                      data.find((article) => article.isImportant).image ===
+                      `${baseUrl}/image/null`
                         ? BeReporterNew
-                        : data[0].image
+                        : data.find((article) => article.isImportant).image
                     }
                     className="w-full h-full object-cover"
-                    alt={data[0].title}
+                    alt={data.find((article) => article.isImportant).title}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
                     <div className="absolute bottom-0 p-4 sm:p-8">
                       <span className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-full mb-2 sm:mb-4 inline-block text-sm sm:text-base">
-                        {CATEGORIES[data[0].category].AR}
+                        {
+                          CATEGORIES[
+                            data.find((article) => article.isImportant).category
+                          ].AR
+                        }
                       </span>
                       <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
-                        {data[0].title}
+                        {data.find((article) => article.isImportant).title}
                       </h2>
                       <p className="text-base sm:text-lg text-zinc-200 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
-                        {data[0].shortContent}
+                        {
+                          data.find((article) => article.isImportant)
+                            .shortContent
+                        }
                       </p>
                     </div>
                   </div>
@@ -124,15 +136,15 @@ export default function MainPageTest() {
           )}
 
           {/* Breaking News Section */}
-          <div className="relative w-full sm:w-screen mb-4 sm:mb-8">
-            <h3 className="inline-block bg-gradient-to-r from-red-950 to-zinc-900 text-white px-3 py-1 sm:px-4 sm:py-2 mt-2 mb-2 rounded-lg shadow-lg transform hover:scale-105 transition-all text-lg sm:text-xl font-bold">
-              في الاتجاهين
+          <div className="mb-4 sm:mb-8">
+            <h3 className="inline-block bg-gradient-to-r from-red-950 to-zinc-900 text-white px-3 py-1 sm:px-4 sm:py-2 mt-2 mb-2 rounded-lg shadow-lg transform transition-all text-lg sm:text-xl font-bold">
+              مقالات تهمك{" "}
             </h3>
-            <div className="grid w-full sm:w-screen lg:grid-cols-3 gap-2 sm:gap-1">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
               <div className="lg:col-span-2 bg-zinc-900/80 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
                 <TwoArticals />
               </div>
-              <div className="bg-zinc-900/80  sm:ml-24 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+              <div className="bg-zinc-900/80 backdrop-blur-sm rounded-xl p-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
                 <LatestNews />
               </div>
             </div>
@@ -144,66 +156,68 @@ export default function MainPageTest() {
               اخبار متـفرقـــه
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {data.map((item) => (
-                <div
-                  key={item.id}
-                  className="group relative bg-stone-900 dark:bg-gray-950 rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-zinc-800"
-                >
-                  <div className="relative">
-                    <Link to={`/articles/${item.id}`}>
-                      <img
-                        src={
-                          item.image === `${baseUrl}/image/null`
-                            ? BeReporterNew
-                            : item.image
-                        }
-                        className="  w-full h-48 sm:h-56 object-fill  transition-transform duration-300 group-hover:scale-105"
-                        alt={item.title}
-                      />
-                      <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
-                        <span className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-xs sm:text-sm rounded-full">
-                          {CATEGORIES[item.category].AR}
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-
-                  <div className="p-4 sm:p-6">
-                    <div className="flex justify-between items-center text-zinc-400 mb-4">
-                      <div className="flex items-center gap-2">
-                        <FaPencil className="text-red-500" />
-                        <span className="text-sm">
-                          {new Date(item.createdAt).toLocaleDateString(
-                            "ar",
-                            DateOptions
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <RiEyeFill className="text-red-500" />
-                        <span>{item.watchCount}</span>
-                      </div>
+              {data
+                .filter((item) => !item.isImportant)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="group relative bg-stone-900 dark:bg-gray-950 rounded-xl overflow-hidden transform transition-all duration-300  border border-zinc-800"
+                  >
+                    <div className="relative">
+                      <Link to={`/articles/${item.id}`}>
+                        <img
+                          src={
+                            item.image === `${baseUrl}/image/null`
+                              ? BeReporterNew
+                              : item.image
+                          }
+                          className="  w-full h-48 sm:h-56 object-fill  transition-transform duration-300 group-hover:scale-105"
+                          alt={item.title}
+                        />
+                        <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+                          <span className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-xs sm:text-sm rounded-full">
+                            {CATEGORIES[item.category].AR}
+                          </span>
+                        </div>
+                      </Link>
                     </div>
 
-                    <Link to={`/articles/${item.id}`}>
-                      <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 hover:text-red-500 transition-colors">
-                        {item.title}
-                      </h3>
-                    </Link>
+                    <div className="p-4 sm:p-6">
+                      <div className="flex justify-between items-center text-zinc-400 mb-4">
+                        <div className="flex items-center gap-2">
+                          <FaPencil className="text-red-500" />
+                          <span className="text-sm">
+                            {new Date(item.createdAt).toLocaleDateString(
+                              "ar",
+                              DateOptions
+                            )}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <RiEyeFill className="text-red-500" />
+                          <span>{item.watchCount}</span>
+                        </div>
+                      </div>
 
-                    <p className="text-zinc-400 text-sm mb-4 line-clamp-3">
-                      {item.shortContent}
-                    </p>
+                      <Link to={`/articles/${item.id}`}>
+                        <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 hover:text-red-500 transition-colors">
+                          {item.title}
+                        </h3>
+                      </Link>
 
-                    <Link
-                      to={`/articles/${item.id}`}
-                      className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-sm rounded-lg hover:from-red-900 hover:to-zinc-800 transition-all duration-300"
-                    >
-                      اقرأ المزيد
-                    </Link>
+                      <p className="text-zinc-400 text-sm mb-4 line-clamp-3">
+                        {item.shortContent}
+                      </p>
+
+                      <Link
+                        to={`/articles/${item.id}`}
+                        className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-sm rounded-lg hover:from-red-900 hover:to-zinc-800 transition-all duration-300"
+                      >
+                        اقرأ المزيد
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
 

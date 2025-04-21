@@ -1,6 +1,6 @@
 import { CATEGORIES } from "../../assets/categories.constant";
 import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import WeatherWidget from "../Weather/WeatherWidget";
 import { useLocalization } from "../../hooks/useLocalization";
 // import ThemeSwitcher from "../common/ThemeSwitcher";
@@ -36,6 +36,8 @@ function Navbar() {
   const [showMobileRegions, setShowMobileRegions] = useState(false); // Add new state for mobile regions menu
   const [showCities, setShowCities] = useState(false); // New state for desktop cities submenu
   const [showMobileCities, setShowMobileCities] = useState(false); // New state for mobile cities submenu
+  const location = useLocation();
+  const isMainPage = location.pathname === "/";
 
   const { getText, getLocalizedText } = useLocalization();
 
@@ -96,16 +98,18 @@ function Navbar() {
               {getLocalizedText("SITE_NAME")}
             </span>
           </div>
-          <div
-            className={`
+          {isMainPage && (
+            <div
+              className={`
                 overflow-hidden transition-all duration-300
                 ${showWeather ? "h-28 opacity-100" : "h-0 opacity-0"}
               `}
-          >
-            <div className="flex justify-center items-center px-4 py-2">
-              <WeatherWidget />
+            >
+              <div className="flex justify-center items-center px-4 py-2">
+                <WeatherWidget isMainPage={true} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {!screen ? (
           <div className="flex justify-between items-center mt-4">

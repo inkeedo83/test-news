@@ -319,6 +319,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
             <option value="ECONOMIC">اقتصاد</option>
             <option value="LAW">قوانين</option>
             <option value="ACCIDENT">حوادث</option>
+            <option value="CULTURE">ثقافة</option>
+            <option value="HEALTH">صحة</option>
+            <option value="EDUCATION">تعليم</option>
+            <option value="ARAB_COMMUNITY_NEWS">الجاليه العربية </option>
+            <option value="LOCAL_EVENTS">محليات</option>
           </select>
           <input
             type="file"
@@ -429,6 +434,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
             <option value="ECONOMIC">اقتصاد</option>
             <option value="LAW">قوانين</option>
             <option value="ACCIDENT">حوادث</option>
+            <option value="CULTURE">ثقافة</option>
+            <option value="HEALTH">صحة</option>
+            <option value="EDUCATION">تعليم</option>
+            <option value="ARAB_COMMUNITY_NEWS">الجاليه العربية </option>
+            <option value="LOCAL_EVENTS">محليات</option>
           </select>
           <input
             type="file"

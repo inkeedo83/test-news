@@ -25,16 +25,16 @@ export default function DaysWeather() {
   }, []);
 
   if (loading)
-    return <div className="text-center p-4">Loading weather data...</div>;
+    return <div className="text-center p-4">جاري تحميل بيانات الطقس...</div>;
   if (error)
-    return <div className="text-center text-red-500 p-4">Error: {error}</div>;
+    return <div className="text-center text-red-500 p-4">خطأ: {error}</div>;
   if (!data) return null;
 
   return (
     <div className="max-w-6xl mx-auto p-4 pt-72">
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
-          7-Day Weather Forecast - Brussels
+          توقعات الطقس لمدة 7 أيام - بروكسل
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {data.forecast.forecastday.map((day) => (
@@ -43,7 +43,7 @@ export default function DaysWeather() {
               className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-center"
             >
               <div className="text-gray-600 dark:text-gray-300">
-                {new Date(day.date).toLocaleDateString("en-US", {
+                {new Date(day.date).toLocaleDateString("ar-SA", {
                   weekday: "short",
                 })}
               </div>
@@ -53,10 +53,10 @@ export default function DaysWeather() {
                 className="mx-auto w-16 h-16"
               />
               <div className="text-lg font-semibold dark:text-white">
-                {Math.round(day.day.maxtemp_c)}°C
+                {Math.round(day.day.maxtemp_c)}°م
               </div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {Math.round(day.day.mintemp_c)}°C
+                {Math.round(day.day.mintemp_c)}°م
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-300">
                 {day.day.condition.text}

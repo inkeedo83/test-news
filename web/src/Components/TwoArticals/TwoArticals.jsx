@@ -10,7 +10,7 @@ import { FaPencil } from "react-icons/fa6";
 
 export default function TwoArticals() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=2&order=DESC`;
+  const http = `${baseUrl}/public/articles?order=DESC&isImportant=true`;
 
   const DateOptions = {
     weekday: "long",
@@ -33,7 +33,7 @@ export default function TwoArticals() {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {data.map((item, index) => (
+      {data.slice(1, 3).map((item, index) => (
         <div
           key={item.id}
           className="w-full relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl transform hover:scale-[1.01] transition-all duration-300"
