@@ -29,6 +29,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
+  const [weatherApiKey, setWeatherApiKey] = useState("");
 
   // Function to update token before request
   const updateToken = async () => {
@@ -270,6 +271,27 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
   };
 
+  // Function to update weather API key
+  const handleWeatherKeyUpdate = async (e) => {
+    e.preventDefault();
+    if (!weatherApiKey.trim()) {
+      setMessage("Please enter a valid API key");
+      return;
+    }
+    setLoading(true);
+    try {
+      await handleAuthError(async () => {
+        await post("settings/weather-key", { key: weatherApiKey });
+      });
+      setMessage("Weather API key updated successfully");
+      setWeatherApiKey("");
+    } catch (err) {
+      setMessage(err.message || "Error updating Weather API key");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-4xl mx-auto pt-72 px-4">
       {/* إضافة خبر Section */}
@@ -453,6 +475,14 @@ export function AdminPanel({ getAccessTokenSilently }) {
             />
             <span>خبر هام</span>
           </label>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={editData.isRelated}
+              onChange={handleEditCheckboxChange}
+            />
+            <span>خبر رئيسي</span>
+          </label>
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             tag Id{" "}
@@ -532,6 +562,29 @@ export function AdminPanel({ getAccessTokenSilently }) {
       <section className="mt-8">
         <TagsManager getAccessTokenSilently={getAccessTokenSilently} />
       </section>
+
+      {/* Weather API Key Section 
+      <section className="bg-blue-300 p-6 rounded-lg mt-8">
+        <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
+          تحديث مفتاح API للطقس
+        </h1>
+        <form onSubmit={handleWeatherKeyUpdate} className="space-y-4">
+          <input
+            type="text"
+            value={weatherApiKey}
+            onChange={(e) => setWeatherApiKey(e.target.value)}
+            placeholder="Weather API Key"
+            className="w-full rounded-md bg-slate-400 p-2"
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-red-800 text-white p-3 rounded-xl hover:bg-red-700"
+          >
+            {loading ? "جاري التحديث..." : "تحديث مفتاح API"}
+          </button>
+        </form>
+      </section>*/}
     </div>
   );
 }

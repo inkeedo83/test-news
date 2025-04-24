@@ -92,42 +92,39 @@ export default function MainPage() {
           </div>
 
           {/* Featured Article */}
-          {data.length > 0 && data.find((article) => article.isImportant) && (
+          {data.length > 0 && data.find((article) => article.isRelated) && (
             <div className="mb-4 sm:mb-8">
               <div className="relative h-[300px] sm:h-[500px] rounded-xl overflow-hidden">
                 <Link
                   to={`/articles/${
-                    data.find((article) => article.isImportant).id
+                    data.find((article) => article.isRelated).id
                   }`}
                 >
                   <img
                     loading="lazy"
                     src={
-                      data.find((article) => article.isImportant).image ===
+                      data.find((article) => article.isRelated).image ===
                       `${baseUrl}/image/null`
                         ? BeReporterNew
-                        : data.find((article) => article.isImportant).image
+                        : data.find((article) => article.isRelated).image
                     }
                     className="w-full h-full object-cover"
-                    alt={data.find((article) => article.isImportant).title}
+                    alt={data.find((article) => article.isRelated).title}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
                     <div className="absolute bottom-0 p-4 sm:p-8">
                       <span className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-full mb-2 sm:mb-4 inline-block text-sm sm:text-base">
                         {
                           CATEGORIES[
-                            data.find((article) => article.isImportant).category
+                            data.find((article) => article.isRelated).category
                           ].AR
                         }
                       </span>
                       <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
-                        {data.find((article) => article.isImportant).title}
+                        {data.find((article) => article.isRelated).title}
                       </h2>
                       <p className="text-base sm:text-lg text-zinc-200 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
-                        {
-                          data.find((article) => article.isImportant)
-                            .shortContent
-                        }
+                        {data.find((article) => article.isRelated).shortContent}
                       </p>
                     </div>
                   </div>
