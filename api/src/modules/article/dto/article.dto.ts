@@ -157,5 +157,12 @@ export class UpdateImageDto {
   image?: Express.Multer.File;
 }
 
+export class CreateKeyDto {
+  @ApiProperty({ type: String, required: true })
+  @IsString()
+  @IsNotEmpty()
+  value: string;
+}
+
 export class ReadOneArticleDto extends IdDto {}
 export class DeleteArticleDto extends IdDto {}
