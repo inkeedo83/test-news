@@ -1,0 +1,52 @@
+<html lang='ar'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Latest Articles</title>
+    <style>
+      body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; direction: rtl; }
+      .articles-container { max-width: 800px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); } h1 { text-align: center; color: #333; } .category { margin-bottom:
+      20px; } .category h2 { color: #d9534f; border-bottom: 2px solid #d9534f; padding-bottom: 5px; } .category ul {
+      list-style-type: none; padding: 0; } .category ul li { padding: 8px 0; border-bottom: 1px solid #ddd; } .category
+      ul li:last-child { border-bottom: none; } .date { text-align: center; font-style: italic; color: #7f8c8d;
+      margin-bottom: 15px; } .greeting { text-align: right; font-size: 16px; line-height: 1.5; } .footer { margin-top:
+      30px; text-align: center; font-size: 12px; color: #777; border-top: 1px solid #ddd; padding-top: 15px; } .button {
+      display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #d9534f; color: #fff;
+      text-decoration: none; border-radius: 4px; transition: background-color 0.3s; } .button:hover { background-color:
+      #c9302c; } .buttons-container { text-align: center; margin: 20px 0; } .category ul li a { color: #d9534f;
+      text-decoration: none; } .category ul li a:hover { text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <div class='articles-container'>
+      <h1>أحدث المقالات</h1>
+      <p class='date'>{{date}}</p>
+
+      <div class='greeting'>
+        <p>مرحباً {{name}}،</p>
+        <p>هذه هي أحدث الأخبار لدينا ليوم {{date}}. نأمل أن تجدها مثيرة للاهتمام!</p>
+      </div>
+
+      <div class='category'>
+        <h2>المقالات الجديدة</h2>
+        <ul>
+          {{#each articles}}
+            <li><a href='{{this.url}}'>{{this.title}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class='buttons-container'>
+        <p>لمزيد من المقالات، يرجى زيارة موقعنا:</p>
+        <a href='{{siteUrl}}' class='button'>زيارة الموقع</a>
+      </div>
+
+      <div class='footer'>
+        <p>لإلغاء الاشتراك من رسائلنا الإخبارية، يرجى النقر
+          <a href='{{siteUrl}}/unsubscribe?email={{email}}'>هنا</a>.</p>
+        <p>© {{year}} - جميع الحقوق محفوظة</p>
+      </div>
+    </div>
+  </body>
+</html>

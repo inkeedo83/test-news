@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { Article } from 'src/modules/database/entities/article.entity';
 import { User } from 'src/modules/database/entities/user.entity';
@@ -7,6 +7,8 @@ import { DataSource } from 'typeorm';
 
 @Injectable()
 export class MailerScheduler {
+  private logger = new Logger(MailerScheduler.name);
+
   constructor(
     private readonly mailerService: MailerService,
     private readonly dataSource: DataSource
@@ -14,17 +16,37 @@ export class MailerScheduler {
 
   @Cron(CronExpression.EVERY_DAY_AT_NOON)
   async sendNews(): Promise<void> {
+    this.logger.log('Starting newsletter distribution...');
+
     const users = await this.dataSource.manager.find(User);
-
-    const emails = users.map(user => user.email);
-
-    const now = new Date().toISOString();
-    const subject = `News at ${now}`;
-
     const articles = await this.dataSource.manager.find(Article, { order: { createdAt: 'DESC' }, take: 4 });
 
-    const news = articles.map(article => `${process.env.BASE_URL}/articles/${article.id}`);
+    if (!users.length || !articles.length) {
+      this.logger.log('No users or articles found, skipping newsletter distribution');
 
-    for (const email of emails) await this.mailerService.sendMail({ receiver: email, subject, text: news.join('\n') });
+      return;
+    }
+
+    this.logger.log(`Sending newsletter to ${users.length} users`);
+
+    const now = new Date();
+    const formattedDate = now.toLocaleDateString();
+
+    // Формируем список ссылок на статьи
+    const articleLinks = articles.map(article => ({
+      title: article.title,
+      url: `${process.env.BASE_URL}/articles/${article.id}`
+    }));
+
+    // Отправляем письма каждому пользователю
+    for (const user of users)
+      await this.mailerService.sendNewsletter(
+        user.email,
+        '', // subject теперь задается внутри mailerService
+        articleLinks,
+        formattedDate
+      );
+
+    this.logger.log('Newsletter distribution completed successfully');
   }
 }

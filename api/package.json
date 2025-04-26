@@ -83,7 +83,9 @@
     "tsconfig-paths": "4.2.0",
     "typeorm": "^0.3.20",
     "typescript": "5.5.4",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "@nestjs-modules/mailer": "^2.0.2",
+    "handlebars": "^4.7.8"
   },
   "devDependencies": {
     "@nestjs/schematics": "10.1.3",
