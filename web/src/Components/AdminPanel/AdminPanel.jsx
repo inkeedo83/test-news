@@ -15,6 +15,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     image: null,
     isImportant: false,
     tags: "",
+    isRelated: false,
   });
   const [editData, setEditData] = useState({
     id: "",
@@ -24,6 +25,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     image: null,
     isImportant: false,
     tags: "",
+    isRelated: false,
   });
   const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -90,7 +92,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
   };
 
   const handleAddCheckboxChange = (e) => {
-    setAddData((prev) => ({ ...prev, isImportant: e.target.checked }));
+    const { name, checked } = e.target;
+    setAddData((prev) => ({ ...prev, [name]: checked }));
     setMessage("");
   };
 
@@ -157,7 +160,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
   };
 
   const handleEditCheckboxChange = (e) => {
-    setEditData((prev) => ({ ...prev, isImportant: e.target.checked }));
+    const { name, checked } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: checked }));
     setMessage("");
   };
 
@@ -275,18 +279,24 @@ export function AdminPanel({ getAccessTokenSilently }) {
   const handleWeatherKeyUpdate = async (e) => {
     e.preventDefault();
     if (!weatherApiKey.trim()) {
-      setMessage("Please enter a valid API key");
+      setMessage("يرجى إدخال مفتاح الطقس");
       return;
     }
     setLoading(true);
     try {
       await handleAuthError(async () => {
-        await post("settings/weather-key", { key: weatherApiKey });
+        await fetch("https://app-test-i.ru/api/key", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ value: weatherApiKey }),
+        });
       });
-      setMessage("Weather API key updated successfully");
+      setMessage("تم تحديث مفتاح الطقس بنجاح");
       setWeatherApiKey("");
     } catch (err) {
-      setMessage(err.message || "Error updating Weather API key");
+      setMessage(err.message || "حدث خطأ أثناء تحديث مفتاح الطقس");
     } finally {
       setLoading(false);
     }
@@ -355,10 +365,20 @@ export function AdminPanel({ getAccessTokenSilently }) {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
+              name="isImportant"
               checked={addData.isImportant}
               onChange={handleAddCheckboxChange}
             />
             <span>خبر هام</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              name="isRelated"
+              checked={addData.isRelated}
+              onChange={handleAddCheckboxChange}
+            />
+            <span>خبر مرتبط</span>
           </label>
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
@@ -470,6 +490,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
+              name="isImportant"
               checked={editData.isImportant}
               onChange={handleEditCheckboxChange}
             />
@@ -478,10 +499,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
+              name="isRelated"
               checked={editData.isRelated}
               onChange={handleEditCheckboxChange}
             />
-            <span>خبر رئيسي</span>
+            <span>خبر مرتبط</span>
           </label>
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
@@ -563,7 +585,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         <TagsManager getAccessTokenSilently={getAccessTokenSilently} />
       </section>
 
-      {/* Weather API Key Section 
+      {/* Weather API Key Section */}
       <section className="bg-blue-300 p-6 rounded-lg mt-8">
         <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
           تحديث مفتاح API للطقس
@@ -584,7 +606,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             {loading ? "جاري التحديث..." : "تحديث مفتاح API"}
           </button>
         </form>
-      </section>*/}
+      </section>
     </div>
   );
 }
