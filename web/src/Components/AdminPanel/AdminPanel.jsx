@@ -15,7 +15,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     image: null,
     isImportant: false,
     tags: "",
-    isRelated: false,
+    isVeryImportant: false,
   });
   const [editData, setEditData] = useState({
     id: "",
@@ -25,7 +25,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     image: null,
     isImportant: false,
     tags: "",
-    isRelated: false,
+    isVeryImportant: false,
   });
   const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -153,7 +153,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       Object.entries(addData).forEach(([key, value]) => {
         if (key === "tags") {
           formData.append("tagsIds", value.trim());
-        } else if (key === "isImportant" || key === "isRelated") {
+        } else if (key === "isImportant" || key === "isVeryImportant") {
           formData.append(key, value ? "true" : "false");
         } else {
           formData.append(key, value);
@@ -261,13 +261,13 @@ export function AdminPanel({ getAccessTokenSilently }) {
         "category",
         "image",
         "isImportant",
-        "isRelated",
+        "isVeryImportant",
         "tags",
       ].forEach((key) => {
         if (editData[key] !== null && editData[key] !== undefined) {
           if (key === "tags") {
             formData.append("tagsIds", editData[key].trim());
-          } else if (key === "isImportant" || key === "isRelated") {
+          } else if (key === "isImportant" || key === "isVeryImportant") {
             formData.append(key, editData[key] ? "true" : "false");
           } else {
             formData.append(key, editData[key]);
@@ -394,8 +394,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
-              name="isRelated"
-              checked={addData.isRelated}
+              name="isVeryImportant"
+              checked={addData.isVeryImportant}
               onChange={handleAddCheckboxChange}
             />
             <span>خبر مرتبط</span>
@@ -519,8 +519,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
-              name="isRelated"
-              checked={editData.isRelated}
+              name="isVeryImportant"
+              checked={editData.isVeryImportant}
               onChange={handleEditCheckboxChange}
             />
             <span>خبر مرتبط</span>
