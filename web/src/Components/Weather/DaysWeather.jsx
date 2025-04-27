@@ -7,7 +7,6 @@ export default function DaysWeather() {
   const [error, setError] = useState(null);
   const [coords, setCoords] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  const key = "c7e6edb50f2d41be802122547252004";
 
   const getUserLocation = () => {
     if (navigator.geolocation) {
@@ -37,6 +36,11 @@ export default function DaysWeather() {
       try {
         setLoading(true);
         setError(null);
+
+        // Fetch the API key from the endpoint
+        const keyResponse = await axios.get("https://app-test-i.ru/api/key");
+        const key = keyResponse.data.key;
+
         const response = await axios.get(
           `https://api.weatherapi.com/v1/search.json?key=${key}&q=${searchInput}`
         );
@@ -60,6 +64,11 @@ export default function DaysWeather() {
     const fetchWeatherData = async () => {
       try {
         setLoading(true);
+
+        // Fetch the API key from the endpoint
+        const keyResponse = await axios.get("https://app-test-i.ru/api/key");
+        const key = keyResponse.data.key;
+
         const response = await axios.get(
           `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${coords.lat},${coords.lon}&days=14&lang=ar`
         );

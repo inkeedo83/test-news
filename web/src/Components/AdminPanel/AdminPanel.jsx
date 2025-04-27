@@ -129,7 +129,10 @@ export function AdminPanel({ getAccessTokenSilently }) {
 
   const handleAddCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setAddData((prev) => ({ ...prev, [name]: checked }));
+    setAddData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
     setMessage("");
   };
 
