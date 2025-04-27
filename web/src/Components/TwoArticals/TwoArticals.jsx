@@ -33,7 +33,7 @@ export default function TwoArticals() {
 
   return (
     <div className="w-full flex flex-col gap-6">
-      {data.slice(1, 3).map((item, index) => (
+      {data.slice(0, 2).map((item, index) => (
         <div
           key={item.id}
           className="w-full relative overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl transform hover:scale-[1.01] transition-all duration-300"
