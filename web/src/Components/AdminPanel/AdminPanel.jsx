@@ -398,7 +398,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
               checked={addData.isVeryImportant}
               onChange={handleAddCheckboxChange}
             />
-            <span>خبر مرتبط</span>
+            <span>خبر مهم جدا </span>
           </label>
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}

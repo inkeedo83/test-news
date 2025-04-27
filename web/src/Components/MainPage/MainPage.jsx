@@ -92,46 +92,57 @@ export default function MainPage() {
           </div>
 
           {/* Featured Article */}
-          {data.length > 0 && data.find((article) => article.isRelated) && (
-            <div className="mb-4 sm:mb-8">
-              <div className="relative h-[300px] sm:h-[500px] rounded-xl overflow-hidden">
-                <Link
-                  to={`/articles/${
-                    data.find((article) => article.isRelated).id
-                  }`}
-                >
-                  <img
-                    loading="lazy"
-                    src={
-                      data.find((article) => article.isRelated).image ===
-                      `${baseUrl}/image/null`
-                        ? BeReporterNew
-                        : data.find((article) => article.isRelated).image
-                    }
-                    className="w-full h-full object-cover"
-                    alt={data.find((article) => article.isRelated).title}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
-                    <div className="absolute bottom-0 p-4 sm:p-8">
-                      <span className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-full mb-2 sm:mb-4 inline-block text-sm sm:text-base">
-                        {
-                          CATEGORIES[
-                            data.find((article) => article.isRelated).category
-                          ].AR
-                        }
-                      </span>
-                      <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
-                        {data.find((article) => article.isRelated).title}
-                      </h2>
-                      <p className="text-base sm:text-lg text-zinc-200 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
-                        {data.find((article) => article.isRelated).shortContent}
-                      </p>
+          {data.length > 0 &&
+            data.find((article) => article.isVeryImportant) && (
+              <div className="mb-4 sm:mb-8">
+                <div className="relative h-[300px] sm:h-[500px] rounded-xl overflow-hidden">
+                  <Link
+                    to={`/articles/${
+                      data.find((article) => article.isVeryImportant).id
+                    }`}
+                  >
+                    <img
+                      loading="lazy"
+                      src={
+                        data.find((article) => article.isVeryImportant)
+                          .image === `${baseUrl}/image/null`
+                          ? BeReporterNew
+                          : data.find((article) => article.isVeryImportant)
+                              .image
+                      }
+                      className="w-full h-full object-cover"
+                      alt={
+                        data.find((article) => article.isVeryImportant).title
+                      }
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
+                      <div className="absolute bottom-0 p-4 sm:p-8">
+                        <span className="px-3 py-1 sm:px-4 sm:py-2 bg-red-500 text-white rounded-full mb-2 sm:mb-4 inline-block text-sm sm:text-base">
+                          {
+                            CATEGORIES[
+                              data.find((article) => article.isVeryImportant)
+                                .category
+                            ].AR
+                          }
+                        </span>
+                        <h2 className="text-2xl sm:text-4xl font-bold text-white mb-2 sm:mb-4">
+                          {
+                            data.find((article) => article.isVeryImportant)
+                              .title
+                          }
+                        </h2>
+                        <p className="text-base sm:text-lg text-zinc-200 mb-2 sm:mb-4 line-clamp-2 sm:line-clamp-none">
+                          {
+                            data.find((article) => article.isVeryImportant)
+                              .shortContent
+                          }
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
           {/* Breaking News Section */}
           <div className="mb-4 sm:mb-8">
