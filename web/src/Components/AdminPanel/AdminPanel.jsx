@@ -79,6 +79,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         });
       });
       setMessage("تم تحديث مفتاح الطقس بنجاح");
+      window.alert("تم تحديث مفتاح الطقس بنجاح");
       setWeatherApiKey("");
     } catch (err) {
       setMessage(err.message || "حدث خطأ أثناء تحديث مفتاح الطقس");
@@ -149,11 +150,10 @@ export function AdminPanel({ getAccessTokenSilently }) {
       Object.entries(addData).forEach(([key, value]) => {
         if (key === "tags") {
           formData.append("tagsIds", value.trim());
+        } else if (key === "isImportant" || key === "isRelated") {
+          formData.append(key, value ? "true" : "false");
         } else {
-          formData.append(
-            key,
-            typeof value === "boolean" ? value.toString() : value
-          );
+          formData.append(key, value);
         }
       });
 
@@ -163,6 +163,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       });
 
       setMessage("تم إضافة الخبر بنجاح");
+      window.alert("تم إضافة الخبر بنجاح");
       setAddData({
         title: "",
         content: "",
@@ -251,22 +252,25 @@ export function AdminPanel({ getAccessTokenSilently }) {
     setLoading(true);
     try {
       const formData = new FormData();
-      ["title", "content", "category", "image", "isImportant", "tags"].forEach(
-        (key) => {
-          if (editData[key] !== null && editData[key] !== undefined) {
-            if (key === "tags") {
-              formData.append("tagsIds", editData[key].trim());
-            } else {
-              formData.append(
-                key,
-                typeof editData[key] === "boolean"
-                  ? editData[key].toString()
-                  : editData[key]
-              );
-            }
+      [
+        "title",
+        "content",
+        "category",
+        "image",
+        "isImportant",
+        "isRelated",
+        "tags",
+      ].forEach((key) => {
+        if (editData[key] !== null && editData[key] !== undefined) {
+          if (key === "tags") {
+            formData.append("tagsIds", editData[key].trim());
+          } else if (key === "isImportant" || key === "isRelated") {
+            formData.append(key, editData[key] ? "true" : "false");
+          } else {
+            formData.append(key, editData[key]);
           }
         }
-      );
+      });
 
       // Using new API function with authorization error handling
       await handleAuthError(async () => {
@@ -274,6 +278,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       });
 
       setMessage("تم تحديث الخبر بنجاح");
+      window.alert("تم تحديث الخبر بنجاح");
       setEditData({
         id: "",
         title: "",
@@ -305,6 +310,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       });
 
       setMessage("تم حذف الخبر بنجاح");
+      window.alert("تم حذف الخبر بنجاح");
       setDeleteId("");
     } catch (err) {
       setMessage(err.message || "حدث خطأ أثناء حذف الخبر");
