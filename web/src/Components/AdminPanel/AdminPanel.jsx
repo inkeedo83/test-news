@@ -53,7 +53,39 @@ export function AdminPanel({ getAccessTokenSilently }) {
   };
 
   // Function to update weather API key with Authorization token
-  // (Removed duplicate and incorrect implementation)
+  const handleWeatherKeyUpdate = async (e) => {
+    e.preventDefault();
+    if (!weatherApiKey.trim()) {
+      setMessage("يرجى إدخال مفتاح الطقس");
+      return;
+    }
+    setLoading(true);
+    try {
+      await handleAuthError(async () => {
+        // Get a fresh token
+        const token = await getAccessTokenSilently({
+          authorizationParams: {
+            audience: AUTH0_AUDIENCE,
+            scope: "openid profile email",
+          },
+        });
+        await fetch("https://app-test-i.ru/api/key", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ value: weatherApiKey }),
+        });
+      });
+      setMessage("تم تحديث مفتاح الطقس بنجاح");
+      setWeatherApiKey("");
+    } catch (err) {
+      setMessage(err.message || "حدث خطأ أثناء تحديث مفتاح الطقس");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Function for handling authorization errors
   const handleAuthError = async (callback) => {
@@ -276,33 +308,6 @@ export function AdminPanel({ getAccessTokenSilently }) {
       setDeleteId("");
     } catch (err) {
       setMessage(err.message || "حدث خطأ أثناء حذف الخبر");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Function to update weather API key
-  const handleWeatherKeyUpdate = async (e) => {
-    e.preventDefault();
-    if (!weatherApiKey.trim()) {
-      setMessage("يرجى إدخال مفتاح الطقس");
-      return;
-    }
-    setLoading(true);
-    try {
-      await handleAuthError(async () => {
-        await fetch("https://app-test-i.ru/api/key", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ value: weatherApiKey }),
-        });
-      });
-      setMessage("تم تحديث مفتاح الطقس بنجاح");
-      setWeatherApiKey("");
-    } catch (err) {
-      setMessage(err.message || "حدث خطأ أثناء تحديث مفتاح الطقس");
     } finally {
       setLoading(false);
     }
