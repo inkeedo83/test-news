@@ -52,6 +52,9 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
   };
 
+  // Function to update weather API key with Authorization token
+  // (Removed duplicate and incorrect implementation)
+
   // Function for handling authorization errors
   const handleAuthError = async (callback) => {
     try {
@@ -161,7 +164,10 @@ export function AdminPanel({ getAccessTokenSilently }) {
 
   const handleEditCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setEditData((prev) => ({ ...prev, [name]: checked }));
+    setEditData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
     setMessage("");
   };
 
