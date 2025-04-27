@@ -39,7 +39,7 @@ export default function DaysWeather() {
 
         // Fetch the API key from the endpoint
         const keyResponse = await axios.get("https://app-test-i.ru/api/key");
-        const key = keyResponse.data.key;
+        const key = keyResponse.data;
 
         const response = await axios.get(
           `https://api.weatherapi.com/v1/search.json?key=${key}&q=${searchInput}`
@@ -67,7 +67,7 @@ export default function DaysWeather() {
 
         // Fetch the API key from the endpoint
         const keyResponse = await axios.get("https://app-test-i.ru/api/key");
-        const key = keyResponse.data.key;
+        const key = keyResponse.data;
 
         const response = await axios.get(
           `https://api.weatherapi.com/v1/forecast.json?key=${key}&q=${coords.lat},${coords.lon}&days=14&lang=ar`

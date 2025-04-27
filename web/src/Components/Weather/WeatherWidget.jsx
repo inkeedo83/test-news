@@ -20,7 +20,7 @@ export default function WeatherWidget({ isMainPage = false }) {
 
         // Fetch the API key from the endpoint
         const keyResponse = await axios.get("https://app-test-i.ru/api/key");
-        const KEY = keyResponse.data.key;
+        const KEY = keyResponse.data;
 
         const apiLang = language === "AR" ? "ar" : "en";
         const apiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${KEY}&q=brussels&lang=${apiLang}&days=3`;
