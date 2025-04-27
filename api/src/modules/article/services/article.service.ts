@@ -52,6 +52,7 @@ export class ArticleService {
     order,
     category,
     isImportant,
+    isVeryImportant,
     tagsIds
   }: ReadArticlesDto): Promise<PaginatedEntityDto<ArticleDto>> {
     const criteria1: FindOptionsWhere<Article> = pattern === undefined ? {} : { title: ILike(`%${pattern}%`) };
@@ -68,6 +69,10 @@ export class ArticleService {
     if (isImportant) {
       criteria1.isImportant = isImportant;
       criteria2.isImportant = isImportant;
+    }
+    if (isVeryImportant) {
+      criteria1.isVeryImportant = isVeryImportant;
+      criteria2.isVeryImportant = isVeryImportant;
     }
 
     const [data, count] = await this.manager.findAndCount(Article, {
@@ -110,6 +115,7 @@ export class ArticleService {
     article.title = title ?? article.title;
     article.content = content ?? article.content;
     article.isImportant = isImportant ?? article.isImportant;
+    article.isVeryImportant = isImportant ?? article.isVeryImportant;
     article.category = category ?? article.category;
 
     if (image) {
@@ -196,7 +202,17 @@ export class ArticleService {
     if (!article) throw new NotFoundException(`Article with id ${id} not found`);
 
     return {
-      ...pick(article, ['id', 'title', 'content', 'watchCount', 'isImportant', 'createdAt', 'updatedAt', 'category']),
+      ...pick(article, [
+        'id',
+        'title',
+        'content',
+        'watchCount',
+        'isImportant',
+        'isVeryImportant',
+        'createdAt',
+        'updatedAt',
+        'category'
+      ]),
       image: `${this.config.get('BASE_URL')}/api/image/${article.image}`,
       isRelated: article.watchCount >= 10,
       tags: article.articleTags.map(tag => ({ id: tag.tag.id, name: tag.tag.name })),
