@@ -33,6 +33,9 @@ export class Article {
   @Column('boolean', { default: false })
   isImportant: boolean;
 
+  @Column('boolean', { default: false })
+  isVeryImportant: boolean;
+
   @Column('enum', { enum: CATEGORIES })
   category: Category;
 

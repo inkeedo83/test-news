@@ -74,6 +74,10 @@ export class ArticleDto extends IdDto {
   @IsBoolean()
   isImportant: boolean;
 
+  @ApiProperty({ type: Boolean, required: true })
+  @IsBoolean()
+  isVeryImportant: boolean;
+
   @ApiProperty({ enum: CATEGORIES })
   @IsEnum(CATEGORIES)
   category: Category;
@@ -99,6 +103,12 @@ export class CreateArticleDto extends PickType(ArticleDto, ['title', 'content', 
   @IsBoolean()
   @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
   isImportant?: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
+  isVeryImportant?: boolean;
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
@@ -128,6 +138,12 @@ export class ReadArticlesDto extends BaseReadDto {
   @IsBoolean()
   @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
   isImportant?: boolean;
+
+  @ApiProperty({ type: Boolean, required: false })
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }: { value: unknown }) => value === 'true' || value === true)
+  isVeryImportant?: boolean;
 
   @ApiProperty({ type: String, isArray: true, format: 'uuid', required: false })
   @IsOptional()
