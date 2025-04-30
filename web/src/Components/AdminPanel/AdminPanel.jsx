@@ -215,7 +215,6 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
-      // Using new API function with authorization error handling
       const article = await handleAuthError(async () => {
         return await get(`articles/${editData.id}`);
       });
@@ -226,11 +225,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
         content: article.content || "",
         category: article.category || "",
         image: null,
-        isImportant: article.isImportant || false,
-        isVeryImportant: article.isVeryImportant || false, // Added isVeryImportant
+        isImportant: Boolean(article.isImportant),
+        isVeryImportant: Boolean(article.isVeryImportant),
         tags: Array.isArray(article.tags)
           ? article.tags.join(",")
-          : article.tags || "", // Ensure tags is a string
+          : article.tags || "",
       });
       if (article.image) {
         setImagePreview(`${baseUrl}/image/${article.image}`);
@@ -264,21 +263,20 @@ export function AdminPanel({ getAccessTokenSilently }) {
         "category",
         "image",
         "isImportant",
-        "isVeryImportant", // Ensure isVeryImportant is included
+        "isVeryImportant",
         "tags",
       ].forEach((key) => {
         if (editData[key] !== null && editData[key] !== undefined) {
           if (key === "tags") {
             formData.append("tagsIds", editData[key].trim());
           } else if (key === "isImportant" || key === "isVeryImportant") {
-            formData.append(key, editData[key] ? "true" : "false");
+            formData.append(key, editData[key].toString());
           } else {
             formData.append(key, editData[key]);
           }
         }
       });
 
-      // Using new API function with authorization error handling
       await handleAuthError(async () => {
         await patch(`articles/${editData.id}`, formData);
       });
@@ -292,7 +290,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         category: "",
         image: null,
         isImportant: false,
-        isVeryImportant: false, // Reset isVeryImportant
+        isVeryImportant: false,
         tags: "",
       });
       setImagePreview("");
