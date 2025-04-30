@@ -224,9 +224,9 @@ export function AdminPanel({ getAccessTokenSilently }) {
         title: article.title || "",
         content: article.content || "",
         category: article.category || "",
-        image: null,
-        isImportant: Boolean(article.isImportant),
-        isVeryImportant: Boolean(article.isVeryImportant),
+        image: article.image || null,
+        isImportant: article.isImportant,
+        isVeryImportant: article.isVeryImportant,
         tags: Array.isArray(article.tags)
           ? article.tags.join(",")
           : article.tags || "",
@@ -257,22 +257,14 @@ export function AdminPanel({ getAccessTokenSilently }) {
     setLoading(true);
     try {
       const formData = new FormData();
-      [
-        "title",
-        "content",
-        "category",
-        "image",
-        "isImportant",
-        "isVeryImportant",
-        "tags",
-      ].forEach((key) => {
-        if (editData[key] !== null && editData[key] !== undefined) {
+      Object.entries(editData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
           if (key === "tags") {
-            formData.append("tagsIds", editData[key].trim());
+            formData.append("tagsIds", value.trim());
           } else if (key === "isImportant" || key === "isVeryImportant") {
-            formData.append(key, editData[key].toString());
-          } else {
-            formData.append(key, editData[key]);
+            formData.append(key, value ? "true" : "false");
+          } else if (key !== "id") {
+            formData.append(key, value);
           }
         }
       });
@@ -590,17 +582,6 @@ export function AdminPanel({ getAccessTokenSilently }) {
           {loading ? "جاري الحذف..." : "حذف الخبر"}
         </button>
       </section>
-      {message && (
-        <div
-          className={`p-3 rounded mb-4 ${
-            message.includes("successfully")
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
-          {message}
-        </div>
-      )}
 
       {/* Tags Manager Section */}
       <section className="mt-8">
