@@ -227,7 +227,10 @@ export function AdminPanel({ getAccessTokenSilently }) {
         category: article.category || "",
         image: null,
         isImportant: article.isImportant || false,
-        tags: article.tags || "",
+        isVeryImportant: article.isVeryImportant || false, // Added isVeryImportant
+        tags: Array.isArray(article.tags)
+          ? article.tags.join(",")
+          : article.tags || "", // Ensure tags is a string
       });
       if (article.image) {
         setImagePreview(`${baseUrl}/image/${article.image}`);
@@ -261,7 +264,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         "category",
         "image",
         "isImportant",
-        "isVeryImportant",
+        "isVeryImportant", // Ensure isVeryImportant is included
         "tags",
       ].forEach((key) => {
         if (editData[key] !== null && editData[key] !== undefined) {
@@ -289,6 +292,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         category: "",
         image: null,
         isImportant: false,
+        isVeryImportant: false, // Reset isVeryImportant
         tags: "",
       });
       setImagePreview("");
@@ -523,7 +527,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
               checked={editData.isVeryImportant}
               onChange={handleEditCheckboxChange}
             />
-            <span>خبر مرتبط</span>
+            <span>خبر مهم جدا </span>
           </label>
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
