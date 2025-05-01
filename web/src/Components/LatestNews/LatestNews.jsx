@@ -30,7 +30,7 @@ const DateOptions = {
 
 export default function LatestNews() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=5&order=DESC&isVeryImportant=false`;
+  const http = `${baseUrl}/public/articles?limit=5&order=DESC&isImportant=false`;
 
   useEffect(() => {
     fetch(http)
