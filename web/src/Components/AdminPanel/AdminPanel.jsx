@@ -24,8 +24,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
     category: "",
     image: null,
     isImportant: false,
-    tags: "",
     isVeryImportant: false,
+    tags: "",
   });
   const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
@@ -173,6 +173,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
         category: "",
         image: null,
         isImportant: false,
+        isVeryImportant: false,
         tags: "",
       });
       setImagePreview("");
@@ -200,6 +201,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
 
   const handleEditCheckboxChange = (e) => {
     const { name, checked } = e.target;
+    console.log(`Checkbox ${name} changed to ${checked}`);
     setEditData((prev) => ({
       ...prev,
       [name]: checked,
@@ -215,10 +217,12 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
+      console.log("Loading article with ID:", editData.id);
       const article = await handleAuthError(async () => {
         return await get(`articles/${editData.id}`);
       });
 
+      console.log("Loaded article data:", article);
       setEditData({
         id: editData.id,
         title: article.title || "",
@@ -232,11 +236,12 @@ export function AdminPanel({ getAccessTokenSilently }) {
           : article.tags || "",
       });
       if (article.image) {
-        // Fix: Use the complete image URL from the API response
+        console.log("Setting image preview:", article.image);
         setImagePreview(article.image);
       }
       setMessage("تم تحميل الخبر بنجاح");
     } catch (err) {
+      console.error("Error loading article:", err);
       setMessage(err.message || "الخبر غير موجود");
     } finally {
       setLoading(false);
@@ -257,6 +262,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
     }
     setLoading(true);
     try {
+      console.log("Preparing to edit article with data:", editData);
       const formData = new FormData();
       Object.entries(editData).forEach(([key, value]) => {
         if (value !== null && value !== undefined) {
@@ -270,10 +276,12 @@ export function AdminPanel({ getAccessTokenSilently }) {
         }
       });
 
+      console.log("Submitting edit request for article ID:", editData.id);
       await handleAuthError(async () => {
         await patch(`articles/${editData.id}`, formData);
       });
 
+      console.log("Article updated successfully");
       setMessage("تم تحديث الخبر بنجاح");
       window.alert("تم تحديث الخبر بنجاح");
       setEditData({
@@ -288,6 +296,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
       });
       setImagePreview("");
     } catch (err) {
+      console.error("Error updating article:", err);
       setMessage(err.message || "حدث خطأ أثناء تحديث الخبر");
     } finally {
       setLoading(false);
