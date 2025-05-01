@@ -269,7 +269,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
           if (key === "tags") {
             formData.append("tagsIds", value.trim());
           } else if (key === "isImportant" || key === "isVeryImportant") {
-            formData.append(key, value ? "true" : "false");
+            formData.append(key, String(value));
           } else if (key !== "id") {
             formData.append(key, value);
           }
