@@ -225,14 +225,15 @@ export function AdminPanel({ getAccessTokenSilently }) {
         content: article.content || "",
         category: article.category || "",
         image: article.image || null,
-        isImportant: article.isImportant,
-        isVeryImportant: article.isVeryImportant,
+        isImportant: Boolean(article.isImportant),
+        isVeryImportant: Boolean(article.isVeryImportant),
         tags: Array.isArray(article.tags)
           ? article.tags.join(",")
           : article.tags || "",
       });
       if (article.image) {
-        setImagePreview(`${baseUrl}/image/${article.image}`);
+        // Fix: Use the complete image URL from the API response
+        setImagePreview(article.image);
       }
       setMessage("تم تحميل الخبر بنجاح");
     } catch (err) {
