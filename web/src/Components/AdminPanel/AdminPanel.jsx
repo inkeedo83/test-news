@@ -129,6 +129,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
 
   const handleAddCheckboxChange = (e) => {
     const { name, checked } = e.target;
+    console.log(`Add checkbox ${name} changed to ${checked}`);
     setAddData((prev) => ({
       ...prev,
       [name]: checked,
@@ -201,7 +202,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
 
   const handleEditCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    console.log(`Checkbox ${name} changed to ${checked}`);
+    console.log(`Edit checkbox ${name} changed to ${checked}`);
     setEditData((prev) => ({
       ...prev,
       [name]: checked,
