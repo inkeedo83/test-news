@@ -1,7 +1,35 @@
 import Typewriter from "typewriter-effect";
+import baseUrl from "../../assets/constants";
+import { useEffect, useState } from "react";
 
-export function WriterEffect(props) {
-  let arr = props.data;
+export function WriterEffect() {
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await fetch(
+          `${baseUrl}/public/articles?limit=12&order=DESC`
+        );
+        const data = await response.json();
+        console.log("API Response:", data); // Debug log
+
+        // Handle both array and object response formats
+        const articleArray = Array.isArray(data) ? data : data.data || [];
+        setArticles(articleArray);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+        setArticles([]); // Set empty array on error
+      }
+    };
+
+    fetchArticles();
+  }, []);
+
+  const titles =
+    articles?.length > 0
+      ? articles.map((item) => item?.title || item?.Title || "")
+      : ["جاري التحميل..."];
 
   return (
     <div className="relative mt-0 mx-2 sm:mx-4 mb-6">
@@ -23,11 +51,11 @@ export function WriterEffect(props) {
           <div className="text-slate-100 font-semibold text-base sm:text-xl leading-relaxed sm:leading-relaxed px-2">
             <Typewriter
               options={{
-                strings: arr.map((item) => item.title),
+                strings: titles,
                 autoStart: true,
                 loop: true,
                 pauseFor: 2000,
-                deleteSpeed: 15,
+                deleteSpeed: 8,
                 delay: 50,
                 cursor: "|",
               }}

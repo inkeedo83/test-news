@@ -17,7 +17,6 @@ export default function FeaturedArticle() {
         }
         const result = await response.json();
         setArticle(result.data[0]);
-        console.log(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

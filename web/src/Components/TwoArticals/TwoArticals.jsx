@@ -10,7 +10,7 @@ import { FaPencil } from "react-icons/fa6";
 
 export default function TwoArticals() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?order=DESC&isImportant=true`;
+  const http = `${baseUrl}/public/articles?order=DESC&isImportant=true&limit=2`;
 
   const DateOptions = {
     weekday: "long",

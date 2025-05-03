@@ -51,17 +51,18 @@ export default function MainPage() {
 
   // fetch start here
   useEffect(() => {
-    fetch(`${baseUrl}/public/articles?limit=12&order=DESC`)
+    const randomOffset = Math.floor(Math.random() * 20) + 1;
+    fetch(
+      `${baseUrl}/public/articles?order=DESC&offset=${randomOffset}&limit=12`
+    )
       .then((res) => {
         const resulte = res.json();
         return resulte;
       })
       .then((resulte) => {
         setData(resulte.data);
-
         setIsloading(false);
       })
-
       .catch((err) => console.log(err));
     toTop();
   }, []);
@@ -89,7 +90,7 @@ export default function MainPage() {
             {" "}
             {/* Changed from space-y-0 to space-y-4 */}
             <NewsletterSubscribe />
-            <WriterEffect data={data} />
+            <WriterEffect />
           </div>
 
           {/* Featured Article */}
@@ -116,69 +117,71 @@ export default function MainPage() {
               اخبار متـفرقـــه
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {data
-                .filter((item) => !item.isImportant)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="group relative bg-stone-900 dark:bg-gray-950 rounded-xl overflow-hidden transform transition-all duration-300  border border-zinc-800"
-                  >
-                    <div className="relative">
-                      <Link to={`/articles/${item.id}`}>
-                        <img
-                          loading="lazy"
-                          src={
-                            item.image === `${baseUrl}/image/null`
-                              ? BeReporterNew
-                              : item.image
-                          }
-                          className="  w-full h-48 sm:h-56 object-fill  transition-transform duration-300 group-hover:scale-105"
-                          alt={item.title}
-                        />
-                        <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
-                          <span className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-xs sm:text-sm rounded-full">
-                            {CATEGORIES[item.category].AR}
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-
-                    <div className="p-4 sm:p-6">
-                      <div className="flex justify-between items-center text-zinc-400 mb-4">
-                        <div className="flex items-center gap-2">
-                          <FaPencil className="text-red-500" />
-                          <span className="text-sm">
-                            {new Date(item.createdAt).toLocaleDateString(
-                              "ar",
-                              DateOptions
-                            )}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <RiEyeFill className="text-red-500" />
-                          <span>{item.watchCount}</span>
-                        </div>
+              {data &&
+                data
+                  .filter((item) => !item.IsImportant && !item.IsVeryImportant)
+                  .slice(0, 12)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      className="group relative bg-stone-900 dark:bg-gray-950 rounded-xl overflow-hidden transform transition-all duration-300  border border-zinc-800"
+                    >
+                      <div className="relative">
+                        <Link to={`/articles/${item.id}`}>
+                          <img
+                            loading="lazy"
+                            src={
+                              item.image === `${baseUrl}/image/null`
+                                ? BeReporterNew
+                                : item.image
+                            }
+                            className="  w-full h-48 sm:h-56 object-fill  transition-transform duration-300 group-hover:scale-105"
+                            alt={item.title}
+                          />
+                          <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+                            <span className="px-3 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-xs sm:text-sm rounded-full">
+                              {CATEGORIES[item.category].AR}
+                            </span>
+                          </div>
+                        </Link>
                       </div>
 
-                      <Link to={`/articles/${item.id}`}>
-                        <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 hover:text-red-500 transition-colors">
-                          {item.title}
-                        </h3>
-                      </Link>
+                      <div className="p-4 sm:p-6">
+                        <div className="flex justify-between items-center text-zinc-400 mb-4">
+                          <div className="flex items-center gap-2">
+                            <FaPencil className="text-red-500" />
+                            <span className="text-sm">
+                              {new Date(item.createdAt).toLocaleDateString(
+                                "ar",
+                                DateOptions
+                              )}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <RiEyeFill className="text-red-500" />
+                            <span>{item.watchCount}</span>
+                          </div>
+                        </div>
 
-                      <p className="text-zinc-400 text-sm mb-4 line-clamp-3">
-                        {item.shortContent}
-                      </p>
+                        <Link to={`/articles/${item.id}`}>
+                          <h3 className="text-lg font-bold text-white mb-4 line-clamp-2 hover:text-red-500 transition-colors">
+                            {item.title}
+                          </h3>
+                        </Link>
 
-                      <Link
-                        to={`/articles/${item.id}`}
-                        className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-sm rounded-lg hover:from-red-900 hover:to-zinc-800 transition-all duration-300"
-                      >
-                        اقرأ المزيد
-                      </Link>
+                        <p className="text-zinc-400 text-sm mb-4 line-clamp-3">
+                          {item.shortContent}
+                        </p>
+
+                        <Link
+                          to={`/articles/${item.id}`}
+                          className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-red-500 to-zinc-900 text-white text-sm rounded-lg hover:from-red-900 hover:to-zinc-800 transition-all duration-300"
+                        >
+                          اقرأ المزيد
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
             </div>
           </div>
 
