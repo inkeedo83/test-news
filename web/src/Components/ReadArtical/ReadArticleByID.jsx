@@ -37,7 +37,7 @@ export default function ReadArticleByID() {
   useEffect(() => {
     axios
       .get(`${baseUrl}/public/articles/${id}`)
-      .then((res) => (console.log(res), setData(res.data)))
+      .then((res) => setData(res.data))
       .catch((err) => console.log(err));
     toTop();
   }, [id]);

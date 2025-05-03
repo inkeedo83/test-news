@@ -12,7 +12,6 @@ export function WriterEffect() {
           `${baseUrl}/public/articles?limit=12&order=DESC`
         );
         const data = await response.json();
-        console.log("API Response:", data); // Debug log
 
         // Handle both array and object response formats
         const articleArray = Array.isArray(data) ? data : data.data || [];
