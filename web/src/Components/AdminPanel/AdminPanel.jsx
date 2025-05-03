@@ -14,8 +14,8 @@ export function AdminPanel({ getAccessTokenSilently }) {
     category: "",
     image: null,
     isImportant: false,
-    tags: "",
     isVeryImportant: false,
+    tags: "",
   });
   const [editData, setEditData] = useState({
     id: "",
@@ -270,7 +270,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
           if (key === "tags") {
             formData.append("tagsIds", value.trim());
           } else if (key === "isImportant" || key === "isVeryImportant") {
-            formData.append(key, String(value));
+            formData.append(key, value); // Send boolean value directly;
           } else if (key !== "id") {
             formData.append(key, value);
           }
