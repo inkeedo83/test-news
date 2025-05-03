@@ -30,13 +30,16 @@ const DateOptions = {
 
 export default function LatestNews() {
   const [data, setData] = useState([]);
-  const http = `${baseUrl}/public/articles?limit=5&order=DESC&isImportant=false`;
+  const http = `${baseUrl}/public/articles?limit=10&order=DESC`;
 
   useEffect(() => {
     fetch(http)
       .then((res) => res.json())
       .then((resulte) => {
-        setData(resulte.data);
+        const filteredArticles = resulte.data
+          .filter((article) => !article.isVeryImportant && !article.isImportant)
+          .slice(0, 5);
+        setData(filteredArticles);
       })
       .catch((err) => console.log(err));
   }, []);

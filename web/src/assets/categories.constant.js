@@ -66,7 +66,7 @@ const CATEGORIES = {
   ARAB_COMMUNITY_NEWS: {
     ID: "ARAB_COMMUNITY_NEWS",
     EN: " Arab Community News",
-    AR: " الجالية العربية",
+    AR: "  لجوء وهجرة",
   },
   LOCAL_EVENTS: {
     ID: "LOCAL_EVENTS",

@@ -45,7 +45,7 @@ function Footer() {
                   to="/privacy-policy"
                   className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
                 >
-                  سياسه الخصوصية
+                  سياسة الخصوصية
                 </Link>
               </li>
             </ul>
