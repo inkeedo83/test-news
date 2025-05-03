@@ -1,4 +1,7 @@
-import { useState } from "react";
+// AdminPanel.jsx - Admin Panel for managing articles, tags, and weather API key
+// -------------------------------------------------------------
+// Imports
+import { useState, useEffect } from "react";
 import TagsManager from "../Tags/TagsManager";
 import baseUrl from "../../assets/constants";
 import { post, get, patch, del } from "../../services/api";
@@ -6,7 +9,10 @@ import { saveAuthToken } from "../../services/auth";
 import PropTypes from "prop-types";
 import { AUTH0_AUDIENCE } from "../../assets/env";
 
+// -------------------------------------------------------------
+// AdminPanel Component
 export function AdminPanel({ getAccessTokenSilently }) {
+  // -------------------- State Management --------------------
   // States for add, edit and delete functionalities
   const [addData, setAddData] = useState({
     title: "",
@@ -29,11 +35,23 @@ export function AdminPanel({ getAccessTokenSilently }) {
   });
   const [deleteId, setDeleteId] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState({ text: "", type: "info" });
   const [imagePreview, setImagePreview] = useState("");
   const [weatherApiKey, setWeatherApiKey] = useState("");
+  const [imageLoading, setImageLoading] = useState(false);
 
-  // Function to update token before request
+  // Clear message after 5 seconds
+  useEffect(() => {
+    if (message.text) {
+      const timer = setTimeout(() => {
+        setMessage({ text: "", type: "info" });
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
+  // -------------------- Utility Functions --------------------
+  // Update token before request
   const updateToken = async () => {
     try {
       console.log("AdminPanel: Getting a fresh access token...");
@@ -48,15 +66,277 @@ export function AdminPanel({ getAccessTokenSilently }) {
       return true;
     } catch (error) {
       console.error("Error refreshing token:", error);
+      setMessage({ text: "Error refreshing token", type: "error" });
       return false;
     }
   };
 
-  // Function to update weather API key with Authorization token
+  // Handle authorization errors and retry if needed
+  const handleAuthError = async (callback) => {
+    try {
+      return await callback();
+    } catch (error) {
+      if (error.message === "UNAUTHORIZED") {
+        // If the token is invalid, try to update it and retry the request
+        const tokenUpdated = await updateToken();
+        if (tokenUpdated) {
+          try {
+            return await callback();
+          } catch (retryError) {
+            setMessage({
+              text: "Authorization error. Please login again.",
+              type: "error",
+            });
+            throw retryError;
+          }
+        } else {
+          setMessage({
+            text: "Authorization error. Please login again.",
+            type: "error",
+          });
+          throw error;
+        }
+      }
+      throw error;
+    }
+  };
+
+  const validateImage = (file) => {
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+    if (!allowedTypes.includes(file.type)) {
+      throw new Error("Only JPG, PNG and GIF images are allowed");
+    }
+    if (file.size > maxSize) {
+      throw new Error("Image size should not exceed 5MB");
+    }
+  };
+
+  const handleImageChange = async (file, setData) => {
+    if (!file) return;
+
+    try {
+      setImageLoading(true);
+      validateImage(file);
+
+      // Create preview
+      const preview = URL.createObjectURL(file);
+      setImagePreview(preview);
+      setData((prev) => ({ ...prev, image: file }));
+    } catch (error) {
+      setMessage({ text: error.message, type: "error" });
+    } finally {
+      setImageLoading(false);
+    }
+  };
+
+  // -------------------- Add Article Handlers --------------------
+  // Handle input changes for add form
+  const handleAddChange = (e) => {
+    const { name, value } = e.target;
+    setAddData((prev) => ({ ...prev, [name]: value }));
+    setMessage({ text: "", type: "info" });
+  };
+
+  // Handle image selection for add form
+  const handleAddImage = (e) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageChange(file, setAddData);
+  };
+
+  // Handle checkbox changes for add form
+  const handleAddCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setAddData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+    setMessage("");
+  };
+
+  // Submit handler for adding an article
+  const handleAddSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !addData.title.trim() ||
+      !addData.content.trim() ||
+      !addData.category.trim()
+    ) {
+      setMessage({ text: "العنوان والمحتوى والفئة مطلوبة", type: "error" });
+      return;
+    }
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      Object.entries(addData).forEach(([key, value]) => {
+        if (key === "tags") {
+          formData.append("tagsIds", value.trim());
+        } else if (key === "isImportant" || key === "isVeryImportant") {
+          formData.append(key, value ? "true" : "false");
+        } else {
+          formData.append(key, value);
+        }
+      });
+      await handleAuthError(async () => {
+        await post("articles", formData);
+      });
+      setMessage({ text: "تم إضافة الخبر بنجاح", type: "success" });
+      window.alert("تم إضافة الخبر بنجاح");
+      setAddData({
+        title: "",
+        content: "",
+        category: "",
+        image: null,
+        isImportant: false,
+        isVeryImportant: false,
+        tags: "",
+      });
+      setImagePreview("");
+    } catch (err) {
+      setMessage({
+        text: err.message || "حدث خطأ أثناء إضافة الخبر",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -------------------- Edit Article Handlers --------------------
+  // Handle input changes for edit form
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({ ...prev, [name]: value }));
+    setMessage({ text: "", type: "info" });
+  };
+
+  // Handle image selection for edit form
+  const handleEditImage = (e) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageChange(file, setEditData);
+  };
+
+  // Handle checkbox changes for edit form
+  const handleEditCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
+    setMessage("");
+  };
+
+  // Load article data for editing
+  const loadArticle = async () => {
+    if (!editData.id.trim()) {
+      setMessage({ text: "الرجاء إدخال معرف الخبر للتحميل", type: "error" });
+      return;
+    }
+    setLoading(true);
+    try {
+      const article = await handleAuthError(async () => {
+        return await get(`articles/${editData.id}`);
+      });
+      setEditData({
+        id: editData.id,
+        title: article.title || "",
+        content: article.content || "",
+        category: article.category || "",
+        image: article.image || null,
+        isImportant: article.isImportant,
+        isVeryImportant: article.isVeryImportant,
+        tags: Array.isArray(article.tags)
+          ? article.tags.join(",")
+          : article.tags || "",
+      });
+      if (article.image) {
+        setImagePreview(article.image);
+      }
+      setMessage({ text: "تم تحميل الخبر بنجاح", type: "success" });
+    } catch (err) {
+      setMessage({
+        text: err.message || "الخبر غير موجود",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Submit handler for editing an article
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !editData.id.trim() ||
+      !editData.title.trim() ||
+      !editData.content.trim() ||
+      !editData.category.trim()
+    ) {
+      setMessage({ text: "جميع الحقول مطلوبة للتعديل", type: "error" });
+      return;
+    }
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      Object.entries(editData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          if (key === "tags") {
+            formData.append("tagsIds", value.trim());
+          } else if (key === "isImportant" || key === "isVeryImportant") {
+            formData.append(key, value); // Send boolean value directly
+          } else if (key !== "id") {
+            formData.append(key, value);
+          }
+        }
+      });
+      await handleAuthError(async () => {
+        await patch(`articles/${editData.id}`, formData);
+      });
+      setMessage({ text: "تم تحديث الخبر بنجاح", type: "success" });
+      window.alert("تم تحديث الخبر بنجاح");
+      setImagePreview("");
+    } catch (err) {
+      setMessage({
+        text: err.message || "حدث خطأ أثناء تحديث الخبر",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -------------------- Delete Article Handler --------------------
+  // Delete an article by ID
+  const handleDelete = async () => {
+    if (!deleteId.trim()) {
+      setMessage({ text: "الرجاء إدخال معرف الخبر للحذف", type: "error" });
+      return;
+    }
+    setLoading(true);
+    try {
+      await handleAuthError(async () => {
+        await del(`articles/${deleteId}`);
+      });
+      setMessage({ text: "تم حذف الخبر بنجاح", type: "success" });
+      window.alert("تم حذف الخبر بنجاح");
+      setDeleteId("");
+    } catch (err) {
+      setMessage({
+        text: err.message || "حدث خطأ أثناء حذف الخبر",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -------------------- Weather API Key Handler --------------------
+  // Update the weather API key
   const handleWeatherKeyUpdate = async (e) => {
     e.preventDefault();
     if (!weatherApiKey.trim()) {
-      setMessage("يرجى إدخال مفتاح الطقس");
+      setMessage({ text: "يرجى إدخال مفتاح الطقس", type: "error" });
       return;
     }
     setLoading(true);
@@ -78,264 +358,30 @@ export function AdminPanel({ getAccessTokenSilently }) {
           body: JSON.stringify({ value: weatherApiKey }),
         });
       });
-      setMessage("تم تحديث مفتاح الطقس بنجاح");
+      setMessage({ text: "تم تحديث مفتاح الطقس بنجاح", type: "success" });
       window.alert("تم تحديث مفتاح الطقس بنجاح");
       setWeatherApiKey("");
     } catch (err) {
-      setMessage(err.message || "حدث خطأ أثناء تحديث مفتاح الطقس");
+      setMessage({
+        text: err.message || "حدث خطأ أثناء تحديث مفتاح الطقس",
+        type: "error",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  // Function for handling authorization errors
-  const handleAuthError = async (callback) => {
-    try {
-      return await callback();
-    } catch (error) {
-      if (error.message === "UNAUTHORIZED") {
-        // If the token is invalid, try to update it and retry the request
-        const tokenUpdated = await updateToken();
-        if (tokenUpdated) {
-          try {
-            return await callback();
-          } catch (retryError) {
-            setMessage("Authorization error. Please login again.");
-            throw retryError;
-          }
-        } else {
-          setMessage("Authorization error. Please login again.");
-          throw error;
-        }
-      }
-      throw error;
-    }
-  };
-
-  // Handlers for Add functionality
-  const handleAddChange = (e) => {
-    const { name, value } = e.target;
-    setAddData((prev) => ({ ...prev, [name]: value }));
-    setMessage("");
-  };
-
-  const handleAddImage = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setAddData((prev) => ({ ...prev, image: file }));
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleAddCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    console.log(`Add checkbox ${name} changed to ${checked}`);
-    setAddData((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-    setMessage("");
-  };
-
-  // Updated function for adding an article
-  const handleAddSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !addData.title.trim() ||
-      !addData.content.trim() ||
-      !addData.category.trim()
-    ) {
-      setMessage("العنوان والمحتوى والفئة مطلوبة");
-      return;
-    }
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      Object.entries(addData).forEach(([key, value]) => {
-        if (key === "tags") {
-          formData.append("tagsIds", value.trim());
-        } else if (key === "isImportant" || key === "isVeryImportant") {
-          formData.append(key, value ? "true" : "false");
-        } else {
-          formData.append(key, value);
-        }
-      });
-
-      // Using new API function with authorization error handling
-      await handleAuthError(async () => {
-        await post("articles", formData);
-      });
-
-      setMessage("تم إضافة الخبر بنجاح");
-      window.alert("تم إضافة الخبر بنجاح");
-      setAddData({
-        title: "",
-        content: "",
-        category: "",
-        image: null,
-        isImportant: false,
-        isVeryImportant: false,
-        tags: "",
-      });
-      setImagePreview("");
-    } catch (err) {
-      setMessage(err.message || "حدث خطأ أثناء إضافة الخبر");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handlers for Edit functionality
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditData((prev) => ({ ...prev, [name]: value }));
-    setMessage("");
-  };
-
-  const handleEditImage = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setEditData((prev) => ({ ...prev, image: file }));
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleEditCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    console.log(`Edit checkbox ${name} changed to ${checked}`);
-    setEditData((prev) => ({
-      ...prev,
-      [name]: checked,
-    }));
-    setMessage("");
-  };
-
-  // Updated function for loading an article
-  const loadArticle = async () => {
-    if (!editData.id.trim()) {
-      setMessage("الرجاء إدخال معرف الخبر للتحميل");
-      return;
-    }
-    setLoading(true);
-    try {
-      console.log("Loading article with ID:", editData.id);
-      const article = await handleAuthError(async () => {
-        return await get(`articles/${editData.id}`);
-      });
-
-      console.log("Loaded article data:", article);
-      setEditData({
-        id: editData.id,
-        title: article.title || "",
-        content: article.content || "",
-        category: article.category || "",
-        image: article.image || null,
-        isImportant: Boolean(article.isImportant),
-        isVeryImportant: Boolean(article.isVeryImportant),
-        tags: Array.isArray(article.tags)
-          ? article.tags.join(",")
-          : article.tags || "",
-      });
-      if (article.image) {
-        console.log("Setting image preview:", article.image);
-        setImagePreview(article.image);
-      }
-      setMessage("تم تحميل الخبر بنجاح");
-    } catch (err) {
-      console.error("Error loading article:", err);
-      setMessage(err.message || "الخبر غير موجود");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Updated function for editing an article
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      !editData.id.trim() ||
-      !editData.title.trim() ||
-      !editData.content.trim() ||
-      !editData.category.trim()
-    ) {
-      setMessage("جميع الحقول مطلوبة للتعديل");
-      return;
-    }
-    setLoading(true);
-    try {
-      console.log("Preparing to edit article with data:", editData);
-      const formData = new FormData();
-      Object.entries(editData).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          if (key === "tags") {
-            formData.append("tagsIds", value.trim());
-          } else if (key === "isImportant" || key === "isVeryImportant") {
-            formData.append(key, value); // Send boolean value directly;
-          } else if (key !== "id") {
-            formData.append(key, value);
-          }
-        }
-      });
-
-      console.log("Submitting edit request for article ID:", editData.id);
-      await handleAuthError(async () => {
-        await patch(`articles/${editData.id}`, formData);
-      });
-
-      console.log("Article updated successfully");
-      setMessage("تم تحديث الخبر بنجاح");
-      window.alert("تم تحديث الخبر بنجاح");
-      setEditData({
-        id: "",
-        title: "",
-        content: "",
-        category: "",
-        image: null,
-        isImportant: false,
-        isVeryImportant: false,
-        tags: "",
-      });
-      setImagePreview("");
-    } catch (err) {
-      console.error("Error updating article:", err);
-      setMessage(err.message || "حدث خطأ أثناء تحديث الخبر");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Updated function for deleting an article
-  const handleDelete = async () => {
-    if (!deleteId.trim()) {
-      setMessage("الرجاء إدخال معرف الخبر للحذف");
-      return;
-    }
-    setLoading(true);
-    try {
-      // Using new API function with authorization error handling
-      await handleAuthError(async () => {
-        await del(`articles/${deleteId}`);
-      });
-
-      setMessage("تم حذف الخبر بنجاح");
-      window.alert("تم حذف الخبر بنجاح");
-      setDeleteId("");
-    } catch (err) {
-      setMessage(err.message || "حدث خطأ أثناء حذف الخبر");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // -------------------------------------------------------------
+  // Render UI
   return (
     <div className="max-w-4xl mx-auto pt-72 px-4">
-      {/* إضافة خبر Section */}
+      {/* -------------------- إضافة خبر Section -------------------- */}
       <section className="bg-teal-400 p-6 rounded-lg mb-8">
         <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
           إضافة خبر
         </h1>
         <form onSubmit={handleAddSubmit} className="space-y-4">
-          {/* ...existing input fields... */}
+          {/* Title input */}
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             عنوان الخبر{" "}
@@ -348,6 +394,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="Title"
             className="w-full rounded-md bg-slate-400 p-2"
           />
+          {/* Content input */}
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             نص الخبر{" "}
@@ -359,6 +406,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="Content"
             className="w-full rounded-md bg-slate-400 p-2 min-h-[100px]"
           />
+          {/* Category select */}
           <select
             name="category"
             value={addData.category}
@@ -379,14 +427,16 @@ export function AdminPanel({ getAccessTokenSilently }) {
             <option value="CULTURE">ثقافة</option>
             <option value="HEALTH">صحة</option>
             <option value="EDUCATION">تعليم</option>
-            <option value="ARAB_COMMUNITY_NEWS">الجاليه العربية </option>
+            <option value="ARAB_COMMUNITY_NEWS"> هجره و لجوء </option>
             <option value="LOCAL_EVENTS">محليات</option>
           </select>
+          {/* Image input */}
           <input
             type="file"
             onChange={handleAddImage}
             className="w-full text-white rounded-xl bg-red-800 p-3"
           />
+          {/* Important checkboxes */}
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -405,11 +455,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
             />
             <span>خبر مهم جدا </span>
           </label>
+          {/* Tags input */}
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             tag Id{" "}
           </p>
-          {/* New input field for tags */}
           <input
             type="text"
             name="tags"
@@ -418,6 +468,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="أدخل الوسوم (مثال: politics, economy)"
             className="w-full rounded-md bg-slate-400 p-2"
           />
+          {/* Image preview */}
           {imagePreview && (
             <div className="bg-slate-600 p-4 rounded text-center">
               <img
@@ -427,6 +478,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
               />
             </div>
           )}
+          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
@@ -436,12 +488,13 @@ export function AdminPanel({ getAccessTokenSilently }) {
           </button>
         </form>
       </section>
-      {/* تعديل خبر Section */}
+
+      {/* -------------------- تعديل خبر Section -------------------- */}
       <section className="bg-orange-300 p-6 rounded-lg mb-8">
         <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
           تعديل خبر
         </h1>
-
+        {/* Article ID input and load button */}
         <div className="mb-4">
           <input
             type="text"
@@ -466,6 +519,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
           عنوان الخبر بعد التعديل{" "}
         </p>
         <form onSubmit={handleEditSubmit} className="space-y-4">
+          {/* Title input */}
           <input
             type="text"
             name="title"
@@ -474,6 +528,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="Title"
             className="w-full rounded-md bg-slate-400 p-2"
           />
+          {/* Content input */}
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             نص الخبر بعد التعديل{" "}
@@ -485,6 +540,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="Content"
             className="w-full rounded-md bg-slate-400 p-2 min-h-[100px]"
           />
+          {/* Category select */}
           <select
             name="category"
             value={editData.category}
@@ -504,14 +560,16 @@ export function AdminPanel({ getAccessTokenSilently }) {
             <option value="CULTURE">ثقافة</option>
             <option value="HEALTH">صحة</option>
             <option value="EDUCATION">تعليم</option>
-            <option value="ARAB_COMMUNITY_NEWS">الجاليه العربية </option>
+            <option value="ARAB_COMMUNITY_NEWS">هجره و لجوء </option>
             <option value="LOCAL_EVENTS">محليات</option>
           </select>
+          {/* Image input */}
           <input
             type="file"
             onChange={handleEditImage}
             className="w-full text-white rounded-xl bg-red-800 p-3"
           />
+          {/* Important checkboxes */}
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -530,11 +588,11 @@ export function AdminPanel({ getAccessTokenSilently }) {
             />
             <span>خبر مهم جدا </span>
           </label>
+          {/* Tags input */}
           <p className="text-sm font-bold text-red-800 text-center mb-4">
             {" "}
             tag Id{" "}
           </p>
-          {/* New input field for tags */}
           <input
             type="text"
             name="tags"
@@ -543,6 +601,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             placeholder="أدخل الوسوم (مثال: politics, economy)"
             className="w-full rounded-md bg-slate-400 p-2"
           />
+          {/* Image preview */}
           {imagePreview && (
             <div className="bg-slate-600 p-4 rounded text-center">
               <img
@@ -552,6 +611,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
               />
             </div>
           )}
+          {/* Submit button */}
           <button
             type="submit"
             disabled={loading}
@@ -561,19 +621,21 @@ export function AdminPanel({ getAccessTokenSilently }) {
           </button>
         </form>
       </section>
-      {message && (
+
+      {/* -------------------- رسالة الحالة -------------------- */}
+      {message.text && (
         <div
           className={`p-3 rounded mb-4 ${
-            message.includes("successfully")
+            message.type === "success"
               ? "bg-green-100 text-green-700"
               : "bg-red-100 text-red-700"
           }`}
         >
-          {message}
+          {message.text}
         </div>
       )}
 
-      {/* حذف خبر Section */}
+      {/* -------------------- حذف خبر Section -------------------- */}
       <section className="bg-red-300 p-6 rounded-lg">
         <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
           حذف خبر
@@ -594,12 +656,12 @@ export function AdminPanel({ getAccessTokenSilently }) {
         </button>
       </section>
 
-      {/* Tags Manager Section */}
+      {/* -------------------- Tags Manager Section -------------------- */}
       <section className="mt-8">
         <TagsManager getAccessTokenSilently={getAccessTokenSilently} />
       </section>
 
-      {/* Weather API Key Section */}
+      {/* -------------------- Weather API Key Section -------------------- */}
       <section className="bg-blue-300 p-6 rounded-lg mt-8">
         <h1 className="text-2xl font-bold text-red-800 text-center mb-4">
           تحديث مفتاح API للطقس
@@ -625,6 +687,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
   );
 }
 
+// PropTypes for AdminPanel
 AdminPanel.propTypes = {
   getAccessTokenSilently: PropTypes.func.isRequired,
 };
