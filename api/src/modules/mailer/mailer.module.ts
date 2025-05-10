@@ -4,6 +4,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { MailerModule as NestMailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { join } from 'path';
+import { AppConfig } from 'src/modules/config/validation.schema';
 import { MailerController } from 'src/modules/mailer/controllers/mailer.controller';
 import { MailerScheduler } from 'src/modules/mailer/services/mailer.scheduler';
 import { MailerService } from 'src/modules/mailer/services/mailer.service';
@@ -12,7 +13,7 @@ import { MailerService } from 'src/modules/mailer/services/mailer.service';
   imports: [
     ScheduleModule.forRoot(),
     NestMailerModule.forRootAsync({
-      useFactory: (config: ConfigService) => ({
+      useFactory: (config: ConfigService<AppConfig, true>) => ({
         transport: {
           host: config.get('MAILER_HOST'),
           port: config.get('MAILER_PORT'),
@@ -22,7 +23,7 @@ import { MailerService } from 'src/modules/mailer/services/mailer.service';
           }
         },
         defaults: {
-          from: `"${config.get('MAILER_FROM_NAME') || 'مراسل بلجيكا'}" <${config.get('MAILER_USERNAME')}>`
+          from: `'مراسل بلجيكا' <${config.get('MAILER_USERNAME')}>`
         },
         template: {
           dir: join(__dirname, 'templates'),
