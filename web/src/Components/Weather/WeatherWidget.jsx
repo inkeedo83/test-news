@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useLanguage } from "../../hooks/useLanguage";
 import { useLocalization } from "../../hooks/useLocalization";
+import BASE_URL from "../../utils/baseUrl";
 
 export default function WeatherWidget({ isMainPage = false }) {
   const [data, setData] = useState(null);
@@ -19,7 +20,7 @@ export default function WeatherWidget({ isMainPage = false }) {
         setLoading(true);
 
         // Fetch the API key from the endpoint
-        const keyResponse = await axios.get("https://app-test-i.ru/api/key");
+        const keyResponse = await axios.get(`${BASE_URL}/key`);
         const KEY = keyResponse.data;
 
         const apiLang = language === "AR" ? "ar" : "en";

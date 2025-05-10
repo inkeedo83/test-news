@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import BASE_URL from "../../utils/baseUrl";
 
 export default function DaysWeather() {
   const [data, setData] = useState(null);
@@ -38,7 +39,7 @@ export default function DaysWeather() {
         setError(null);
 
         // Fetch the API key from the endpoint
-        const keyResponse = await axios.get("https://app-test-i.ru/api/key");
+        const keyResponse = await axios.get(`${BASE_URL}/key`);
         const key = keyResponse.data;
 
         const response = await axios.get(
@@ -66,7 +67,7 @@ export default function DaysWeather() {
         setLoading(true);
 
         // Fetch the API key from the endpoint
-        const keyResponse = await axios.get("https://app-test-i.ru/api/key");
+        const keyResponse = await axios.get(`${BASE_URL}/key`);
         const key = keyResponse.data;
 
         const response = await axios.get(
