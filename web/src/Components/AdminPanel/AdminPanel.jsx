@@ -3,7 +3,7 @@
 // Imports
 import { useState, useEffect } from "react";
 import TagsManager from "../Tags/TagsManager";
-import baseUrl from "../../assets/constants";
+import BASE_URL from "../../assets/constants";
 import { post, get, patch, del } from "../../services/api";
 import { saveAuthToken } from "../../services/auth";
 import PropTypes from "prop-types";
@@ -349,7 +349,7 @@ export function AdminPanel({ getAccessTokenSilently }) {
             scope: "openid profile email",
           },
         });
-        await fetch("https://app-test-i.ru/api/key", {
+        await fetch(`${BASE_URL}/key`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
